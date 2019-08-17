@@ -1,4 +1,4 @@
-package vahovsky.LabBook;
+package vahovsky.LabBook.test.LabBook;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

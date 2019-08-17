@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="446.0" xmlns="http://javafx.com/javafx/10.0.2" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TextArea fx:id="noteTextArea" layoutX="13.0" layoutY="130.0" prefHeight="310.0" prefWidth="420.0" wrapText="true" />
+      <Label layoutX="140.0" layoutY="35.0" text="New Note" textFill="#a708e1">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Label>
+      <Button fx:id="saveButton" layoutX="179.0" layoutY="468.0" mnemonicParsing="false" text="Save">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>
