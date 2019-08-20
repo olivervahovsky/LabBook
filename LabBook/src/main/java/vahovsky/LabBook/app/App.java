@@ -1,4 +1,4 @@
-package vahovsky.LabBook;
+package vahovsky.LabBook.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

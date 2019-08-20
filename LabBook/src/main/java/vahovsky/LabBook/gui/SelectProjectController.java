@@ -235,7 +235,7 @@ public class SelectProjectController {
 	public void signOut() {
 		FrontPageController controller = new FrontPageController();
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("frontPage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../app/frontPage.fxml"));
 			loader.setController(controller);
 
 			Parent parentPane = loader.load();
