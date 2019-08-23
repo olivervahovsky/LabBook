@@ -100,7 +100,7 @@ public class FrontPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				RegistrationController registrationController = new RegistrationController();
-				showModalWindow(registrationController, "registration.fxml");
+				showModalWindow(registrationController, "registration.fxml", "Registration");
 			}
 		});
 
@@ -117,7 +117,7 @@ public class FrontPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				ForgottenPasswordController forgottenPasswordController = new ForgottenPasswordController();
-				showModalWindow(forgottenPasswordController, "forgottenPassword.fxml");
+				showModalWindow(forgottenPasswordController, "forgottenPassword.fxml", "Forgotten Password");
 			}
 		});
 
@@ -179,7 +179,7 @@ public class FrontPageController {
 		}
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -188,6 +188,7 @@ public class FrontPageController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {

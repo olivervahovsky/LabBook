@@ -104,7 +104,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditProjectController editController = new EditProjectController(selectedProject.get());
-				showModalWindow(editController, "editProject.fxml");
+				showModalWindow(editController, "editProject.fxml", "Project Editing");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -122,7 +122,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				DeleteProjectController deleteProjectController = new DeleteProjectController(selectedProject.get());
-				showModalWindow(deleteProjectController, "deleteProject.fxml");
+				showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -140,7 +140,7 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				NewProjectController newProjectController = new NewProjectController(
 						UserIdentificationManager.getUser());
-				showModalWindow(newProjectController, "newProject.fxml");
+				showModalWindow(newProjectController, "newProject.fxml", "New Project");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -150,7 +150,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditUserController editUserController = new EditUserController(UserIdentificationManager.getUser());
-				showModalWindow(editUserController, "editUser.fxml");
+				showModalWindow(editUserController, "editUser.fxml", "Account Editing");
 
 			}
 		});
@@ -197,7 +197,7 @@ public class SelectProjectController {
 		});
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -206,6 +206,7 @@ public class SelectProjectController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {

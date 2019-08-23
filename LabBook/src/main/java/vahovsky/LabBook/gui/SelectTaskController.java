@@ -87,7 +87,7 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditTaskController editTaskController = new EditTaskController(selectedTask.get());
-				showModalWindow(editTaskController, "editTask.fxml");
+				showModalWindow(editTaskController, "editTask.fxml", "Task Editing");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -105,7 +105,7 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				DeleteTaskController deleteTaskController = new DeleteTaskController(selectedTask.get());
-				showModalWindow(deleteTaskController, "deleteTask.fxml");
+				showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -115,7 +115,7 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewTaskController newTaskController = new NewTaskController(projectModel.getProject());
-				showModalWindow(newTaskController, "newTask.fxml");
+				showModalWindow(newTaskController, "newTask.fxml", "New Task");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -171,7 +171,7 @@ public class SelectTaskController {
 		});
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -180,6 +180,7 @@ public class SelectTaskController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {

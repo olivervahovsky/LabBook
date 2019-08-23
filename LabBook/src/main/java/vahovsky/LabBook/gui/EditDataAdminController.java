@@ -120,7 +120,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditAdminController editController = new EditAdminController(admin);
-				showModalWindow(editController, "editAdmin.fxml");
+				showModalWindow(editController, "editAdmin.fxml", "Admin editing");
 				userModel.setAll(userDao.getAll());
 			}
 		});
@@ -130,7 +130,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				DeleteUserAdminController deleteController = new DeleteUserAdminController(selectedUserModel.getUser());
-				showModalWindow(deleteController, "deleteUserAdmin.fxml");
+				showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
 				List<User> users = userDao.getAll();
 				userComboBox.setItems(FXCollections.observableList(users));
 				userModel.setAll(userDao.getAll());
@@ -156,7 +156,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewLaboratoryController laboratoryController = new NewLaboratoryController();
-				showModalWindow(laboratoryController, "newLaboratory.fxml");
+				showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));
 				laboratoryModel.setAll(laboratoryDao.getAll());
@@ -169,7 +169,7 @@ public class EditDataAdminController {
 			public void handle(ActionEvent event) {
 				EditLaboratoryController laboratoryController = new EditLaboratoryController(
 						selectedLaboratoryModel.getLaboratory());
-				showModalWindow(laboratoryController, "editLaboratory.fxml");
+				showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));
 			}
@@ -180,7 +180,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewAdminController newAdminController = new NewAdminController();
-				showModalWindow(newAdminController, "newAdmin.fxml");
+				showModalWindow(newAdminController, "newAdmin.fxml", "New Admin");
 
 			}
 		});
@@ -207,7 +207,7 @@ public class EditDataAdminController {
 		}
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -216,6 +216,7 @@ public class EditDataAdminController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {

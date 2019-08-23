@@ -78,7 +78,7 @@ public class SelectNoteController {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
 						EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-						showModalWindow(editNoteController, "editNote.fxml");
+						showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
 						notesModel.setAll(getNotes());
 					}
 				}
@@ -90,7 +90,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-				showModalWindow(editNoteController, "editNote.fxml");
+				showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -100,7 +100,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				DeleteNoteController deleteNoteController = new DeleteNoteController(selectedNote.get());
-				showModalWindow(deleteNoteController, "deleteNote.fxml");
+				showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -110,7 +110,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewNoteController newNoteController = new NewNoteController(taskModel.getTask());
-				showModalWindow(newNoteController, "newNote.fxml");
+				showModalWindow(newNoteController, "newNote.fxml", "New Note");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -176,7 +176,7 @@ public class SelectNoteController {
 		});
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -185,6 +185,7 @@ public class SelectNoteController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {

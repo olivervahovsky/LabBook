@@ -88,7 +88,7 @@ public class EditLaboratoryController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewItemController newItemController = new NewItemController(laboratoryModel.getLaboratory());
-				showModalWindow(newItemController, "newItem.fxml");
+				showModalWindow(newItemController, "newItem.fxml", "New Item");
 				itemModel.setAll(getItems());
 			}
 		});
@@ -98,7 +98,7 @@ public class EditLaboratoryController {
 			@Override
 			public void handle(ActionEvent event) {
 				DeleteItemController deleteItemController = new DeleteItemController(selectedItem.get());
-				showModalWindow(deleteItemController, "deleteItem.fxml");
+				showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
 				// itemModel.setAll(itemDao.getAll());
 				itemModel.setAll(getItems());
 
@@ -141,7 +141,7 @@ public class EditLaboratoryController {
 
 	}
 
-	private void showModalWindow(Object controller, String fxml) {
+	private void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
@@ -150,6 +150,7 @@ public class EditLaboratoryController {
 
 			Stage dialog = new Stage();
 			dialog.setScene(scene);
+			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
 		} catch (IOException e) {
