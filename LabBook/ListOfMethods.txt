@@ -1,0 +1,1 @@
+getItemsOfLaboratory(Laboratory laboratory) - public static List<Item> (LaboratoryManager)

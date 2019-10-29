@@ -14,9 +14,17 @@ import vahovsky.LabBook.persistent.UserDAO;
 
 public class ForgottenPasswordManagerSimple {
 
-	private static String USER_NAME = "ovlv.projekt"; // GMail user name (just the part before "@gmail.com")
-	private static String PASSWORD = "LabBook17ViVa"; // GMail password
+	// GMail user name (just the part before "@gmail.com")
+	private static String USER_NAME = "ovlv.projekt";
+	// GMail password
+	private static String PASSWORD = "LabBook17ViVa";
 
+	/**
+	 * Method to set new random password to a user defined by an email address and
+	 * to send him this new password
+	 * 
+	 * @param email email address of the user that requested new password
+	 */
 	public static void sendPassword(String email) {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 
@@ -34,6 +42,16 @@ public class ForgottenPasswordManagerSimple {
 		sendFromGMail(from, pass, to, subject, body);
 	}
 
+	/**
+	 * Method to send mail message through smtp.gmail.com server
+	 * 
+	 * @param from    gmail username of the account, from which the message is sent
+	 * @param pass    gmail password of the account, from which the message is sent
+	 * @param to      field of mail addresses of all the recipients of the message
+	 *                to be sent
+	 * @param subject subject of the message to be sent
+	 * @param body    body of the message to be sent
+	 */
 	private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
 		Properties props = System.getProperties();
 		String host = "smtp.gmail.com";

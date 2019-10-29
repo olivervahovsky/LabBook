@@ -9,13 +9,17 @@ import vahovsky.LabBook.gui.FrontPageController;
 
 public class App extends Application {
 
-	// spustenie aplikacie
+	
+	/**
+	 * Method that runs the app.
+	 * - loads graphic interface of the frontpage
+	 * - loads controller of the frontpage
+	 */
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		FrontPageController mainController = new FrontPageController();
 		FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("frontPage.fxml"));
 		fxmlLoader.setController(mainController);
-		// môže hodiť IOException
 		Parent rootPane = fxmlLoader.load();
 
 		Scene scene = new Scene(rootPane);
@@ -30,4 +34,3 @@ public class App extends Application {
 	}
 
 }
-

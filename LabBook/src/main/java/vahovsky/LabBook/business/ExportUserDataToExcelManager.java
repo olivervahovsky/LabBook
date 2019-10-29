@@ -35,6 +35,13 @@ public class ExportUserDataToExcelManager {
 
 	private static UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 
+	/**
+	 * Method to export user data (his projects, tasks and comments of these
+	 * projects) into an excel file
+	 * 
+	 * @param user User, whose data are to be exported
+	 * @throws IOException
+	 */
 	public static void exportUserData(User user) throws IOException {
 		// Create a Workbook
 		Workbook workbook = new XSSFWorkbook(); // new HSSFWorkbook() for generating `.xls` file
@@ -45,13 +52,13 @@ public class ExportUserDataToExcelManager {
 		 */
 		CreationHelper createHelper = workbook.getCreationHelper();
 
-		// Create a Sheet
+		// create a sheet about the projects
 		Sheet sheet = workbook.createSheet("Projects");
 		// Create a Font for styling header cells
 		Font headerFont = workbook.createFont();
 		headerFont.setBold(true);
 		headerFont.setFontHeightInPoints((short) 14);
-		headerFont.setColor(IndexedColors.PINK.getIndex());
+		headerFont.setColor(IndexedColors.BLUE.getIndex());
 		// Create a CellStyle with the font
 		CellStyle headerCellStyle = workbook.createCellStyle();
 		headerCellStyle.setFont(headerFont);
@@ -67,6 +74,8 @@ public class ExportUserDataToExcelManager {
 		CellStyle dateCellStyle = workbook.createCellStyle();
 		dateCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("dd-MM-yyyy"));
 
+		// listing the projects, their status (active?), time schedule into the
+		// "projects" sheet
 		List<Project> projects = userDAO.getProjects(user);
 		int rowNum = 1;
 		for (Project project : projects) {
@@ -91,10 +100,12 @@ public class ExportUserDataToExcelManager {
 			row.createCell(4).setCellValue(project.isEachItemAvailable());
 		}
 
+		// adjust size of the columns to fit the content
 		for (int i = 0; i < projectColumns.length; i++) {
 			sheet.autoSizeColumn(i);
 		}
 
+		// create sheet with the list of the tasks
 		sheet = workbook.createSheet("Tasks");
 
 		headerRow = sheet.createRow(0);
@@ -107,6 +118,9 @@ public class ExportUserDataToExcelManager {
 
 		List<Task> tasks = userDAO.getTasks(user);
 		rowNum = 1;
+
+		// list the tasks according to projects they are a part of, their status
+		// (active?), time schedule, laboratory here the were/are carried out
 		for (Task task : tasks) {
 			Row row = sheet.createRow(rowNum++);
 
@@ -139,6 +153,7 @@ public class ExportUserDataToExcelManager {
 			sheet.autoSizeColumn(i);
 		}
 
+		// create sheet listing the notes
 		sheet = workbook.createSheet("Notes");
 
 		headerRow = sheet.createRow(0);
@@ -149,6 +164,7 @@ public class ExportUserDataToExcelManager {
 			cell.setCellStyle(headerCellStyle);
 		}
 
+		// list the notes + the date and time of their creation, project, task or item they belong to
 		List<Note> notes = userDAO.getNotes(user);
 		rowNum = 1;
 		for (Note note : notes) {

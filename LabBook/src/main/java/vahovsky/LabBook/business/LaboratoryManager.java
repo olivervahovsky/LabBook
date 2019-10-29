@@ -10,6 +10,10 @@ import vahovsky.LabBook.persistent.ItemDAO;
 
 public class LaboratoryManager {
 	
+	/** Method returning the ArrayList of all items stored in a defined Laboratory 
+	 * @param laboratory Laboratory, which items we want to list.
+	 * @return the list of the items of this laboratory
+	 */
 	public static List<Item> getItemsOfLaboratory(Laboratory laboratory) {
 		ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
 		List<Item> items = new ArrayList<>();

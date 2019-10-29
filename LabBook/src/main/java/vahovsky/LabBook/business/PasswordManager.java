@@ -8,6 +8,12 @@ import vahovsky.LabBook.persistent.DAOfactory;
 
 public class PasswordManager {
 
+	/** Method checking the correctness of the user/admin password.
+	 * @param	password String provided by user as a password to be checked.
+	 * @param	id Identification of the user/admin in the database.
+	 * @param	UserType	Type of the user - user or admin.
+	 * @return	True if password is correct, false otherwise.	
+	 */
 	public boolean isCorrectPassword(String password, Long id, int UserType) {
 		if (UserType == 1) {
 			List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
