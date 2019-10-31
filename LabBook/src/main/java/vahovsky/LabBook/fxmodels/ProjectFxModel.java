@@ -67,7 +67,7 @@ public class ProjectFxModel {
 		this.name.set(name);
 	}
 
-	public StringProperty nameProperty() {
+	public StringProperty getNameProperty() {
 		return name;
 	}
 

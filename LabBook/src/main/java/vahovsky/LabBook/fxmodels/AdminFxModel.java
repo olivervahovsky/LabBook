@@ -7,21 +7,33 @@ import vahovsky.LabBook.entities.Admin;
 public class AdminFxModel {
 
 	private Long adminID;
-	// na property vieme dat listenery, treba rozlisovat medzi vracanim property a
-	// vracanim value wrapped v property = property.get()
+
+	// the difference between property (e.g. StringProperty name) and value wrapped
+	// in this property (e.g. String name) is, that it is possible to add listeners
+	// to a property. At the same time, value (String name) is wrapped in this
+	// property and is accessible through method get() (String name = name.get() )
 	private StringProperty name = new SimpleStringProperty();
 	private StringProperty password = new SimpleStringProperty();
 	private StringProperty email = new SimpleStringProperty();
-	//private Admin admin;
 
+	/**
+	 * Constructor of fxModel object based on parameters of entity object
+	 * 
+	 * @param admin Entity object that serves as a reference for the fxModel
+	 */
 	public AdminFxModel(Admin admin) {
-		//this.admin = admin;
 		setName(admin.getName());
 		setPassword(admin.getPassword());
 		setAdminID(admin.getAdminID());
 		setEmail(admin.getEmail());
 	}
 
+	/**
+	 * Method that creates and returns admin entity object based on parameters
+	 * (properties) of admin fxModel object
+	 * 
+	 * @return entity object admin
+	 */
 	public Admin getAdmin() {
 		Admin a = new Admin();
 		a.setAdminID(adminID);
@@ -29,18 +41,6 @@ public class AdminFxModel {
 		a.setPassword(getPassword());
 		a.setEmail(getEmail());
 		return a;
-	}
-
-	public StringProperty EmailProperty() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email.set(email);
-	}
-
-	public String getEmail() {
-		return email.get();
 	}
 
 	public Long getAdminID() {
@@ -59,7 +59,7 @@ public class AdminFxModel {
 		this.name.set(name);
 	}
 
-	public StringProperty nameProperty() {
+	public StringProperty getNameProperty() {
 		return name;
 	}
 
@@ -71,8 +71,20 @@ public class AdminFxModel {
 		this.password.set(password);
 	}
 
-	public StringProperty passwordProperty() {
+	public StringProperty getPasswordProperty() {
 		return password;
+	}
+
+	public StringProperty getEmailProperty() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email.set(email);
+	}
+
+	public String getEmail() {
+		return email.get();
 	}
 
 }

@@ -37,10 +37,10 @@ public class EditUserController {
 
 	@FXML
 	void initialize() {
-		nameTextField.textProperty().bindBidirectional(userModel.nameProperty());
-		emailTextField.textProperty().bindBidirectional(userModel.EmailProperty());
-		newPasswordPasswordField.textProperty().bindBidirectional(userModel.passwordProperty());
-		confirmNewPasswordPasswordField.textProperty().bindBidirectional(userModel.passwordProperty());
+		nameTextField.textProperty().bindBidirectional(userModel.getNameProperty());
+		emailTextField.textProperty().bindBidirectional(userModel.getEmailProperty());
+		newPasswordPasswordField.textProperty().bindBidirectional(userModel.getPasswordProperty());
+		confirmNewPasswordPasswordField.textProperty().bindBidirectional(userModel.getPasswordProperty());
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 

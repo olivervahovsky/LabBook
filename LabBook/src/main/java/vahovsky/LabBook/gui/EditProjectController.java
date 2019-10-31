@@ -38,7 +38,7 @@ public class EditProjectController {
 	@FXML
 	void initialize() {
 		// projectModel = FXCollections.observableArrayList(projectDao.getAll());
-		nameTextField.textProperty().bindBidirectional(projectModel.nameProperty());
+		nameTextField.textProperty().bindBidirectional(projectModel.getNameProperty());
 		fromDatePicker.valueProperty().bindBidirectional(projectModel.fromProperty());
 		untilDatePicker.valueProperty().bindBidirectional(projectModel.untilProperty());
 

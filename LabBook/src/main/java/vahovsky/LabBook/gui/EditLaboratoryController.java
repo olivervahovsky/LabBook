@@ -70,7 +70,7 @@ public class EditLaboratoryController {
 	@FXML
 	void initialize() {
 		itemModel = FXCollections.observableArrayList(getItems());
-		nameTextField.textProperty().bindBidirectional(laboratoryModel.nameProperty());
+		nameTextField.textProperty().bindBidirectional(laboratoryModel.getNameProperty());
 		locationTextField.textProperty().bindBidirectional(laboratoryModel.locationProperty());
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {

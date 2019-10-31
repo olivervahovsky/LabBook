@@ -39,10 +39,10 @@ public class EditAdminController {
 
 	@FXML
 	void initialize() {
-		nameTextField.textProperty().bindBidirectional(adminModel.nameProperty());
-		emailTextField.textProperty().bindBidirectional(adminModel.EmailProperty());
-		passwordPasswordField.textProperty().bindBidirectional(adminModel.passwordProperty());
-		confirmPasswordPasswordField.textProperty().bindBidirectional(adminModel.passwordProperty());
+		nameTextField.textProperty().bindBidirectional(adminModel.getNameProperty());
+		emailTextField.textProperty().bindBidirectional(adminModel.getEmailProperty());
+		passwordPasswordField.textProperty().bindBidirectional(adminModel.getPasswordProperty());
+		confirmPasswordPasswordField.textProperty().bindBidirectional(adminModel.getPasswordProperty());
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 

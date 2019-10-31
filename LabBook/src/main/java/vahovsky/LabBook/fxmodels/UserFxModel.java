@@ -38,7 +38,7 @@ public class UserFxModel {
 		return user;
 	}
 
-	public StringProperty EmailProperty() {
+	public StringProperty getEmailProperty() {
 		return email;
 	}
 
@@ -58,7 +58,7 @@ public class UserFxModel {
 		this.userID = userID;
 	}
 
-	public StringProperty nameProperty() {
+	public StringProperty getNameProperty() {
 		return name;
 	}
 
@@ -70,7 +70,7 @@ public class UserFxModel {
 		return name.get();
 	}
 
-	public StringProperty passwordProperty() {
+	public StringProperty getPasswordProperty() {
 		return password;
 	}
 

@@ -62,7 +62,7 @@ public class LaboratoryFxModel {
 		this.name.set(name);
 	}
 
-	public StringProperty nameProperty() {
+	public StringProperty getNameProperty() {
 		return name;
 	}
 

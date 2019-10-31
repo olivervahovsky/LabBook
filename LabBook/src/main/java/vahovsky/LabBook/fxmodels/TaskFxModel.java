@@ -86,7 +86,7 @@ public class TaskFxModel {
 		this.taskId = taskId;
 	}
 
-	public StringProperty nameProperty() {
+	public StringProperty getNameProperty() {
 		return name;
 	}
 
