@@ -20,6 +20,11 @@ public class NoteFxModel {
 	private Project project;
 	private Item item;
 
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param note Entity object that serves as a reference for the fxModel
+	 */
 	public NoteFxModel(Note note) {
 		setNoteID(note.getNoteID());
 		setText(note.getText());
@@ -30,6 +35,13 @@ public class NoteFxModel {
 		setTask(note.getTask());
 	}
 
+	/**
+	 * Method that creates and returns entity object based on parameters
+	 * (instance variables) of fxModel object
+	 * 
+	 * @return note entity object based on parameters (instance variables) of
+	 *         fxModel object
+	 */
 	public Note getNote() {
 		Note n = new Note();
 		n.setNoteID(getNoteID());
@@ -96,10 +108,6 @@ public class NoteFxModel {
 
 	public void setText(String text) {
 		this.text.set(text);
-	}
-
-	public StringProperty textProperty() {
-		return text;
 	}
 
 }

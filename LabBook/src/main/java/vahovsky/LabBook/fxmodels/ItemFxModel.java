@@ -8,6 +8,11 @@ public class ItemFxModel {
 	private String name;
 	private int quantity;
 
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param item Entity object that serves as a reference for the fxModel
+	 */
 	public ItemFxModel(Item item) {
 		setName(item.getName());
 		setItemID(item.getItemID());
@@ -17,24 +22,32 @@ public class ItemFxModel {
 	public ItemFxModel() {
 	}
 
-	public ItemFxModel(Long itemID, String name, int quantity) {
-		this.itemID = itemID;
-		this.name = name;
-		this.quantity = quantity;
+	/**
+	 * Method that sets instance variables of fxModel object based on input entity
+	 * object
+	 * 
+	 * @param item entity object, which parameters are used to set parameters of
+	 *             fxModel object
+	 */
+	public void setItem(Item item) {
+		setName(item.getName());
+		setItemID(item.getItemID());
+		item.setQuantity(item.getQuantity());
 	}
 
+	/**
+	 * Method that creates and returns entity object based on parameters (instance
+	 * variables) of fxModel object
+	 * 
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
+	 */
 	public Item getItem() {
 		Item item = new Item();
 		item.setName(getName());
 		item.setItemID(getItemID());
 		item.setQuantity(getQuantity());
 		return item;
-	}
-
-	public void setItem(Item item) {
-		setName(item.getName());
-		setItemID(item.getItemID());
-		item.setQuantity(item.getQuantity());
 	}
 
 	public Long getItemID() {

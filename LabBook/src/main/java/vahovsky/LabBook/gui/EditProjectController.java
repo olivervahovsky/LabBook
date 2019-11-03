@@ -39,8 +39,8 @@ public class EditProjectController {
 	void initialize() {
 		// projectModel = FXCollections.observableArrayList(projectDao.getAll());
 		nameTextField.textProperty().bindBidirectional(projectModel.getNameProperty());
-		fromDatePicker.valueProperty().bindBidirectional(projectModel.fromProperty());
-		untilDatePicker.valueProperty().bindBidirectional(projectModel.untilProperty());
+		fromDatePicker.valueProperty().bindBidirectional(projectModel.getFromProperty());
+		untilDatePicker.valueProperty().bindBidirectional(projectModel.getUntilProperty());
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 

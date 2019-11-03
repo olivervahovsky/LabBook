@@ -19,12 +19,12 @@ public class ProjectFxModel {
 	private User createdBy;
 	private List<User> completedBy;
 
-	// public ProjectFxModel() {
-	//
-	// }
-
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param project Entity object that serves as a reference for the fxModel
+	 */
 	public ProjectFxModel(Project project) {
-		// this.project = project;
 		setName(project.getName());
 		setFrom(project.getDateFrom());
 		setUntil(project.getDateUntil());
@@ -32,6 +32,13 @@ public class ProjectFxModel {
 		setProjectId(project.getProjectID());
 	}
 
+	/**
+	 * Method that sets instance variables of fxModel object based on input entity
+	 * object
+	 * 
+	 * @param project entity object, which parameters are used to set
+	 *                parameters of fxModel object
+	 */
 	public void setProject(Project project) {
 		setName(project.getName());
 		setFrom(project.getDateFrom());
@@ -40,15 +47,22 @@ public class ProjectFxModel {
 		setCompletedBy(project.getCompletedBy());
 	}
 
+	/**
+	 * Method that creates and returns entity object based on parameters (instance
+	 * variables) of fxModel object
+	 * 
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
+	 */
 	public Project getProject() {
-		Project p = new Project();
-		p.setName(getName());
-		p.setDateFrom(getFrom());
-		p.setDateUntil(getUntil());
-		p.setCreatedBy(getCreatedBy());
-		p.setCompletedBy(getCompletedBy());
-		p.setProjectID(getProjectId());
-		return p;
+		Project project = new Project();
+		project.setName(getName());
+		project.setDateFrom(getFrom());
+		project.setDateUntil(getUntil());
+		project.setCreatedBy(getCreatedBy());
+		project.setCompletedBy(getCompletedBy());
+		project.setProjectID(getProjectId());
+		return project;
 	}
 
 	public Long getProjectId() {
@@ -79,7 +93,7 @@ public class ProjectFxModel {
 		this.from.set(from);
 	}
 
-	public ObjectProperty<LocalDate> fromProperty() {
+	public ObjectProperty<LocalDate> getFromProperty() {
 		return from;
 	}
 
@@ -91,7 +105,7 @@ public class ProjectFxModel {
 		this.until.set(until);
 	}
 
-	public ObjectProperty<LocalDate> untilProperty() {
+	public ObjectProperty<LocalDate> getUntilProperty() {
 		return until;
 	}
 

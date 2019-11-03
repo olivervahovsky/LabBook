@@ -14,6 +14,12 @@ public class LaboratoryFxModel {
 	private StringProperty location = new SimpleStringProperty();
 	private List<Item> items;
 
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param laboratory entity object, which parameters are used to create fxModel
+	 *                   object
+	 */
 	public LaboratoryFxModel(Laboratory laboratory) {
 		setLaboratoryID(laboratory.getLaboratoryID());
 		setName(laboratory.getName());
@@ -22,28 +28,42 @@ public class LaboratoryFxModel {
 			setItems(laboratory.getItems());
 		}
 	}
-	
+
 	public LaboratoryFxModel() {
 	}
-	
+
+	/**
+	 * Method that sets instance variables of fxModel object based on input entity
+	 * object
+	 * 
+	 * @param laboratory entity object, which parameters are used to set parameters
+	 *                   of fxModel object
+	 */
+	public void setLaboratory(Laboratory laboratory) {
+		setLaboratoryID(laboratory.getLaboratoryID());
+		setName(laboratory.getName());
+		setLocation(laboratory.getLocation());
+		if (laboratory.getItems() != null) {
+			setItems(laboratory.getItems());
+		}
+	}
+
+	/**
+	 * Method that creates and returns entity object based on parameters (instance
+	 * variables) of fxModel object
+	 * 
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
+	 */
 	public Laboratory getLaboratory() {
-		Laboratory l = new Laboratory();
-		l.setName(getName());
-		l.setLocation(getLocation());
+		Laboratory laboratory = new Laboratory();
+		laboratory.setName(getName());
+		laboratory.setLocation(getLocation());
 		if (getItems() != null) {
 			setItems(getItems());
 		}
-		l.setLaboratoryID(getLaboratoryID());
-		return l;
-	}
-
-	public void setLaboratory(Laboratory lab) {
-		setLaboratoryID(lab.getLaboratoryID());
-		setName(lab.getName());
-		setLocation(lab.getLocation());
-		if (lab.getItems() != null) {
-			setItems(lab.getItems());
-		}
+		laboratory.setLaboratoryID(getLaboratoryID());
+		return laboratory;
 	}
 
 	public Long getLaboratoryID() {
@@ -74,7 +94,7 @@ public class LaboratoryFxModel {
 		this.location.set(location);
 	}
 
-	public StringProperty locationProperty() {
+	public StringProperty getLocationProperty() {
 		return location;
 	}
 

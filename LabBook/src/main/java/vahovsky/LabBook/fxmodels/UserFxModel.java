@@ -15,20 +15,38 @@ public class UserFxModel {
 
 	}
 
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param user Entity object that serves as a reference for the fxModel
+	 */
 	public UserFxModel(User user) {
 		setName(user.getName());
 		setPassword(user.getPassword());
-		//System.out.println(user.getUserID());
 		setUserID(user.getUserID());
 		setEmail(user.getEmail());
 	}
 
+	/**
+	 * Method that sets instance variables of fxModel object based on input entity
+	 * object
+	 * 
+	 * @param user entity object, which parameters are used to set parameters of
+	 *             fxModel object
+	 */
 	public void setUser(User user) {
 		setName(user.getName());
 		setPassword(user.getPassword());
 		setUserID(user.getUserID());
 	}
 
+	/**
+	 * Method that creates and returns entity object based on parameters (instance
+	 * variables) of fxModel object
+	 * 
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
+	 */
 	public User getUser() {
 		User user = new User();
 		user.setUserID(getUserID());

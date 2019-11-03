@@ -65,8 +65,8 @@ public class EditTaskController {
 		//laboratoryModel = FXCollections.observableArrayList(laboratoryDao.getAll());
 
 		nameTextField.textProperty().bindBidirectional(taskModel.getNameProperty());
-		fromDatePicker.valueProperty().bindBidirectional(taskModel.fromProperty());
-		untilDatePicker.valueProperty().bindBidirectional(taskModel.untilProperty());
+		fromDatePicker.valueProperty().bindBidirectional(taskModel.getFromProperty());
+		untilDatePicker.valueProperty().bindBidirectional(taskModel.getUntilProperty());
 
 		List<Laboratory> laboratories = laboratoryDao.getAll();
 		laboratoryComboBox.setItems(FXCollections.observableList(laboratories));

@@ -17,7 +17,7 @@ public class AdminFxModel {
 	private StringProperty email = new SimpleStringProperty();
 
 	/**
-	 * Constructor of fxModel object based on parameters of entity object
+	 * Constructor that creates fxModel object based on parameters of entity object
 	 * 
 	 * @param admin Entity object that serves as a reference for the fxModel
 	 */
@@ -29,18 +29,19 @@ public class AdminFxModel {
 	}
 
 	/**
-	 * Method that creates and returns admin entity object based on parameters
-	 * (properties) of admin fxModel object
+	 * Method that creates and returns entity object based on parameters
+	 * (properties) of fxModel object
 	 * 
-	 * @return entity object admin
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
 	 */
 	public Admin getAdmin() {
-		Admin a = new Admin();
-		a.setAdminID(adminID);
-		a.setName(getName());
-		a.setPassword(getPassword());
-		a.setEmail(getEmail());
-		return a;
+		Admin admin = new Admin();
+		admin.setAdminID(adminID);
+		admin.setName(getName());
+		admin.setPassword(getPassword());
+		admin.setEmail(getEmail());
+		return admin;
 	}
 
 	public Long getAdminID() {

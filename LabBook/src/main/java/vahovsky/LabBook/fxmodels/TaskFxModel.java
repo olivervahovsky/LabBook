@@ -27,6 +27,11 @@ public class TaskFxModel {
 	public TaskFxModel() {
 	}
 
+	/**
+	 * Constructor that creates fxModel object based on parameters of entity object
+	 * 
+	 * @param task Entity object that serves as a reference for the fxModel
+	 */
 	public TaskFxModel(Task task) {
 		setProject(task.getProject());
 		setName(task.getName());
@@ -38,6 +43,13 @@ public class TaskFxModel {
 		setCreatedBy(task.getCreatedBy());
 	}
 
+	/**
+	 * Method that sets instance variables of fxModel object based on input entity
+	 * object
+	 * 
+	 * @param task entity object, which parameters are used to set parameters of
+	 *             fxModel object
+	 */
 	public void setTask(Task task) {
 		setProject(task.getProject());
 		setName(task.getName());
@@ -50,6 +62,13 @@ public class TaskFxModel {
 		setCreatedBy(task.getCreatedBy());
 	}
 
+	/**
+	 * Method that creates and returns entity object based on parameters (instance
+	 * variables) of fxModel object
+	 * 
+	 * @return entity object based on parameters (instance variables) of fxModel
+	 *         object
+	 */
 	public Task getTask() {
 		Task t = new Task();
 		t.setProject(getProject());
@@ -106,7 +125,7 @@ public class TaskFxModel {
 		this.from.set(from);
 	}
 
-	public ObjectProperty<LocalDate> fromProperty() {
+	public ObjectProperty<LocalDate> getFromProperty() {
 		return from;
 	}
 
@@ -118,7 +137,7 @@ public class TaskFxModel {
 		this.until.set(until);
 	}
 
-	public ObjectProperty<LocalDate> untilProperty() {
+	public ObjectProperty<LocalDate> getUntilProperty() {
 		return until;
 	}
 
