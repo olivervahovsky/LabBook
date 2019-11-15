@@ -70,25 +70,26 @@ public class MysqlUserDAO implements UserDAO {
 		}
 	}
 
-	// dobuducna - nech aj po odstraneni usera ostanu jeho projekty, tasky,
-	// komenty... foreign key na null, alebo odstranenie stlpca s foreign key,
-	// pridanie stlpca so stringom s menom byvaleho usera...
 	@Override
 	public void deleteUser(User user) {
-		// vymaze vsetky note, ktore patrili k danemu userovi
+		// First delete all the notes belonging to the user, as they cannot be
+		// accessed after user deletion
 		jdbcTemplate.update("DELETE FROM note WHERE user_id_user = ?", user.getUserID());
-		// vymaze vsetky tasky, ktore patria danemu userovi (nestaci mazat riadky
-		// tabulky lebo tasky su foreign key inde a to je obsiahnute v metode
-		// deleteTask, preto tuto volame)
+		// Next delete all the tasks belonging to the user, as they cannot be
+		// accessed after user deletion. Here, deleting rows from the tasks table is
+		// not enough, as tasks are foreign keys elsewhere, hence we delete tasks by
+		// calling the method deleteTask which updates all the references to these
+		// tasks in other tables of the database.
 		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasks(user);
 		if (tasks != null) {
 			for (Task task : tasks) {
 				DAOfactory.INSTANCE.getTaskDAO().deleteTask(task);
 			}
 		}
-		// vymaze vsetky projekty, ktore patrili k danemu userovi
+		// Next delete all the projects belonging to the user, as they cannot be
+		// accessed after user deletion.
 		jdbcTemplate.update("DELETE FROM project WHERE user_id_user = ?", user.getUserID());
-		// vymaze usera
+		// Finally delete the user himself
 		String sql = "DELETE FROM user WHERE id_user = " + user.getUserID();
 		jdbcTemplate.update(sql);
 	}
@@ -157,10 +158,7 @@ public class MysqlUserDAO implements UserDAO {
 				note.setText(rs.getString("text"));
 				note.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
 				note.setAuthor(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));
-				// ak note nema nastavene napr. task, teda nie je to poznamka k tasku, tak
-				// task_id_task je null, getByID potom nenajde taky riadok v databaze, lebo
-				// ziadny task nema primarny kluc = null, lenze getByID je cez queryForObject a
-				// musi preto vratit prave jeden riadok
+				
 				if (rs.getObject("task_id_task") != null)
 					note.setTask(DAOfactory.INSTANCE.getTaskDAO().getByID(rs.getLong("task_id_task")));
 				else
@@ -179,7 +177,7 @@ public class MysqlUserDAO implements UserDAO {
 			}
 		});
 	}
-	
+
 	@Override
 	public List<Project> getProjects(User user) {
 		String sql = "SELECT id_project, name, active, date_from, date_until, each_item_available, user_id_user "

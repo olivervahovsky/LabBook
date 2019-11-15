@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import vahovsky.LabBook.entities.Admin;
 
 public class MysqlAdminDAO implements AdminDAO {
-	
+
 	private JdbcTemplate jdbcTemplate;
 
 	public MysqlAdminDAO(JdbcTemplate jdbcTemplate) {

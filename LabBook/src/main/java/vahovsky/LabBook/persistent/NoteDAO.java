@@ -6,16 +6,37 @@ import vahovsky.LabBook.entities.Note;
 
 public interface NoteDAO {
 
-	// pridanie note do databazy
+	/**
+	 * Method adding representation of entity object note into database
+	 * 
+	 * @param note entity object, the representation of which we want to add into
+	 *             the database
+	 */
 	void addNote(Note note);
 
-	// vrati vsetky note z databazy
+	/**
+	 * Method listing all note entities, representations of which are currently
+	 * present in database
+	 * 
+	 * @return list of entity objects based on their corresponding representations
+	 *         in database
+	 */
 	List<Note> getAll();
 
-	// zmena note v databaze
+	/**
+	 * Save changes of note's parameters to its corresponding representation in
+	 * database
+	 * 
+	 * @param note entity object, upon which changes were made
+	 */
 	void saveNote(Note note);
 
-	// vymazanie note z databazy
+	/**
+	 * Method to delete representation of note entity object from database
+	 * 
+	 * @param note entity object, representation of which is to be removed from
+	 *             database
+	 */
 	void deleteNote(Note note);
 
 }

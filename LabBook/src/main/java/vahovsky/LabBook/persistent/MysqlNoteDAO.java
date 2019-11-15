@@ -60,10 +60,7 @@ public class MysqlNoteDAO implements NoteDAO {
 				note.setText(rs.getString("text"));
 				note.setTimestamp(rs.getTimestamp("timestamp").toLocalDateTime());
 				note.setAuthor(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));
-				// ak note nema nastavene napr. task, teda nie je to poznamka k tasku, tak
-				// task_id_task je null, getByID potom nenajde taky riadok v databaze, lebo
-				// ziadny task nema primarny kluc = null, lenze getByID je cez queryForObject a
-				// musi preto vratit prave jeden riadok
+
 				if (rs.getObject("task_id_task") != null)
 					note.setTask(DAOfactory.INSTANCE.getTaskDAO().getByID(rs.getLong("task_id_task")));
 				else
@@ -78,6 +75,7 @@ public class MysqlNoteDAO implements NoteDAO {
 					note.setItem(DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item")));
 				else
 					note.setItem(null);
+
 				return note;
 			}
 		});

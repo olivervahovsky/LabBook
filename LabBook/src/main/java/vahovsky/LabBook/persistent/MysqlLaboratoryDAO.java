@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Laboratory;
 
-
 public class MysqlLaboratoryDAO implements LaboratoryDAO {
 
 	private JdbcTemplate jdbcTemplate;
@@ -66,13 +65,15 @@ public class MysqlLaboratoryDAO implements LaboratoryDAO {
 
 	@Override
 	public void deleteLaboratory(Laboratory laboratory) {
-		// updatuje itemy, ktore patrili danemu labaku, nech nepatria ziadnemu
+		// First delete the reference of the laboratory to be removed from those items,
+		// which formerly belonged to this laboratory
 		String sql = "UPDATE item SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
 		jdbcTemplate.update(sql, null, laboratory.getLaboratoryID());
-		// updatuje tasky, ktore patrili danemu labaku, nech nepatria ziadnemu
+		// Also delete the reference of the laboratory to be removed from those tasks,
+		// which formerly belonged to this laboratory
 		sql = "UPDATE task SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
 		jdbcTemplate.update(sql, null, laboratory.getLaboratoryID());
-		// vymaze labak
+		// Finally, delete the laboratory itself
 		jdbcTemplate.update("DELETE FROM laboratory WHERE id_laboratory = " + laboratory.getLaboratoryID());
 	}
 

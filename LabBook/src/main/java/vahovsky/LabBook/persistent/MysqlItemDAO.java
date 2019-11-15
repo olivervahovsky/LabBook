@@ -69,11 +69,6 @@ public class MysqlItemDAO implements ItemDAO {
 				item.setName(rs.getString("name"));
 				item.setQuantity(rs.getInt("quantity"));
 				item.setAvailable(rs.getBoolean("available"));
-				/*
-				 * if (item.getLaboratory() != null)
-				 * item.setLaboratory(DAOfactory.INSTANCE.getLaboratoryDAO()
-				 * .getLaboratoryByID(rs.getLong("laboratory_id_laboratory")));
-				 */
 				if (rs.getObject("laboratory_id_laboratory") != null)
 					item.setLaboratory(DAOfactory.INSTANCE.getLaboratoryDAO()
 							.getLaboratoryByID(rs.getLong("laboratory_id_laboratory")));
@@ -84,12 +79,13 @@ public class MysqlItemDAO implements ItemDAO {
 
 	@Override
 	public void deleteItem(Item item) {
-		// vymaze vsetky note, ktore patrili k danemu itemu
+		// First delete all the notes belonging to the item, as they cannot be accessed
+		// after item deletion
 		jdbcTemplate.update("DELETE FROM note WHERE item_id_item = ?", item.getItemID());
-		// vymaze vsetky riadky tabulky task_has_item, ktore patrili k danemu
-		// item
+		// Next delete also all the rows of the table task_has_item corresponding to the
+		// item to be deleted
 		jdbcTemplate.update("DELETE FROM task_has_item WHERE item_id_item = ?", item.getItemID());
-		// vymaze item
+		// Finally, delete the item itself
 		jdbcTemplate.update("DELETE FROM item WHERE id_item = " + item.getItemID());
 	}
 

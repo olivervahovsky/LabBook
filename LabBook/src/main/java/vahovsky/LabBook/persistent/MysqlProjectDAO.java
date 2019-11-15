@@ -82,14 +82,13 @@ public class MysqlProjectDAO implements ProjectDAO {
 
 	@Override
 	public void deleteProject(Project project) {
-		// vymaze vsetky note, ktore patrili k danemu projektu
+		// First delete all the notes belonging to the project, as they cannot be
+		// accessed after project deletion
 		jdbcTemplate.update("DELETE FROM note WHERE project_id_project = ?", project.getProjectID());
-		// vymaze vsetky tasky, ktore patrili k danemu projektu
+		// Next delete all the tasks belonging to the project, as they cannot be
+		// accessed after project deletion
 		jdbcTemplate.update("DELETE FROM task WHERE project_id_project = ?", project.getProjectID());
-		// vymaze vsetky riadky tabulky user_has_project, ktore patrili k danemu
-		// projektu
-		//jdbcTemplate.update("DELETE FROM user_has_project WHERE project_id_project = ?", project.getProjectID());
-		// vymaze projekt
+		// Finally delete the project itself
 		String sql = "DELETE FROM project WHERE id_project = " + project.getProjectID();
 		jdbcTemplate.update(sql);
 	}
