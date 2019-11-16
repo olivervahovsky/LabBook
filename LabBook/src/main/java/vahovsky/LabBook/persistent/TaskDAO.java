@@ -2,6 +2,7 @@ package vahovsky.LabBook.persistent;
 
 import java.util.List;
 
+import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Task;
 
 public interface TaskDAO {
@@ -49,5 +50,15 @@ public interface TaskDAO {
 	 *         (characterized by "id") in database
 	 */
 	Task getByID(Long id);
+	
+	/**
+	 * Method that gets items of the task according to the table task_has_item in
+	 * the database.
+	 * 
+	 * @param task The task, identified uniquely in the table task_has_item, to
+	 *             which we are getting items (according to the reference to this
+	 *             task in the table task_has_item)
+	 */
+	List<Item> getItems(Task task);
 
 }

@@ -104,6 +104,7 @@ public class MysqlTaskDAOTest {
 				successfullyDeleted = false;
 			}
 		}
+		projectDAO.deleteProject(project);
 		userDAO.deleteUser(testUser);
 		itemDAO.deleteItem(testItem);
 		itemDAO.deleteItem(testItem2);
@@ -225,6 +226,74 @@ public class MysqlTaskDAOTest {
 		assertTrue(vratenyTask != null);
 		assertTrue(vratenyTask.getItems().size() == 3);
 		
+		taskDAO.deleteTask(task);
+		projectDAO.deleteProject(project);
+		userDAO.deleteUser(testUser);
+		itemDAO.deleteItem(testItem);
+		itemDAO.deleteItem(testItem2);
+		itemDAO.deleteItem(testItem3);
+		laboratoryDAO.deleteLaboratory(testLaboratory);
+	}
+	
+	@Test
+	void testGetItems() {
+		User testUser = new User();
+		testUser.setName("tester");
+		testUser.setPassword("1234");
+		testUser.setEmail("tester.testovaci@test.com");
+		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
+		userDAO.addUser(testUser);
+		
+		Project project = new Project();
+		project.setName("testovaci_projekt");
+		project.setActive(true);
+		project.setDateFrom(LocalDate.now());
+		project.setEachItemAvailable(false);
+		project.setCreatedBy(testUser);
+		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
+		projectDAO.addProject(project);
+		
+		Laboratory testLaboratory = new Laboratory();
+		testLaboratory.setName("tester");
+		testLaboratory.setLocation("testovacia");
+		LaboratoryDAO laboratoryDAO = DAOfactory.INSTANCE.getLaboratoryDAO();
+		laboratoryDAO.addLaboratory(testLaboratory);
+		
+		Item testItem = new Item();
+		testItem.setName("test_item1");
+		testItem.setQuantity(10);
+		testItem.setAvailable(true);
+		testItem.setLaboratory(testLaboratory);
+
+		Item testItem2 = new Item();
+		testItem2.setName("test_item2");
+		testItem2.setQuantity(10);
+		testItem2.setAvailable(true);
+		
+		Item testItem3 = new Item();
+		testItem3.setName("test_item3");
+		testItem3.setQuantity(10);
+		testItem3.setAvailable(true);
+		
+		ItemDAO itemDAO = DAOfactory.INSTANCE.getItemDAO();
+		itemDAO.addItem(testItem);
+		itemDAO.addItem(testItem2);
+		itemDAO.addItem(testItem3);
+
+		Task task = new Task();
+		task.setProject(project);
+		task.setName("testTask");
+		task.setActive(true);
+		task.setDateTimeFrom(LocalDate.now());
+		task.setEachItemAvailable(false);
+		task.setCreatedBy(testUser);
+		task.setItems(Arrays.asList(testItem, testItem2, testItem3));
+		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
+		taskDAO.addTask(task);
+		assertTrue(taskDAO.getItems(task).size() == 3);
+
+		taskDAO.deleteTask(task);
+		projectDAO.deleteProject(project);
 		userDAO.deleteUser(testUser);
 		itemDAO.deleteItem(testItem);
 		itemDAO.deleteItem(testItem2);

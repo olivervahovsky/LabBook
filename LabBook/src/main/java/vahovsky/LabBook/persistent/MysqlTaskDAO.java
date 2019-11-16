@@ -96,6 +96,21 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 
 	@Override
+	public List<Item> getItems(Task task) {
+		String sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getTaskID();
+		List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
+
+			@Override
+			public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Item item = new Item();
+				item = DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
+				return item;
+			}
+		});
+		return items;
+	}
+
+	@Override
 	public List<Task> getAll() {
 		String sql = "SELECT id_task, project_id_project, name, active, date_time_from, date_time_until,"
 				+ " each_item_available, user_id_user, laboratory_id_laboratory " + "FROM task";
@@ -125,16 +140,8 @@ public class MysqlTaskDAO implements TaskDAO {
 			}
 		});
 		for (Task task : tasks) {
-			sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getTaskID();
-			List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
-
-				@Override
-				public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-					Item item = new Item();
-					item = DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
-					return item;
-				}
-			});
+			MysqlTaskDAO mtd = new MysqlTaskDAO(jdbcTemplate);
+			List<Item> items = mtd.getItems(task);
 			task.setItems(items);
 		}
 		return tasks;
@@ -153,16 +160,8 @@ public class MysqlTaskDAO implements TaskDAO {
 				+ " date_time_from, date_time_until, each_item_available, user_id_user, laboratory_id_laboratory "
 				+ "FROM task " + "WHERE id_task = " + id;
 		Task task = jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Task.class));
-		sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getTaskID();
-		List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
-
-			@Override
-			public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Item item = new Item();
-				item = DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
-				return item;
-			}
-		});
+		MysqlTaskDAO mtd = new MysqlTaskDAO(jdbcTemplate);
+		List<Item> items = mtd.getItems(task);
 		task.setItems(items);
 		return task;
 	}
