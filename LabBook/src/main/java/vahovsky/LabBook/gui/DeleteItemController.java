@@ -32,13 +32,11 @@ public class DeleteItemController {
 		yesButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
 			@Override
-
 			public void handle(KeyEvent event) {
 				if (event.getCode().equals(KeyCode.ENTER)) {
 					itemDao.deleteItem(itemModel.getItem());
 					yesButton.getScene().getWindow().hide();
 				}
-
 			}
 		});
 

@@ -28,7 +28,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import vahovsky.LabBook.business.LaboratoryManager;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 import vahovsky.LabBook.fxmodels.LaboratoryFxModel;
@@ -57,13 +56,13 @@ public class EditLaboratoryController {
 	private LaboratoryDAO laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
 	private LaboratoryFxModel laboratoryModel;
 	private Map<String, BooleanProperty> columnsVisibility = new LinkedHashMap<>();
-	//private Laboratory laboratory;
+	// private Laboratory laboratory;
 	private ObservableList<Item> itemModel;
-	//private ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
+	// private ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
 	private ObjectProperty<Item> selectedItem = new SimpleObjectProperty<>();
 
 	public EditLaboratoryController(Laboratory laboratory) {
-		//this.laboratory = laboratory;
+		// this.laboratory = laboratory;
 		this.laboratoryModel = new LaboratoryFxModel(laboratory);
 	}
 
@@ -159,7 +158,7 @@ public class EditLaboratoryController {
 	}
 
 	private List<Item> getItems() {
-		return LaboratoryManager.getItemsOfLaboratory(laboratoryModel.getLaboratory());
+		return laboratoryDao.getItemsOfLaboratory(laboratoryModel.getLaboratory());
 	}
 
 //	private List<Item> getItems() {

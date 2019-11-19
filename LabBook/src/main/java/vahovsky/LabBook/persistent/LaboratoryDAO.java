@@ -2,6 +2,7 @@ package vahovsky.LabBook.persistent;
 
 import java.util.List;
 
+import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 
 public interface LaboratoryDAO {
@@ -49,5 +50,11 @@ public interface LaboratoryDAO {
 	 *         (characterized by "id") in database
 	 */
 	Laboratory getLaboratoryByID(Long id);
+	
+	/** Method returning the ArrayList of all items stored in a defined Laboratory 
+	 * @param laboratory Laboratory, which items we want to list.
+	 * @return the list of the items of this laboratory
+	 */
+	List<Item> getItemsOfLaboratory(Laboratory laboratory);
 
 }

@@ -2,6 +2,7 @@ package vahovsky.LabBook.persistent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 
 public class MysqlLaboratoryDAO implements LaboratoryDAO {
@@ -82,6 +84,22 @@ public class MysqlLaboratoryDAO implements LaboratoryDAO {
 		String sql = "SELECT id_laboratory AS laboratoryID, name, location " + "FROM laboratory "
 				+ "WHERE id_laboratory = " + id;
 		return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Laboratory.class));
+	}
+	
+	@Override
+	public List<Item> getItemsOfLaboratory(Laboratory laboratory) {
+		ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
+		List<Item> items = new ArrayList<>();
+		if (itemDao.getAll() != null) {
+			List<Item> allItems = itemDao.getAll();
+			for (Item i : allItems) {
+				if (i.getLaboratory() != null)
+					if (i.getLaboratory().getLaboratoryID().equals(laboratory.getLaboratoryID())) {
+						items.add(i);
+					}
+			}
+		}
+		return items;
 	}
 
 }

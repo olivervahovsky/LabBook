@@ -13,21 +13,20 @@ import vahovsky.LabBook.persistent.LaboratoryDAO;
 
 public class DeleteLaboratoryController {
 
-	private LaboratoryDAO laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
-	private LaboratoryFxModel laboratoryModel;
-	//private Laboratory laboratory;
-
 	@FXML
 	private Button yesButton;
 
 	@FXML
 	private Button noButton;
 
+	private LaboratoryDAO laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
+	private LaboratoryFxModel laboratoryModel;
+
 	public DeleteLaboratoryController(Laboratory laboratory) {
-		//this.laboratory = laboratory;
 		this.laboratoryModel = new LaboratoryFxModel(laboratory);
 	}
 
+	@FXML
 	void initialize() {
 
 		yesButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
