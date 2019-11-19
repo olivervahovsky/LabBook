@@ -91,7 +91,7 @@ public class NewItemController {
 	}
 
 	private void showTakenNameWindow() {
-		TakenNameController controller = new TakenNameController();
+		WrongDataInputController controller = new WrongDataInputController();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("takenName.fxml"));
 			loader.setController(controller);

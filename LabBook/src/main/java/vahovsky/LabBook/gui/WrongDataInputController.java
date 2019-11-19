@@ -13,6 +13,5 @@ public class WrongDataInputController {
 		backButton.setOnAction(eh -> {
 			backButton.getScene().getWindow().hide();
 		});
-		
 	}
 }

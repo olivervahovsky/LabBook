@@ -197,7 +197,7 @@ public class FrontPageController {
 	}
 
 	private void showWrongDataWindow() {
-		AlertBoxFailToSignInController controller = new AlertBoxFailToSignInController();
+		WrongDataInputController controller = new WrongDataInputController();
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("alertBoxFailToSignIn.fxml"));
 			loader.setController(controller);
