@@ -13,7 +13,7 @@ import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.entities.User;
 
-public class TaskFxModel {
+public class TaskFxModel implements EntityFxModel {
 
 	private Long taskId;
 	private StringProperty name = new SimpleStringProperty();
@@ -37,7 +37,7 @@ public class TaskFxModel {
 		setName(task.getName());
 		setFrom(task.getDateTimeFrom());
 		setUntil(task.getDateTimeUntil());
-		setTaskId(task.getTaskID());
+		setTaskId(task.getEntityID());
 		setItems(task.getItems());
 		setLaboratory(task.getLaboratory());
 		setCreatedBy(task.getCreatedBy());
@@ -69,7 +69,8 @@ public class TaskFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public Task getTask() {
+	@Override
+	public Task getEntity() {
 		Task t = new Task();
 		t.setProject(getProject());
 		t.setName(getName());

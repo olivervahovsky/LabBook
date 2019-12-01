@@ -18,14 +18,14 @@ public class PasswordManager {
 		if (UserType == 1) {
 			List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
 			for (User user : users) {
-				if (user.getUserID().equals(id)) {
+				if (user.getEntityID().equals(id)) {
 					return password.equals(user.getPassword());
 				}
 			}
 		} else {
 			List<Admin> admins = DAOfactory.INSTANCE.getAdminDAO().getAll();
 			for (Admin admin : admins) {
-				if (admin.getAdminID().equals(id)) {
+				if (admin.getEntityID().equals(id)) {
 					return password.equals(admin.getPassword());
 				}
 			}

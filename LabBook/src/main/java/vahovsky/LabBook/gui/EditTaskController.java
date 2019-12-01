@@ -86,8 +86,8 @@ public class EditTaskController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				taskModel.setLaboratory(selectedLaboratoryModel.getLaboratory());
-				taskDao.saveTask(taskModel.getTask());
+				taskModel.setLaboratory(selectedLaboratoryModel.getEntity());
+				taskDao.saveTask(taskModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 
 			}

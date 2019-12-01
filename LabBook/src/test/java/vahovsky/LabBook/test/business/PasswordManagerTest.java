@@ -26,13 +26,13 @@ public class PasswordManagerTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 		
-		assertTrue(manager.isCorrectPassword("1234", testUser.getUserID(), 1));
-		assertFalse(manager.isCorrectPassword("1234", testUser.getUserID(), 2));
+		assertTrue(manager.isCorrectPassword("1234", testUser.getEntityID(), 1));
+		assertFalse(manager.isCorrectPassword("1234", testUser.getEntityID(), 2));
 		assertFalse(manager.isCorrectPassword("1234", 99l, 1));
-		assertFalse(manager.isCorrectPassword("1244", testUser.getUserID(), 1));
-		assertFalse(manager.isCorrectPassword("", testUser.getUserID(), 1));
+		assertFalse(manager.isCorrectPassword("1244", testUser.getEntityID(), 1));
+		assertFalse(manager.isCorrectPassword("", testUser.getEntityID(), 1));
 		
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 		
 		Admin testAdmin = new Admin();
 		testAdmin.setName("tester");
@@ -40,13 +40,13 @@ public class PasswordManagerTest {
 		AdminDAO adminDAO = DAOfactory.INSTANCE.getAdminDAO();
 		adminDAO.addAdmin(testAdmin);
 		
-		assertTrue(manager.isCorrectPassword("1234", testAdmin.getAdminID(), 2));
-		assertFalse(manager.isCorrectPassword("1234", testAdmin.getAdminID(), 1));
+		assertTrue(manager.isCorrectPassword("1234", testAdmin.getEntityID(), 2));
+		assertFalse(manager.isCorrectPassword("1234", testAdmin.getEntityID(), 1));
 		assertFalse(manager.isCorrectPassword("1234", 99l, 2));
-		assertFalse(manager.isCorrectPassword("1244", testAdmin.getAdminID(), 1));
-		assertFalse(manager.isCorrectPassword("", testAdmin.getAdminID(), 1));
+		assertFalse(manager.isCorrectPassword("1244", testAdmin.getEntityID(), 1));
+		assertFalse(manager.isCorrectPassword("", testAdmin.getEntityID(), 1));
 		
-		adminDAO.deleteAdmin(testAdmin);
+		adminDAO.deleteEntity(testAdmin);
 		
 	}
 

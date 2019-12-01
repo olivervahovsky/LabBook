@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
@@ -62,19 +63,19 @@ public class MysqlUserDAO implements UserDAO {
 	public void saveUser(User user) {
 		if (user == null)
 			return;
-		if (user.getUserID() == null) { // CREATE
+		if (user.getEntityID() == null) { // CREATE
 			addUser(user);
 		} else { // UPDATE
 			String sql = "UPDATE user SET " + "name = ?, password = ?, email = ? " + "WHERE id_user = ?";
-			jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), user.getUserID());
+			jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), user.getEntityID());
 		}
 	}
 
 	@Override
-	public void deleteUser(User user) {
+	public void deleteEntity(Entity user) {
 		// First delete all the notes belonging to the user, as they cannot be
 		// accessed after user deletion
-		jdbcTemplate.update("DELETE FROM note WHERE user_id_user = ?", user.getUserID());
+		jdbcTemplate.update("DELETE FROM note WHERE user_id_user = ?", user.getEntityID());
 		// Next delete all the tasks belonging to the user, as they cannot be
 		// accessed after user deletion. Here, deleting rows from the tasks table is
 		// not enough, as tasks are foreign keys elsewhere, hence we delete tasks by
@@ -83,14 +84,14 @@ public class MysqlUserDAO implements UserDAO {
 		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasks(user);
 		if (tasks != null) {
 			for (Task task : tasks) {
-				DAOfactory.INSTANCE.getTaskDAO().deleteTask(task);
+				DAOfactory.INSTANCE.getTaskDAO().deleteEntity(task);
 			}
 		}
 		// Next delete all the projects belonging to the user, as they cannot be
 		// accessed after user deletion.
-		jdbcTemplate.update("DELETE FROM project WHERE user_id_user = ?", user.getUserID());
+		jdbcTemplate.update("DELETE FROM project WHERE user_id_user = ?", user.getEntityID());
 		// Finally delete the user himself
-		String sql = "DELETE FROM user WHERE id_user = " + user.getUserID();
+		String sql = "DELETE FROM user WHERE id_user = " + user.getEntityID();
 		jdbcTemplate.update(sql);
 	}
 
@@ -101,10 +102,10 @@ public class MysqlUserDAO implements UserDAO {
 		return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
 	}
 
-	public List<Task> getTasks(User user) {
+	public List<Task> getTasks(Entity user) {
 		String sql = "SELECT id_task, project_id_project, name, active,"
 				+ " date_time_from, date_time_until, each_item_available, user_id_user, laboratory_id_laboratory "
-				+ "FROM task " + "WHERE user_id_user = " + user.getUserID();
+				+ "FROM task " + "WHERE user_id_user = " + user.getEntityID();
 		List<Task> tasks = jdbcTemplate.query(sql, new RowMapper<Task>() {
 
 			@Override
@@ -131,7 +132,7 @@ public class MysqlUserDAO implements UserDAO {
 			}
 		});
 		for (Task task : tasks) {
-			sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getTaskID();
+			sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getEntityID();
 			List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
 
 				@Override
@@ -148,7 +149,7 @@ public class MysqlUserDAO implements UserDAO {
 
 	public List<Note> getNotes(User user) {
 		String sql = "SELECT id_note, text, timestamp, user_id_user, task_id_task, project_id_project, item_id_item "
-				+ "FROM note " + "WHERE user_id_user = " + user.getUserID();
+				+ "FROM note " + "WHERE user_id_user = " + user.getEntityID();
 		return jdbcTemplate.query(sql, new RowMapper<Note>() {
 
 			@Override
@@ -181,7 +182,7 @@ public class MysqlUserDAO implements UserDAO {
 	@Override
 	public List<Project> getProjects(User user) {
 		String sql = "SELECT id_project, name, active, date_from, date_until, each_item_available, user_id_user "
-				+ "FROM project " + "WHERE user_id_user = " + user.getUserID();
+				+ "FROM project " + "WHERE user_id_user = " + user.getEntityID();
 		return jdbcTemplate.query(sql, new RowMapper<Project>() {
 
 			@Override

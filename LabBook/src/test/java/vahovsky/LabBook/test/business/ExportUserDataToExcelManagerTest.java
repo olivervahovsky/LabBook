@@ -118,12 +118,12 @@ public class ExportUserDataToExcelManagerTest {
 			e.printStackTrace();
 		}
 
-		itemDAO.deleteItem(testItem);
-		itemDAO.deleteItem(testItem2);
-		itemDAO.deleteItem(testItem3);
-		laboratoryDAO.deleteLaboratory(testLaboratory);
+		itemDAO.deleteEntity(testItem);
+		itemDAO.deleteEntity(testItem2);
+		itemDAO.deleteEntity(testItem3);
+		laboratoryDAO.deleteEntity(testLaboratory);
 
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 
 }

@@ -47,7 +47,7 @@ public class NewNoteController {
 					showWrongDataInputWindow();
 				} else {
 					note.setText(text);
-					note.setTask(taskModel.getTask());
+					note.setTask(taskModel.getEntity());
 					note.setAuthor(UserIdentificationManager.getUser());
 					note.setTimestamp(LocalDateTime.now());
 					NoteDAO noteDao = DAOfactory.INSTANCE.getNoteDAO();

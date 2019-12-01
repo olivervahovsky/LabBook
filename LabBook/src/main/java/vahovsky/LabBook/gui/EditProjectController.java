@@ -47,7 +47,7 @@ public class EditProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				projectModel.setCreatedBy(UserIdentificationManager.getUser());
-				projectDao.saveProject(projectModel.getProject());
+				projectDao.saveProject(projectModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 			}
 		});

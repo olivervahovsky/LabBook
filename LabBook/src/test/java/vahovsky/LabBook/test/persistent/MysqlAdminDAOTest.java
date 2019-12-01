@@ -28,7 +28,7 @@ class MysqlAdminDAOTest {
 		boolean notThere = true;
 		List<Admin> all = adminDAO.getAll();
 		for (Admin a : all) {
-			if (a.getAdminID().equals(testAdmin.getAdminID())) {
+			if (a.getEntityID().equals(testAdmin.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -38,17 +38,17 @@ class MysqlAdminDAOTest {
 		all = adminDAO.getAll();
 		boolean succesfullyAdded = false;
 		for (Admin a : all) {
-			if (a.getAdminID().equals(testAdmin.getAdminID())) {
+			if (a.getEntityID().equals(testAdmin.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
-		adminDAO.deleteAdmin(testAdmin);
+		adminDAO.deleteEntity(testAdmin);
 		all = adminDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Admin a : all) {
-			if (a.getAdminID().equals(testAdmin.getAdminID())) {
+			if (a.getEntityID().equals(testAdmin.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
@@ -63,16 +63,16 @@ class MysqlAdminDAOTest {
 		AdminDAO adminDAO = DAOfactory.INSTANCE.getAdminDAO();
 		// create
 		adminDAO.saveAdmin(testAdmin);
-		assertNotNull(testAdmin.getAdminID());
+		assertNotNull(testAdmin.getEntityID());
 		testAdmin.setName("tester_new");
 		testAdmin.setEmail("admin.omnipotentny@mail.sk");
 		// update
 		adminDAO.saveAdmin(testAdmin);
 		List<Admin> all = adminDAO.getAll();
 		for (Admin a : all) {
-			if (a.getAdminID().equals(testAdmin.getAdminID())) {
+			if (a.getEntityID().equals(testAdmin.getEntityID())) {
 				assertEquals("tester_new", a.getName());
-				adminDAO.deleteAdmin(a);
+				adminDAO.deleteEntity(a);
 				return;
 			}
 		}

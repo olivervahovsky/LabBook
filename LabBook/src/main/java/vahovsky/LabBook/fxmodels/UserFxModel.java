@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import vahovsky.LabBook.entities.User;
 
-public class UserFxModel {
+public class UserFxModel implements EntityFxModel {
 
 	private Long userID;
 	private StringProperty name = new SimpleStringProperty();
@@ -23,7 +23,7 @@ public class UserFxModel {
 	public UserFxModel(User user) {
 		setName(user.getName());
 		setPassword(user.getPassword());
-		setUserID(user.getUserID());
+		setUserID(user.getEntityID());
 		setEmail(user.getEmail());
 	}
 
@@ -37,7 +37,7 @@ public class UserFxModel {
 	public void setUser(User user) {
 		setName(user.getName());
 		setPassword(user.getPassword());
-		setUserID(user.getUserID());
+		setUserID(user.getEntityID());
 	}
 
 	/**
@@ -47,7 +47,8 @@ public class UserFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public User getUser() {
+	@Override
+	public User getEntity() {
 		User user = new User();
 		user.setUserID(getUserID());
 		user.setName(getName());

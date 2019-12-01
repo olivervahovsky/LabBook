@@ -3,7 +3,7 @@ package vahovsky.LabBook.entities;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Task {
+public class Task implements Entity {
 
 	private Long taskID;
 	private String name;
@@ -28,7 +28,8 @@ public class Task {
 		this.project = project;
 	}
 
-	public Long getTaskID() {
+	@Override
+	public Long getEntityID() {
 		return taskID;
 	}
 
@@ -118,7 +119,7 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskID=" + taskID + ", projectID=" + project.getProjectID() + ", name=" + name + "]";
+		return "Task [taskID=" + taskID + ", projectID=" + project.getEntityID() + ", name=" + name + "]";
 	}
 
 }

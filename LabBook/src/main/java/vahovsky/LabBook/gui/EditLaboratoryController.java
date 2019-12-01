@@ -76,7 +76,7 @@ public class EditLaboratoryController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				laboratoryDao.saveLaboratory(laboratoryModel.getLaboratory());
+				laboratoryDao.saveLaboratory(laboratoryModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 
 			}
@@ -86,7 +86,7 @@ public class EditLaboratoryController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				NewItemController newItemController = new NewItemController(laboratoryModel.getLaboratory());
+				NewItemController newItemController = new NewItemController(laboratoryModel.getEntity());
 				showModalWindow(newItemController, "newItem.fxml", "New Item");
 				itemModel.setAll(getItems());
 			}
@@ -158,7 +158,7 @@ public class EditLaboratoryController {
 	}
 
 	private List<Item> getItems() {
-		return laboratoryDao.getItemsOfLaboratory(laboratoryModel.getLaboratory());
+		return laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity());
 	}
 
 //	private List<Item> getItems() {

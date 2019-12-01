@@ -10,7 +10,7 @@ import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.entities.User;
 
-public class NoteFxModel {
+public class NoteFxModel implements EntityFxModel {
 
 	private Long noteID;
 	private StringProperty text = new SimpleStringProperty();
@@ -26,7 +26,7 @@ public class NoteFxModel {
 	 * @param note Entity object that serves as a reference for the fxModel
 	 */
 	public NoteFxModel(Note note) {
-		setNoteID(note.getNoteID());
+		setNoteID(note.getEntityID());
 		setText(note.getText());
 		setTimestamp(note.getTimestamp());
 		setAuthor(note.getAuthor());
@@ -42,16 +42,17 @@ public class NoteFxModel {
 	 * @return note entity object based on parameters (instance variables) of
 	 *         fxModel object
 	 */
-	public Note getNote() {
-		Note n = new Note();
-		n.setNoteID(getNoteID());
-		n.setText(getText());
-		n.setTimestamp(getTimestamp());
-		n.setAuthor(getAuthor());
-		n.setProject(getProject());
-		n.setItem(getItem());
-		n.setTask(getTask());
-		return n;
+	@Override
+	public Note getEntity() {
+		Note note = new Note();
+		note.setNoteID(getNoteID());
+		note.setText(getText());
+		note.setTimestamp(getTimestamp());
+		note.setAuthor(getAuthor());
+		note.setProject(getProject());
+		note.setItem(getItem());
+		note.setTask(getTask());
+		return note;
 	}
 
 	public Task getTask() {

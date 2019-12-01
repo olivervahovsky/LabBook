@@ -109,7 +109,7 @@ public class SelectNoteController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				NewNoteController newNoteController = new NewNoteController(taskModel.getTask());
+				NewNoteController newNoteController = new NewNoteController(taskModel.getEntity());
 				showModalWindow(newNoteController, "newNote.fxml", "New Note");
 				notesModel.setAll(getNotes());
 			}
@@ -196,10 +196,10 @@ public class SelectNoteController {
 	private List<Note> getNotes() {
 		List<Note> notes = new ArrayList<>();
 		List<Note> allNotes = noteDao.getAll();
-		for (Note n : allNotes) {
-			if (n.getTask() != null)
-				if (n.getTask().getTaskID().equals(taskModel.getTaskId())) {
-					notes.add(n);
+		for (Note note : allNotes) {
+			if (note.getTask() != null)
+				if (note.getTask().getEntityID().equals(taskModel.getTaskId())) {
+					notes.add(note);
 				}
 		}
 		return notes;

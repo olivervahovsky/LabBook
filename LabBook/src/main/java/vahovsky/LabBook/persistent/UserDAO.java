@@ -2,12 +2,13 @@ package vahovsky.LabBook.persistent;
 
 import java.util.List;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.entities.User;
 
-public interface UserDAO {
+public interface UserDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object user into database
@@ -40,7 +41,7 @@ public interface UserDAO {
 	 * @param user entity object, representation of which is to be removed from
 	 *             database
 	 */
-	void deleteUser(User user);
+	void deleteEntity(Entity user);
 
 	/**
 	 * Method that returns entity object user. This object corresponds to the
@@ -78,7 +79,7 @@ public interface UserDAO {
 	 * @param user User, whose projects we want to list.
 	 * @return implementation of List<> containing all the tasks of defined user.
 	 */
-	List<Task> getTasks(User user);
+	List<Task> getTasks(Entity user);
 
 	/**
 	 * Method that returns list of the notes of defined user.

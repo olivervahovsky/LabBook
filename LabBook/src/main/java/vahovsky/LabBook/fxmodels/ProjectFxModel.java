@@ -10,7 +10,7 @@ import javafx.beans.property.StringProperty;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.User;
 
-public class ProjectFxModel {
+public class ProjectFxModel implements EntityFxModel {
 
 	private Long projectId;
 	private StringProperty name = new SimpleStringProperty();
@@ -29,7 +29,7 @@ public class ProjectFxModel {
 		setFrom(project.getDateFrom());
 		setUntil(project.getDateUntil());
 		setCompletedBy(project.getCompletedBy());
-		setProjectId(project.getProjectID());
+		setProjectId(project.getEntityID());
 	}
 
 	/**
@@ -54,7 +54,8 @@ public class ProjectFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public Project getProject() {
+	@Override
+	public Project getEntity() {
 		Project project = new Project();
 		project.setName(getName());
 		project.setDateFrom(getFrom());

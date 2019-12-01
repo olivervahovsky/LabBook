@@ -4,7 +4,7 @@ import java.util.List;
 
 import vahovsky.LabBook.entities.Item;
 
-public interface ItemDAO {
+public interface ItemDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object item into database
@@ -30,14 +30,6 @@ public interface ItemDAO {
 	 *         in database
 	 */
 	List<Item> getAll();
-
-	/**
-	 * Method to delete representation of item entity object from database
-	 * 
-	 * @param item entity object, representation of which is to be removed from
-	 *             database
-	 */
-	void deleteItem(Item item);
 
 	/**
 	 * Method that returns entity object item. This object corresponds to the

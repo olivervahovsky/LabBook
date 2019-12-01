@@ -32,7 +32,7 @@ public class MysqlLaboratoryDAOTest {
 		boolean notThere = true;
 		List<Laboratory> all = laboratoryDAO.getAll();
 		for (Laboratory l : all) {
-			if (l.getLaboratoryID().equals(testLaboratory.getLaboratoryID())) {
+			if (l.getEntityID().equals(testLaboratory.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -51,22 +51,22 @@ public class MysqlLaboratoryDAOTest {
 		all = laboratoryDAO.getAll();
 		boolean succesfullyAdded = false;
 		for (Laboratory l : all) {
-			if (l.getLaboratoryID().equals(testLaboratory.getLaboratoryID())) {
+			if (l.getEntityID().equals(testLaboratory.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
-		laboratoryDAO.deleteLaboratory(testLaboratory);
+		laboratoryDAO.deleteEntity(testLaboratory);
 		all = laboratoryDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Laboratory l : all) {
-			if (l.getLaboratoryID().equals(testLaboratory.getLaboratoryID())) {
+			if (l.getEntityID().equals(testLaboratory.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
 		assertTrue(successfullyDeleted);
-		itemDAO.deleteItem(testItem);
+		itemDAO.deleteEntity(testItem);
 	}
 	
 	@Test
@@ -77,15 +77,15 @@ public class MysqlLaboratoryDAOTest {
 		LaboratoryDAO laboratoryDAO = DAOfactory.INSTANCE.getLaboratoryDAO();
 		// create
 		laboratoryDAO.saveLaboratory(testLaboratory);
-		assertNotNull(testLaboratory.getLaboratoryID());
+		assertNotNull(testLaboratory.getEntityID());
 		testLaboratory.setName("tester_new");
 		// update
 		laboratoryDAO.saveLaboratory(testLaboratory);
 		List<Laboratory> all = laboratoryDAO.getAll();
 		for (Laboratory l : all) {
-			if (l.getLaboratoryID().equals(testLaboratory.getLaboratoryID())) {
+			if (l.getEntityID().equals(testLaboratory.getEntityID())) {
 				assertEquals("tester_new", l.getName());
-				laboratoryDAO.deleteLaboratory(l);
+				laboratoryDAO.deleteEntity(l);
 				return;
 			}
 		}
@@ -119,17 +119,17 @@ public class MysqlLaboratoryDAOTest {
 
 		List<Item> items = laboratoryDAO.getItemsOfLaboratory(testLaboratory);
 		int numberOfItems = 0;
-		for (Item i : items) {
-			if (i.getLaboratory().getLaboratoryID().equals(testLaboratory.getLaboratoryID())) {
+		for (Item item : items) {
+			if (item.getLaboratory().getEntityID().equals(testLaboratory.getEntityID())) {
 				numberOfItems++;
 			}
 		}
 		assertEquals(2, numberOfItems);
 
 		// zmazem testovacie data
-		laboratoryDAO.deleteLaboratory(testLaboratory);
-		itemDAO.deleteItem(testItem);
-		itemDAO.deleteItem(testItem1);
+		laboratoryDAO.deleteEntity(testLaboratory);
+		itemDAO.deleteEntity(testItem);
+		itemDAO.deleteEntity(testItem1);
 
 	}
 

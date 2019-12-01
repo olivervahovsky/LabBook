@@ -40,7 +40,7 @@ public class EditNoteController {
 			public void handle(ActionEvent event) {
 				notesModel.setAuthor(UserIdentificationManager.getUser());
 				notesModel.setText(noteTextArea.getText());
-				noteDao.saveNote(notesModel.getNote());
+				noteDao.saveNote(notesModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 			}
 		});

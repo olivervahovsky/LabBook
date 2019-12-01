@@ -3,7 +3,7 @@ package vahovsky.LabBook.entities;
 import java.time.LocalDate;
 import java.util.List;
 
-public class Project {
+public class Project implements Entity {
 
 	private Long projectID;
 	private String name;
@@ -28,7 +28,8 @@ public class Project {
 		this.active = true;
 	}
 
-	public Long getProjectID() {
+	@Override
+	public Long getEntityID() {
 		return projectID;
 	}
 

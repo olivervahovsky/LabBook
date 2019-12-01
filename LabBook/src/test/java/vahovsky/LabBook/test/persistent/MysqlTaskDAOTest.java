@@ -89,27 +89,27 @@ public class MysqlTaskDAOTest {
 		boolean succesfullyAdded = false;
 		List<Task> all = taskDAO.getAll();
 		for (Task t : all) {
-			if (t.getTaskID().equals(task.getTaskID())) {
+			if (t.getEntityID().equals(task.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 		assertTrue(task.getItems().size() == 3);
 
-		taskDAO.deleteTask(task);
+		taskDAO.deleteEntity(task);
 		all = taskDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Task t : all) {
-			if (t.getTaskID().equals(task.getTaskID())) {
+			if (t.getEntityID().equals(task.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
-		itemDAO.deleteItem(testItem);
-		itemDAO.deleteItem(testItem2);
-		itemDAO.deleteItem(testItem3);
-		laboratoryDAO.deleteLaboratory(testLaboratory);
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
+		itemDAO.deleteEntity(testItem);
+		itemDAO.deleteEntity(testItem2);
+		itemDAO.deleteEntity(testItem3);
+		laboratoryDAO.deleteEntity(testLaboratory);
 		assertTrue(successfullyDeleted);
 	}
 
@@ -149,17 +149,17 @@ public class MysqlTaskDAOTest {
 		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
 		// create
 		taskDAO.saveTask(task);
-		assertNotNull(task.getTaskID());
+		assertNotNull(task.getEntityID());
 		assertTrue(task.getItems().size() == 1);
 		task.setName("testovaci_task_new");
 		// update
 		taskDAO.saveTask(task);
 		List<Task> all = taskDAO.getAll();
 		for (Task t : all) {
-			if (t.getTaskID().equals(task.getTaskID())) {
+			if (t.getEntityID().equals(task.getEntityID())) {
 				assertEquals("testovaci_task_new", t.getName());
-				userDAO.deleteUser(testUser);
-				itemDAO.deleteItem(testItem);
+				userDAO.deleteEntity(testUser);
+				itemDAO.deleteEntity(testItem);
 				return;
 			}
 		}
@@ -222,17 +222,17 @@ public class MysqlTaskDAOTest {
 		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
 		taskDAO.addTask(task);
 		
-		Task vratenyTask = taskDAO.getByID(task.getTaskID());
+		Task vratenyTask = taskDAO.getByID(task.getEntityID());
 		assertTrue(vratenyTask != null);
 		assertTrue(vratenyTask.getItems().size() == 3);
 		
-		taskDAO.deleteTask(task);
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
-		itemDAO.deleteItem(testItem);
-		itemDAO.deleteItem(testItem2);
-		itemDAO.deleteItem(testItem3);
-		laboratoryDAO.deleteLaboratory(testLaboratory);
+		taskDAO.deleteEntity(task);
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
+		itemDAO.deleteEntity(testItem);
+		itemDAO.deleteEntity(testItem2);
+		itemDAO.deleteEntity(testItem3);
+		laboratoryDAO.deleteEntity(testLaboratory);
 	}
 	
 	@Test
@@ -292,13 +292,13 @@ public class MysqlTaskDAOTest {
 		taskDAO.addTask(task);
 		assertTrue(taskDAO.getItems(task).size() == 3);
 
-		taskDAO.deleteTask(task);
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
-		itemDAO.deleteItem(testItem);
-		itemDAO.deleteItem(testItem2);
-		itemDAO.deleteItem(testItem3);
-		laboratoryDAO.deleteLaboratory(testLaboratory);
+		taskDAO.deleteEntity(task);
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
+		itemDAO.deleteEntity(testItem);
+		itemDAO.deleteEntity(testItem2);
+		itemDAO.deleteEntity(testItem3);
+		laboratoryDAO.deleteEntity(testLaboratory);
 	}
 
 }

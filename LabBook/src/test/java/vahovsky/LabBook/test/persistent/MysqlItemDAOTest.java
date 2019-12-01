@@ -60,7 +60,7 @@ public class MysqlItemDAOTest {
 		boolean notThere = true;
 		List<Item> all = itemDAO.getAll();
 		for (Item i : all) {
-			if (i.getItemID().equals(testItem.getItemID())) {
+			if (i.getEntityID().equals(testItem.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -70,25 +70,25 @@ public class MysqlItemDAOTest {
 		all = itemDAO.getAll();
 		boolean succesfullyAdded = false;
 		for (Item i : all) {
-			if (i.getItemID().equals(testItem.getItemID())) {
+			if (i.getEntityID().equals(testItem.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
-		itemDAO.deleteItem(testItem);
-		laboratoryDAO.deleteLaboratory(lab);
+		itemDAO.deleteEntity(testItem);
+		laboratoryDAO.deleteEntity(lab);
 		all = itemDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Item i : all) {
-			if (i.getItemID().equals(testItem.getItemID())) {
+			if (i.getEntityID().equals(testItem.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
 		assertTrue(successfullyDeleted);
-		laboratoryDAO.deleteLaboratory(lab);
-		noteDAO.deleteNote(note);
-		userDAO.deleteUser(testUser);
+		laboratoryDAO.deleteEntity(lab);
+		noteDAO.deleteEntity(note);
+		userDAO.deleteEntity(testUser);
 	}
 	
 	@Test
@@ -102,15 +102,15 @@ public class MysqlItemDAOTest {
 		ItemDAO itemDAO = DAOfactory.INSTANCE.getItemDAO();
 		// create
 		itemDAO.saveItem(testItem);
-		assertNotNull(testItem.getItemID());
+		assertNotNull(testItem.getEntityID());
 		testItem.setName("test_item_new");
 		// update
 		itemDAO.saveItem(testItem);
 		List<Item> all = itemDAO.getAll();
 		for (Item u : all) {
-			if (u.getItemID().equals(testItem.getItemID())) {
+			if (u.getEntityID().equals(testItem.getEntityID())) {
 				assertEquals("test_item_new", u.getName());
-				itemDAO.deleteItem(u);
+				itemDAO.deleteEntity(u);
 				return;
 			}
 		}
@@ -126,9 +126,9 @@ public class MysqlItemDAOTest {
 		
 		ItemDAO itemDAO = DAOfactory.INSTANCE.getItemDAO();
 		itemDAO.addItem(testItem);
-		long id = testItem.getItemID();
-		assertTrue(id == itemDAO.getByID(id).getItemID());
-		itemDAO.deleteItem(testItem);
+		long id = testItem.getEntityID();
+		assertTrue(id == itemDAO.getByID(id).getEntityID());
+		itemDAO.deleteEntity(testItem);
 	}
 
 }

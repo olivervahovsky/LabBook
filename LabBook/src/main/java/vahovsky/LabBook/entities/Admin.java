@@ -1,6 +1,6 @@
 package vahovsky.LabBook.entities;
 
-public class Admin {
+public class Admin implements Entity {
 
 	private Long adminID;
 	private String name;
@@ -23,7 +23,8 @@ public class Admin {
 		this.email = email;
 	}
 
-	public Long getAdminID() {
+	@Override
+	public Long getEntityID() {
 		return adminID;
 	}
 

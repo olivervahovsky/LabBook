@@ -4,7 +4,7 @@ import java.util.List;
 
 import vahovsky.LabBook.entities.Admin;
 
-public interface AdminDAO {
+public interface AdminDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object admin into database
@@ -31,12 +31,10 @@ public interface AdminDAO {
 	 */
 	void saveAdmin(Admin admin);
 
-	/**
-	 * Method to delete representation of admin entity object from database
-	 * 
-	 * @param admin entity object, representation of which is to be removed from
-	 *              database
+	/** Method removing representation of entity object admin from database
+	 * @param admin entity object, the representation of which we want to remove from
+	 *              the database
 	 */
-	void deleteAdmin(Admin admin);
+	//void deleteEntity(Admin admin);
 
 }

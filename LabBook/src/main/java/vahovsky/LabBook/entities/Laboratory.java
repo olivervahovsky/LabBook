@@ -2,7 +2,7 @@ package vahovsky.LabBook.entities;
 
 import java.util.List;
 
-public class Laboratory {
+public class Laboratory implements Entity {
 
 	private Long laboratoryID;
 	private String name;
@@ -18,7 +18,8 @@ public class Laboratory {
 		this.location = location;
 	}
 
-	public Long getLaboratoryID() {
+	@Override
+	public Long getEntityID() {
 		return laboratoryID;
 	}
 

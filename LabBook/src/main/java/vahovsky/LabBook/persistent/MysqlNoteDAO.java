@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
 
 public class MysqlNoteDAO implements NoteDAO {
@@ -30,17 +31,17 @@ public class MysqlNoteDAO implements NoteDAO {
 		Map<String, Object> values = new HashMap<>();
 		values.put("text", note.getText());
 		values.put("timestamp", note.getTimestamp());
-		values.put("user_id_user", note.getAuthor().getUserID());
+		values.put("user_id_user", note.getAuthor().getEntityID());
 		if (note.getTask() != null)
-			values.put("task_id_task", note.getTask().getTaskID());
+			values.put("task_id_task", note.getTask().getEntityID());
 		else
 			values.put("task_id_task", null);
 		if (note.getProject() != null)
-			values.put("project_id_project", note.getProject().getProjectID());
+			values.put("project_id_project", note.getProject().getEntityID());
 		else
 			values.put("project_id_project", null);
 		if (note.getItem() != null)
-			values.put("item_id_item", note.getItem().getItemID());
+			values.put("item_id_item", note.getItem().getEntityID());
 		else
 			values.put("item_id_item", null);
 
@@ -85,7 +86,7 @@ public class MysqlNoteDAO implements NoteDAO {
 	public void saveNote(Note note) {
 		if (note == null)
 			return;
-		if (note.getNoteID() == null) { // CREATE
+		if (note.getEntityID() == null) { // CREATE
 			addNote(note);
 		} else { // UPDATE
 			String sql = "UPDATE note SET " + "text = ?, timestamp = ?, user_id_user = ?, "
@@ -93,24 +94,24 @@ public class MysqlNoteDAO implements NoteDAO {
 
 			Long taskID = null;
 			if (note.getTask() != null)
-				taskID = note.getTask().getTaskID();
+				taskID = note.getTask().getEntityID();
 
 			Long projectID = null;
 			if (note.getProject() != null)
-				projectID = note.getProject().getProjectID();
+				projectID = note.getProject().getEntityID();
 
 			Long itemID = null;
 			if (note.getItem() != null)
-				itemID = note.getItem().getItemID();
+				itemID = note.getItem().getEntityID();
 
-			jdbcTemplate.update(sql, note.getText(), note.getTimestamp(), note.getAuthor().getUserID(), taskID,
-					projectID, itemID, note.getNoteID());
+			jdbcTemplate.update(sql, note.getText(), note.getTimestamp(), note.getAuthor().getEntityID(), taskID,
+					projectID, itemID, note.getEntityID());
 		}
 	}
 
 	@Override
-	public void deleteNote(Note note) {
-		String sql = "DELETE FROM note WHERE id_note = " + note.getNoteID();
+	public void deleteEntity(Entity note) {
+		String sql = "DELETE FROM note WHERE id_note = " + note.getEntityID();
 		jdbcTemplate.update(sql);
 	}
 

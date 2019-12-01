@@ -256,9 +256,9 @@ public class SelectProjectController {
 	private List<Project> getProjects() {
 		List<Project> projects = new ArrayList<>();
 		List<Project> allProjects = projectDao.getAll();
-		for (Project p : allProjects) {
-			if (p.getCreatedBy().getUserID().equals(UserIdentificationManager.getUser().getUserID())) {
-				projects.add(p);
+		for (Project project : allProjects) {
+			if (project.getCreatedBy().getEntityID().equals(UserIdentificationManager.getUser().getEntityID())) {
+				projects.add(project);
 			}
 		}
 		return projects;

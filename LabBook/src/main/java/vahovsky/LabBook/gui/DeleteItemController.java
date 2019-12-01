@@ -1,11 +1,7 @@
 package vahovsky.LabBook.gui;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.fxmodels.ItemFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
@@ -25,28 +21,10 @@ public class DeleteItemController {
 	public DeleteItemController(Item item) {
 		this.itemModel = new ItemFxModel(item);
 	}
-
+	
 	@FXML
 	void initialize() {
-
-		yesButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode().equals(KeyCode.ENTER)) {
-					itemDao.deleteItem(itemModel.getItem());
-					yesButton.getScene().getWindow().hide();
-				}
-			}
-		});
-
-		noButton.setOnAction(new EventHandler<ActionEvent>() {
-
-			@Override
-			public void handle(ActionEvent event) {
-				noButton.getScene().getWindow().hide();
-			}
-		});
+		Utilities.initialize(yesButton, noButton, itemDao, itemModel);
 	}
 
 }

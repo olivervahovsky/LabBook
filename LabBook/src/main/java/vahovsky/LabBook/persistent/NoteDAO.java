@@ -4,7 +4,7 @@ import java.util.List;
 
 import vahovsky.LabBook.entities.Note;
 
-public interface NoteDAO {
+public interface NoteDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object note into database
@@ -30,13 +30,5 @@ public interface NoteDAO {
 	 * @param note entity object, upon which changes were made
 	 */
 	void saveNote(Note note);
-
-	/**
-	 * Method to delete representation of note entity object from database
-	 * 
-	 * @param note entity object, representation of which is to be removed from
-	 *             database
-	 */
-	void deleteNote(Note note);
 
 }

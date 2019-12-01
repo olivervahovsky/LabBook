@@ -4,7 +4,7 @@ import java.util.List;
 
 import vahovsky.LabBook.entities.Project;
 
-public interface ProjectDAO {
+public interface ProjectDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object project into database
@@ -30,14 +30,6 @@ public interface ProjectDAO {
 	 *         in database
 	 */
 	List<Project> getAll();
-
-	/**
-	 * Method to delete representation of project entity object from database
-	 * 
-	 * @param project entity object, representation of which is to be removed from
-	 *                database
-	 */
-	void deleteProject(Project project);
 
 	/**
 	 * Method that returns entity object project. This object corresponds to the

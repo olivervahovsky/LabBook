@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Task;
 
@@ -35,14 +36,14 @@ public class MysqlTaskDAO implements TaskDAO {
 	 *             task_has_item
 	 */
 	private void insertItems(Task task) {
-		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task = ?", task.getTaskID());
+		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task = ?", task.getEntityID());
 		if (task.getItems() != null)
 			if (task.getItems().size() > 0) {
 				StringBuilder sb = new StringBuilder();
 				sb.append("INSERT INTO task_has_item (task_id_task, item_id_item)");
 				sb.append(" VALUES ");
 				for (int i = 0; i < task.getItems().size(); i++) {
-					sb.append("(" + task.getTaskID() + "," + task.getItems().get(i).getItemID() + "),");
+					sb.append("(" + task.getEntityID() + "," + task.getItems().get(i).getEntityID() + "),");
 				}
 				String insertSql = sb.substring(0, sb.length() - 1);
 				jdbcTemplate.update(insertSql);
@@ -59,15 +60,15 @@ public class MysqlTaskDAO implements TaskDAO {
 				"each_item_available", "user_id_user", "laboratory_id_laboratory");
 
 		Map<String, Object> values = new HashMap<>();
-		values.put("project_id_project", task.getProject().getProjectID());
+		values.put("project_id_project", task.getProject().getEntityID());
 		values.put("name", task.getName());
 		values.put("active", task.isActive());
 		values.put("date_time_from", task.getDateTimeFrom());
 		values.put("date_time_until", task.getDateTimeUntil());
 		values.put("each_item_available", task.isEachItemAvailable());
-		values.put("user_id_user", task.getCreatedBy().getUserID());
+		values.put("user_id_user", task.getCreatedBy().getEntityID());
 		if (task.getLaboratory() != null) {
-			values.put("laboratory_id_laboratory", task.getLaboratory().getLaboratoryID());
+			values.put("laboratory_id_laboratory", task.getLaboratory().getEntityID());
 		}
 
 		task.setTaskID(insert.executeAndReturnKey(values).longValue());
@@ -78,7 +79,7 @@ public class MysqlTaskDAO implements TaskDAO {
 	public void saveTask(Task task) {
 		if (task == null)
 			return;
-		if (task.getTaskID() == null) { // CREATE
+		if (task.getEntityID() == null) { // CREATE
 			addTask(task);
 		} else { // UPDATE
 			String sql = "UPDATE task SET "
@@ -86,18 +87,18 @@ public class MysqlTaskDAO implements TaskDAO {
 					+ "each_item_available = ?, user_id_user = ?, laboratory_id_laboratory = ? " + "WHERE id_task = ?";
 			Long laboratoryID = null;
 			if (task.getLaboratory() != null) {
-				laboratoryID = task.getLaboratory().getLaboratoryID();
+				laboratoryID = task.getLaboratory().getEntityID();
 			}
-			jdbcTemplate.update(sql, task.getProject().getProjectID(), task.getName(), task.isActive(),
+			jdbcTemplate.update(sql, task.getProject().getEntityID(), task.getName(), task.isActive(),
 					task.getDateTimeFrom(), task.getDateTimeUntil(), task.isEachItemAvailable(),
-					task.getCreatedBy().getUserID(), laboratoryID, task.getTaskID());
+					task.getCreatedBy().getEntityID(), laboratoryID, task.getEntityID());
 			insertItems(task);
 		}
 	}
 
 	@Override
 	public List<Item> getItems(Task task) {
-		String sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getTaskID();
+		String sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getEntityID();
 		List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
 
 			@Override
@@ -148,9 +149,9 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 
 	@Override
-	public void deleteTask(Task task) {
-		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task= ?", task.getTaskID());
-		String sql = "DELETE FROM task WHERE id_task = " + task.getTaskID();
+	public void deleteEntity(Entity task) {
+		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task= ?", task.getEntityID());
+		String sql = "DELETE FROM task WHERE id_task = " + task.getEntityID();
 		jdbcTemplate.update(sql);
 	}
 

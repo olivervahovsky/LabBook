@@ -38,7 +38,7 @@ class MysqlUserDAOTest {
 		boolean notThere = true;
 		List<User> all = userDAO.getAll();
 		for (User u : all) {
-			if (u.getUserID().equals(testUser.getUserID())) {
+			if (u.getEntityID().equals(testUser.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -75,17 +75,17 @@ class MysqlUserDAOTest {
 		all = userDAO.getAll();
 		boolean succesfullyAdded = false;
 		for (User u : all) {
-			if (u.getUserID().equals(testUser.getUserID())) {
+			if (u.getEntityID().equals(testUser.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 		all = userDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (User u : all) {
-			if (u.getUserID().equals(testUser.getUserID())) {
+			if (u.getEntityID().equals(testUser.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
@@ -101,7 +101,7 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		// create
 		userDAO.saveUser(testUser);
-		assertNotNull(testUser.getUserID());
+		assertNotNull(testUser.getEntityID());
 		// update
 		testUser.setName("tester_new");
 		Project project = new Project();
@@ -116,10 +116,10 @@ class MysqlUserDAOTest {
 		userDAO.saveUser(testUser);
 		List<User> all = userDAO.getAll();
 		for (User u : all) {
-			if (u.getUserID().equals(testUser.getUserID())) {
+			if (u.getEntityID().equals(testUser.getEntityID())) {
 				assertEquals("tester_new", u.getName());
 				assertTrue(project.getCreatedBy().getName().equals(u.getName()));
-				userDAO.deleteUser(u);
+				userDAO.deleteEntity(u);
 				return;
 			}
 		}
@@ -135,9 +135,9 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 
-		long id = testUser.getUserID();
-		assertTrue(id == userDAO.getByID(id).getUserID());
-		userDAO.deleteUser(testUser);
+		long id = testUser.getEntityID();
+		assertTrue(id == userDAO.getByID(id).getEntityID());
+		userDAO.deleteEntity(testUser);
 	}
 
 	@Test
@@ -187,7 +187,7 @@ class MysqlUserDAOTest {
 
 		assertTrue(userDAO.getTasks(testUser).size() == 2);
 		
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 
 	@Test
@@ -236,7 +236,7 @@ class MysqlUserDAOTest {
 		assertTrue(userDAO.getNotes(testUser) != null);
 		assertTrue(userDAO.getNotes(testUser).size() == 2);
 		
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 		
 	}
 	
@@ -270,7 +270,7 @@ class MysqlUserDAOTest {
 		assertTrue(userDAO.getProjects(testUser) != null);
 		assertTrue(userDAO.getProjects(testUser).size() == 2);
 		
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 		
 	}
 	
@@ -283,9 +283,9 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 
-		Long id = testUser.getUserID();
-		assertTrue(id.equals(userDAO.getByEmail("tester.testovaci@test.com").getUserID()));
-		userDAO.deleteUser(testUser);
+		Long id = testUser.getEntityID();
+		assertTrue(id.equals(userDAO.getByEmail("tester.testovaci@test.com").getEntityID()));
+		userDAO.deleteEntity(testUser);
 	}
 	
 	@Test
@@ -298,7 +298,7 @@ class MysqlUserDAOTest {
 		testUser.setEmail("tester.testovaci@test.com");
 		userDAO.addUser(testUser);
 		assertTrue(userDAO.getAllEmails().size() == origNumber + 1);
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 	
 	@Test
@@ -311,7 +311,7 @@ class MysqlUserDAOTest {
 		testUser.setEmail("tester.testovaci@test.com");
 		userDAO.addUser(testUser);
 		assertTrue(userDAO.getAllNames().size() == origNumber + 1);
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 
 }

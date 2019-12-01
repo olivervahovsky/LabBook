@@ -5,7 +5,7 @@ import java.util.List;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Task;
 
-public interface TaskDAO {
+public interface TaskDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object task into database
@@ -31,14 +31,6 @@ public interface TaskDAO {
 	 *         in database
 	 */
 	List<Task> getAll();
-
-	/**
-	 * Method to delete representation of task entity object from database
-	 * 
-	 * @param task entity object, representation of which is to be removed from
-	 *             database
-	 */
-	void deleteTask(Task task);
 
 	/**
 	 * Method that returns entity object task. This object corresponds to the

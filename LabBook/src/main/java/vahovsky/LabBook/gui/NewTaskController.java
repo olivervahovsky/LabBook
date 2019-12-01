@@ -138,9 +138,9 @@ public class NewTaskController {
 				} else if (!isAvailable(name)) {
 					showTakenNameWindow();
 				} else {
-					Task task = new Task(name, from, until, projectModel.getProject());
-					if (selectedLaboratoryModel.getLaboratory() != null) {
-						task.setLaboratory(selectedLaboratoryModel.getLaboratory());
+					Task task = new Task(name, from, until, projectModel.getEntity());
+					if (selectedLaboratoryModel.getEntity() != null) {
+						task.setLaboratory(selectedLaboratoryModel.getEntity());
 					}
 					task.setCreatedBy(UserIdentificationManager.getUser());
 					TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();

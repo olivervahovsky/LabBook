@@ -2,7 +2,7 @@ package vahovsky.LabBook.fxmodels;
 
 import vahovsky.LabBook.entities.Item;
 
-public class ItemFxModel {
+public class ItemFxModel implements EntityFxModel {
 
 	private Long itemID;
 	private String name;
@@ -15,7 +15,7 @@ public class ItemFxModel {
 	 */
 	public ItemFxModel(Item item) {
 		setName(item.getName());
-		setItemID(item.getItemID());
+		setItemID(item.getEntityID());
 		setQuantity(item.getQuantity());
 	}
 
@@ -31,7 +31,7 @@ public class ItemFxModel {
 	 */
 	public void setItem(Item item) {
 		setName(item.getName());
-		setItemID(item.getItemID());
+		setItemID(item.getEntityID());
 		item.setQuantity(item.getQuantity());
 	}
 
@@ -42,7 +42,8 @@ public class ItemFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public Item getItem() {
+	@Override
+	public Item getEntity() {
 		Item item = new Item();
 		item.setName(getName());
 		item.setItemID(getItemID());

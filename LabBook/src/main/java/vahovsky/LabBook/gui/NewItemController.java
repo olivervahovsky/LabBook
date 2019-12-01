@@ -59,7 +59,7 @@ public class NewItemController {
 					Item item = new Item();
 					item.setName(name);
 					item.setQuantity(quantity);
-					item.setLaboratory(laboratoryModel.getLaboratory());
+					item.setLaboratory(laboratoryModel.getEntity());
 					ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
 					itemDao.addItem(item);
 					saveButton.getScene().getWindow().hide();

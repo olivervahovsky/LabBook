@@ -46,7 +46,7 @@ public class MysqlProjectDAOTest {
 		boolean notThere = true;
 		List<Project> all = projectDAO.getAll();
 		for (Project p : all) {
-			if (p.getProjectID().equals(project.getProjectID())) {
+			if (p.getEntityID().equals(project.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -80,17 +80,17 @@ public class MysqlProjectDAOTest {
 		all = projectDAO.getAll();
 		boolean succesfullyAdded = false;
 		for (Project p : all) {
-			if (p.getProjectID().equals(project.getProjectID())) {
+			if (p.getEntityID().equals(project.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
 		all = projectDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Project p : all) {
-			if (p.getProjectID().equals(project.getProjectID())) {
+			if (p.getEntityID().equals(project.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
@@ -115,16 +115,16 @@ public class MysqlProjectDAOTest {
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
 		// create
 		projectDAO.saveProject(project);
-		assertNotNull(project.getProjectID());
+		assertNotNull(project.getEntityID());
 		project.setName("testovaci_projekt_new");
 		// update
 		projectDAO.saveProject(project);
 		List<Project> all = projectDAO.getAll();
 		for (Project p : all) {
-			if (p.getProjectID().equals(project.getProjectID())) {
+			if (p.getEntityID().equals(project.getEntityID())) {
 				assertEquals("testovaci_projekt_new", p.getName());
-				projectDAO.deleteProject(p);
-				userDAO.deleteUser(testUser);
+				projectDAO.deleteEntity(p);
+				userDAO.deleteEntity(testUser);
 				return;
 			}
 		}
@@ -148,10 +148,10 @@ public class MysqlProjectDAOTest {
 		project.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
 		projectDAO.addProject(project);
-		long id = project.getProjectID();
-		assertTrue(id == projectDAO.getByID(id).getProjectID());
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
+		long id = project.getEntityID();
+		assertTrue(id == projectDAO.getByID(id).getEntityID());
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
 	}
 
 }

@@ -24,10 +24,10 @@ public class UserIdentificationManagerTest {
 
 		int output = UserIdentificationManager.setUser("tester", "1234");
 		assertEquals(UserIdentificationManager.getTypeOfUser(), 1);
-		assertEquals(UserIdentificationManager.getId(), testUser.getUserID());
+		assertEquals(UserIdentificationManager.getId(), testUser.getEntityID());
 		assertEquals(output, 1);
 
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 
 		Admin testAdmin = new Admin();
 		testAdmin.setName("tester");
@@ -37,10 +37,10 @@ public class UserIdentificationManagerTest {
 
 		output = UserIdentificationManager.setUser("tester", "1234");
 		assertEquals(UserIdentificationManager.getTypeOfUser(), 2);
-		assertEquals(UserIdentificationManager.getId(), testAdmin.getAdminID());
+		assertEquals(UserIdentificationManager.getId(), testAdmin.getEntityID());
 		assertEquals(output, 2);
 
-		adminDAO.deleteAdmin(testAdmin);
+		adminDAO.deleteEntity(testAdmin);
 	}
 
 	@Test
@@ -54,13 +54,13 @@ public class UserIdentificationManagerTest {
 
 		UserIdentificationManager.setUser("tester", "1234");
 		assertEquals(UserIdentificationManager.getTypeOfUser(), 1);
-		assertEquals(UserIdentificationManager.getId(), testUser.getUserID());
+		assertEquals(UserIdentificationManager.getId(), testUser.getEntityID());
 
 		UserIdentificationManager.logOut();
 		assertEquals(UserIdentificationManager.getTypeOfUser(), 0);
 		assertEquals(UserIdentificationManager.getId(), null);
 
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 
 	@Test
@@ -73,9 +73,9 @@ public class UserIdentificationManagerTest {
 		userDAO.addUser(testUser);
 
 		UserIdentificationManager.setUser("tester", "1234");
-		assertEquals(UserIdentificationManager.getUser().getUserID(), testUser.getUserID());
+		assertEquals(UserIdentificationManager.getUser().getEntityID(), testUser.getEntityID());
 
-		userDAO.deleteUser(testUser);
+		userDAO.deleteEntity(testUser);
 	}
 
 	@Test
@@ -87,9 +87,9 @@ public class UserIdentificationManagerTest {
 		adminDAO.addAdmin(testAdmin);
 		
 		UserIdentificationManager.setUser("tester", "1234");
-		assertEquals(UserIdentificationManager.getAdmin().getAdminID(), testAdmin.getAdminID());
+		assertEquals(UserIdentificationManager.getAdmin().getEntityID(), testAdmin.getEntityID());
 		
-		adminDAO.deleteAdmin(testAdmin);
+		adminDAO.deleteEntity(testAdmin);
 	}
 
 }

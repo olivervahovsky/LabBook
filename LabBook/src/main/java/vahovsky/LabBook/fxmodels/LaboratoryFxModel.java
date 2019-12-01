@@ -7,7 +7,7 @@ import javafx.beans.property.StringProperty;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 
-public class LaboratoryFxModel {
+public class LaboratoryFxModel implements EntityFxModel {
 
 	private Long laboratoryID;
 	private StringProperty name = new SimpleStringProperty();
@@ -21,7 +21,7 @@ public class LaboratoryFxModel {
 	 *                   object
 	 */
 	public LaboratoryFxModel(Laboratory laboratory) {
-		setLaboratoryID(laboratory.getLaboratoryID());
+		setLaboratoryID(laboratory.getEntityID());
 		setName(laboratory.getName());
 		setLocation(laboratory.getLocation());
 		if (laboratory.getItems() != null) {
@@ -40,7 +40,7 @@ public class LaboratoryFxModel {
 	 *                   of fxModel object
 	 */
 	public void setLaboratory(Laboratory laboratory) {
-		setLaboratoryID(laboratory.getLaboratoryID());
+		setLaboratoryID(laboratory.getEntityID());
 		setName(laboratory.getName());
 		setLocation(laboratory.getLocation());
 		if (laboratory.getItems() != null) {
@@ -55,7 +55,8 @@ public class LaboratoryFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public Laboratory getLaboratory() {
+	@Override
+	public Laboratory getEntity() {
 		Laboratory laboratory = new Laboratory();
 		laboratory.setName(getName());
 		laboratory.setLocation(getLocation());

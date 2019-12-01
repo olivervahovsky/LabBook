@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import vahovsky.LabBook.entities.Admin;
 
-public class AdminFxModel {
+public class AdminFxModel implements EntityFxModel {
 
 	private Long adminID;
 
@@ -24,7 +24,7 @@ public class AdminFxModel {
 	public AdminFxModel(Admin admin) {
 		setName(admin.getName());
 		setPassword(admin.getPassword());
-		setAdminID(admin.getAdminID());
+		setAdminID(admin.getEntityID());
 		setEmail(admin.getEmail());
 	}
 
@@ -35,7 +35,8 @@ public class AdminFxModel {
 	 * @return entity object based on parameters (instance variables) of fxModel
 	 *         object
 	 */
-	public Admin getAdmin() {
+	@Override
+	public Admin getEntity() {
 		Admin admin = new Admin();
 		admin.setAdminID(adminID);
 		admin.setName(getName());

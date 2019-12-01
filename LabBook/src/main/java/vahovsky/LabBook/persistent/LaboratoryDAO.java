@@ -5,7 +5,7 @@ import java.util.List;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 
-public interface LaboratoryDAO {
+public interface LaboratoryDAO extends EntityDAO {
 
 	/**
 	 * Method adding representation of entity object laboratory into database
@@ -31,14 +31,6 @@ public interface LaboratoryDAO {
 	 * @param laboratory entity object, upon which changes were made
 	 */
 	void saveLaboratory(Laboratory laboratory);
-
-	/**
-	 * Method to delete representation of laboratory entity object from database
-	 * 
-	 * @param laboratory entity object, representation of which is to be removed from
-	 *                   database
-	 */
-	void deleteLaboratory(Laboratory laboratory);
 
 	/**
 	 * Method that returns entity object laboratory. This object corresponds to the

@@ -38,9 +38,9 @@ public class UserIdentificationManager {
 	 */
 	public static User getUser() {
 		List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
-		for (User u : users) {
-			if (u.getUserID().equals(id)) {
-				return u;
+		for (User user : users) {
+			if (user.getEntityID().equals(id)) {
+				return user;
 			}
 		}
 		return null;
@@ -55,7 +55,7 @@ public class UserIdentificationManager {
 	public static Admin getAdmin() {
 		List<Admin> admins = DAOfactory.INSTANCE.getAdminDAO().getAll();
 		for (Admin a : admins) {
-			if (a.getAdminID().equals(id)) {
+			if (a.getEntityID().equals(id)) {
 				return a;
 			}
 		}
@@ -78,17 +78,17 @@ public class UserIdentificationManager {
 
 		List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
 		for (User user : users) {
-			if (user.getName().equals(userName) && pm.isCorrectPassword(password, user.getUserID(), 1)) {
+			if (user.getName().equals(userName) && pm.isCorrectPassword(password, user.getEntityID(), 1)) {
 				UserIdentificationManager.typeOfUser = 1;
-				UserIdentificationManager.id = user.getUserID();
+				UserIdentificationManager.id = user.getEntityID();
 				return 1;
 			}
 		}
 		List<Admin> admins = DAOfactory.INSTANCE.getAdminDAO().getAll();
 		for (Admin admin : admins) {
-			if (admin.getName().equals(userName) && pm.isCorrectPassword(password, admin.getAdminID(), 2)) {
+			if (admin.getName().equals(userName) && pm.isCorrectPassword(password, admin.getEntityID(), 2)) {
 				UserIdentificationManager.typeOfUser = 2;
-				UserIdentificationManager.id = admin.getAdminID();
+				UserIdentificationManager.id = admin.getEntityID();
 				return 2;
 			}
 		}

@@ -54,7 +54,7 @@ public class NewProjectController {
 					showWrongDataInputWindow();
 				} else {
 					Project project = new Project(name, from, until, true);
-					project.setCreatedBy(userModel.getUser());
+					project.setCreatedBy(userModel.getEntity());
 					ProjectDAO projectDao = DAOfactory.INSTANCE.getProjectDAO();
 					projectDao.addProject(project);
 					saveButton.getScene().getWindow().hide();

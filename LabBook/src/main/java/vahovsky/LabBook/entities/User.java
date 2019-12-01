@@ -2,7 +2,7 @@ package vahovsky.LabBook.entities;
 
 import java.util.List;
 
-public class User {
+public class User implements Entity {
 
 	private Long userID;
 	private String name;
@@ -28,8 +28,8 @@ public class User {
 		this.password = password;
 	}
 	
-
-	public Long getUserID() {
+	@Override
+	public Long getEntityID() {
 		return userID;
 	}
 

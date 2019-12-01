@@ -46,7 +46,7 @@ public class EditUserController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				userDao.saveUser(userModel.getUser());
+				userDao.saveUser(userModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 			}
 		});

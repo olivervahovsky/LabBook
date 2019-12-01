@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Project;
 
 public class MysqlProjectDAO implements ProjectDAO {
@@ -35,7 +36,7 @@ public class MysqlProjectDAO implements ProjectDAO {
 		values.put("date_from", project.getDateFrom());
 		values.put("date_until", project.getDateUntil());
 		values.put("each_item_available", project.isEachItemAvailable());
-		values.put("user_id_user", project.getCreatedBy().getUserID());
+		values.put("user_id_user", project.getCreatedBy().getEntityID());
 
 		project.setProjectID(insert.executeAndReturnKey(values).longValue());
 	}
@@ -69,27 +70,27 @@ public class MysqlProjectDAO implements ProjectDAO {
 	public void saveProject(Project project) {
 		if (project == null)
 			return;
-		if (project.getProjectID() == null) { // CREATE
+		if (project.getEntityID() == null) { // CREATE
 			addProject(project);
 		} else { // UPDATE
 			String sql = "UPDATE project SET " + "name = ?, active = ?, date_from = ?, date_until = ?, "
 					+ "each_item_available = ?, user_id_user = ? " + "WHERE id_project = ?";
 			jdbcTemplate.update(sql, project.getName(), project.isActive(), project.getDateFrom(),
-					project.getDateUntil(), project.isEachItemAvailable(), project.getCreatedBy().getUserID(),
-					project.getProjectID());
+					project.getDateUntil(), project.isEachItemAvailable(), project.getCreatedBy().getEntityID(),
+					project.getEntityID());
 		}
 	}
 
 	@Override
-	public void deleteProject(Project project) {
+	public void deleteEntity(Entity project) {
 		// First delete all the notes belonging to the project, as they cannot be
 		// accessed after project deletion
-		jdbcTemplate.update("DELETE FROM note WHERE project_id_project = ?", project.getProjectID());
+		jdbcTemplate.update("DELETE FROM note WHERE project_id_project = ?", project.getEntityID());
 		// Next delete all the tasks belonging to the project, as they cannot be
 		// accessed after project deletion
-		jdbcTemplate.update("DELETE FROM task WHERE project_id_project = ?", project.getProjectID());
+		jdbcTemplate.update("DELETE FROM task WHERE project_id_project = ?", project.getEntityID());
 		// Finally delete the project itself
-		String sql = "DELETE FROM project WHERE id_project = " + project.getProjectID();
+		String sql = "DELETE FROM project WHERE id_project = " + project.getEntityID();
 		jdbcTemplate.update(sql);
 	}
 

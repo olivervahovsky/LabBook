@@ -55,22 +55,22 @@ public class MysqlNoteDAOTest {
 		boolean succesfullyAdded = false;
 		List<Note> all = noteDAO.getAll();
 		for (Note n : all) {
-			if (n.getNoteID().equals(note.getNoteID())) {
+			if (n.getEntityID().equals(note.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
-		noteDAO.deleteNote(note);
+		noteDAO.deleteEntity(note);
 		all = noteDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (Note n : all) {
-			if (n.getNoteID().equals(note.getNoteID())) {
+			if (n.getEntityID().equals(note.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
-		projectDAO.deleteProject(project);
-		userDAO.deleteUser(testUser);
+		projectDAO.deleteEntity(project);
+		userDAO.deleteEntity(testUser);
 		assertTrue(successfullyDeleted);
 	}
 	
@@ -100,17 +100,17 @@ public class MysqlNoteDAOTest {
 		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
 		// create
 		noteDAO.saveNote(note);
-		assertNotNull(note.getNoteID());
+		assertNotNull(note.getEntityID());
 		note.setText("testovaci_task_new");
 		// update
 		noteDAO.saveNote(note);
 		List<Note> all = noteDAO.getAll();
 		for (Note n : all) {
-			if (n.getNoteID().equals(note.getNoteID())) {
+			if (n.getEntityID().equals(note.getEntityID())) {
 				assertEquals("testovaci_task_new", n.getText());
-				noteDAO.deleteNote(n);
-				projectDAO.deleteProject(project);
-				userDAO.deleteUser(testUser);
+				noteDAO.deleteEntity(n);
+				projectDAO.deleteEntity(project);
+				userDAO.deleteEntity(testUser);
 				return;
 			}
 		}

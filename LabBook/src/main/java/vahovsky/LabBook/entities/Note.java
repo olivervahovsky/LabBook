@@ -2,7 +2,7 @@ package vahovsky.LabBook.entities;
 
 import java.time.LocalDateTime;
 
-public class Note {
+public class Note implements Entity {
 
 	private Long noteID;
 	private String text;
@@ -36,7 +36,8 @@ public class Note {
 		this.task = task;
 	}
 
-	public Long getNoteID() {
+	@Override
+	public Long getEntityID() {
 		return noteID;
 	}
 

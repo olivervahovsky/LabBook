@@ -129,7 +129,7 @@ public class EditDataAdminController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteUserAdminController deleteController = new DeleteUserAdminController(selectedUserModel.getUser());
+				DeleteUserAdminController deleteController = new DeleteUserAdminController(selectedUserModel.getEntity());
 				showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
 				List<User> users = userDao.getAll();
 				userComboBox.setItems(FXCollections.observableList(users));
@@ -145,7 +145,7 @@ public class EditDataAdminController {
 				// DeleteLaboratoryController deleteController = new DeleteLaboratoryController(
 				// selectedLaboratoryModel.getLaboratory());
 				// showModalWindow(deleteController, "deleteLaboratory.fxml");
-				laboratoryDao.deleteLaboratory(selectedLaboratoryModel.getLaboratory());
+				laboratoryDao.deleteEntity(selectedLaboratoryModel.getEntity());
 				laboratoryModel.setAll(laboratoryDao.getAll());
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 			}
@@ -168,7 +168,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditLaboratoryController laboratoryController = new EditLaboratoryController(
-						selectedLaboratoryModel.getLaboratory());
+						selectedLaboratoryModel.getEntity());
 				showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));

@@ -48,7 +48,7 @@ public class EditAdminController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				adminDao.saveAdmin(adminModel.getAdmin());
+				adminDao.saveAdmin(adminModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 			}
 			

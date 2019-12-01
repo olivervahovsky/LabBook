@@ -114,7 +114,7 @@ public class SelectTaskController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				NewTaskController newTaskController = new NewTaskController(projectModel.getProject());
+				NewTaskController newTaskController = new NewTaskController(projectModel.getEntity());
 				showModalWindow(newTaskController, "newTask.fxml", "New Task");
 				tasksModel.setAll(getTasks());
 			}
@@ -189,7 +189,7 @@ public class SelectTaskController {
 	}
 
 	public void openNotes() {
-		SelectNoteController controller = new SelectNoteController(selectedTask.get(), projectModel.getProject());
+		SelectNoteController controller = new SelectNoteController(selectedTask.get(), projectModel.getEntity());
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("selectNotes.fxml"));
 			loader.setController(controller);
@@ -211,9 +211,9 @@ public class SelectTaskController {
 	private List<Task> getTasks() {
 		List<Task> tasks = new ArrayList<>();
 		List<Task> allTasks = taskDao.getAll();
-		for (Task t : allTasks) {
-			if (t.getProject().getProjectID() == projectModel.getProjectId()) {
-				tasks.add(t);
+		for (Task task : allTasks) {
+			if (task.getProject().getEntityID() == projectModel.getProjectId()) {
+				tasks.add(task);
 			}
 		}
 		return tasks;

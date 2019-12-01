@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
 
 public class MysqlItemDAO implements ItemDAO {
@@ -33,7 +34,7 @@ public class MysqlItemDAO implements ItemDAO {
 		values.put("quantity", item.getQuantity());
 		values.put("available", item.isAvailable());
 		if (item.getLaboratory() != null)
-			values.put("laboratory_id_laboratory", item.getLaboratory().getLaboratoryID());
+			values.put("laboratory_id_laboratory", item.getLaboratory().getEntityID());
 		else
 			values.put("laboratory_id_laboratory", null);
 		item.setItemID(insert.executeAndReturnKey(values).longValue());
@@ -43,17 +44,17 @@ public class MysqlItemDAO implements ItemDAO {
 	public void saveItem(Item item) {
 		if (item == null)
 			return;
-		if (item.getItemID() == null) { // CREATE
+		if (item.getEntityID() == null) { // CREATE
 			addItem(item);
 		} else { // UPDATE
 			Long laboratoryID = null;
 			if (item.getLaboratory() != null) {
-				laboratoryID = item.getLaboratory().getLaboratoryID();
+				laboratoryID = item.getLaboratory().getEntityID();
 			}
 			String sql = "UPDATE item SET " + "name = ?, quantity = ?, available = ?, laboratory_id_laboratory = ? "
 					+ "WHERE id_item = ?";
 			jdbcTemplate.update(sql, item.getName(), item.getQuantity(), item.isAvailable(), laboratoryID,
-					item.getItemID());
+					item.getEntityID());
 		}
 	}
 
@@ -78,15 +79,15 @@ public class MysqlItemDAO implements ItemDAO {
 	}
 
 	@Override
-	public void deleteItem(Item item) {
+	public void deleteEntity(Entity item) {
 		// First delete all the notes belonging to the item, as they cannot be accessed
 		// after item deletion
-		jdbcTemplate.update("DELETE FROM note WHERE item_id_item = ?", item.getItemID());
+		jdbcTemplate.update("DELETE FROM note WHERE item_id_item = ?", item.getEntityID());
 		// Next delete also all the rows of the table task_has_item corresponding to the
 		// item to be deleted
-		jdbcTemplate.update("DELETE FROM task_has_item WHERE item_id_item = ?", item.getItemID());
+		jdbcTemplate.update("DELETE FROM task_has_item WHERE item_id_item = ?", item.getEntityID());
 		// Finally, delete the item itself
-		jdbcTemplate.update("DELETE FROM item WHERE id_item = " + item.getItemID());
+		jdbcTemplate.update("DELETE FROM item WHERE id_item = " + item.getEntityID());
 	}
 
 	@Override

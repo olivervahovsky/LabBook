@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Admin;
+import vahovsky.LabBook.entities.Entity;
 
 public class MysqlAdminDAO implements AdminDAO {
 
@@ -57,17 +58,17 @@ public class MysqlAdminDAO implements AdminDAO {
 	public void saveAdmin(Admin admin) {
 		if (admin == null)
 			return;
-		if (admin.getAdminID() == null) { // CREATE
+		if (admin.getEntityID() == null) { // CREATE
 			addAdmin(admin);
 		} else { // UPDATE
 			String sql = "UPDATE admin SET " + "name = ?, password = ?, email = ? " + "WHERE id_admin = ?";
-			jdbcTemplate.update(sql, admin.getName(), admin.getPassword(), admin.getEmail(), admin.getAdminID());
+			jdbcTemplate.update(sql, admin.getName(), admin.getPassword(), admin.getEmail(), admin.getEntityID());
 		}
 	}
 
 	@Override
-	public void deleteAdmin(Admin admin) {
-		String sql = "DELETE FROM admin WHERE id_admin = " + admin.getAdminID();
+	public void deleteEntity(Entity admin) {
+		String sql = "DELETE FROM admin WHERE id_admin = " + admin.getEntityID();
 		jdbcTemplate.update(sql);
 	}
 

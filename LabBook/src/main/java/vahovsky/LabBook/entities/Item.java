@@ -2,7 +2,7 @@ package vahovsky.LabBook.entities;
 
 import java.util.List;
 
-public class Item {
+public class Item implements Entity {
 
 	private Long itemID;
 	private String name;
@@ -12,7 +12,8 @@ public class Item {
 	private List<Project> usedInProjects;
 	private List<Task> usedInTasks;
 
-	public Long getItemID() {
+	@Override
+	public Long getEntityID() {
 		return itemID;
 	}
 
