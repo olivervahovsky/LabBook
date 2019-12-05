@@ -33,6 +33,7 @@ import javafx.stage.Stage;
 import vahovsky.LabBook.business.ExportUserDataToExcelManager;
 import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Project;
+import vahovsky.LabBook.fxmodels.ProjectFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ProjectDAO;
 
@@ -121,7 +122,8 @@ public class SelectProjectController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteProjectController deleteProjectController = new DeleteProjectController(selectedProject.get());
+				ProjectFxModel projectFxModel = new ProjectFxModel(selectedProject.get());
+				DeleteEntityController deleteProjectController = new DeleteEntityController(DAOfactory.INSTANCE.getProjectDAO(), projectFxModel);
 				showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting");
 				projectsModel.setAll(getProjects());
 			}

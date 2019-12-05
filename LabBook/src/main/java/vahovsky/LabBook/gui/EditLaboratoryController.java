@@ -30,6 +30,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
+import vahovsky.LabBook.fxmodels.ItemFxModel;
 import vahovsky.LabBook.fxmodels.LaboratoryFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.LaboratoryDAO;
@@ -96,7 +97,8 @@ public class EditLaboratoryController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteItemController deleteItemController = new DeleteItemController(selectedItem.get());
+				ItemFxModel itemFxModel = new ItemFxModel(selectedItem.get());
+				DeleteEntityController deleteItemController = new DeleteEntityController(DAOfactory.INSTANCE.getItemDAO(), itemFxModel);
 				showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
 				// itemModel.setAll(itemDao.getAll());
 				itemModel.setAll(getItems());

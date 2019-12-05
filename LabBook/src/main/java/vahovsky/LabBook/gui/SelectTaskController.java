@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.fxmodels.ProjectFxModel;
+import vahovsky.LabBook.fxmodels.TaskFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.TaskDAO;
 
@@ -104,7 +105,8 @@ public class SelectTaskController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteTaskController deleteTaskController = new DeleteTaskController(selectedTask.get());
+				TaskFxModel taskFxModel = new TaskFxModel(selectedTask.get());
+				DeleteEntityController deleteTaskController = new DeleteEntityController(DAOfactory.INSTANCE.getTaskDAO(), taskFxModel);
 				showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting");
 				tasksModel.setAll(getTasks());
 			}

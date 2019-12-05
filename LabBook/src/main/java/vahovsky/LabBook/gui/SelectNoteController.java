@@ -34,6 +34,7 @@ import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
+import vahovsky.LabBook.fxmodels.NoteFxModel;
 import vahovsky.LabBook.fxmodels.TaskFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.NoteDAO;
@@ -99,7 +100,8 @@ public class SelectNoteController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteNoteController deleteNoteController = new DeleteNoteController(selectedNote.get());
+				NoteFxModel noteFxModel = new NoteFxModel(selectedNote.get());
+				DeleteEntityController deleteNoteController = new DeleteEntityController(DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
 				showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting");
 				notesModel.setAll(getNotes());
 			}

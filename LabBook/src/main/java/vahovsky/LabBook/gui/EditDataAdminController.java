@@ -129,7 +129,8 @@ public class EditDataAdminController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				DeleteUserAdminController deleteController = new DeleteUserAdminController(selectedUserModel.getEntity());
+				UserFxModel userFxModel = new UserFxModel(selectedUserModel.getEntity());
+				DeleteEntityController deleteController = new DeleteEntityController(DAOfactory.INSTANCE.getUserDAO(), userFxModel);
 				showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
 				List<User> users = userDao.getAll();
 				userComboBox.setItems(FXCollections.observableList(users));
@@ -190,7 +191,7 @@ public class EditDataAdminController {
 	public void signOut() {
 		FrontPageController controller = new FrontPageController();
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("frontPage.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../app/frontPage.fxml"));
 			loader.setController(controller);
 
 			Parent parentPane = loader.load();
