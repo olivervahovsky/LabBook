@@ -28,7 +28,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.business.ExportUserDataToExcelManager;
 import vahovsky.LabBook.business.UserIdentificationManager;
@@ -38,6 +37,8 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class SelectProjectController {
+	
+	Utilities util;
 
 	private ProjectDAO projectDao = DAOfactory.INSTANCE.getProjectDAO();
 	private ObservableList<Project> projectsModel;
@@ -105,7 +106,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditProjectController editController = new EditProjectController(selectedProject.get());
-				showModalWindow(editController, "editProject.fxml", "Project Editing");
+				util.showModalWindow(editController, "editProject.fxml", "Project Editing");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -124,7 +125,7 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				ProjectFxModel projectFxModel = new ProjectFxModel(selectedProject.get());
 				DeleteEntityController deleteProjectController = new DeleteEntityController(DAOfactory.INSTANCE.getProjectDAO(), projectFxModel);
-				showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting");
+				util.showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -142,7 +143,7 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				NewProjectController newProjectController = new NewProjectController(
 						UserIdentificationManager.getUser());
-				showModalWindow(newProjectController, "newProject.fxml", "New Project");
+				util.showModalWindow(newProjectController, "newProject.fxml", "New Project");
 				projectsModel.setAll(getProjects());
 			}
 		});
@@ -152,7 +153,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditUserController editUserController = new EditUserController(UserIdentificationManager.getUser());
-				showModalWindow(editUserController, "editUser.fxml", "Account Editing");
+				util.showModalWindow(editUserController, "editUser.fxml", "Account Editing");
 
 			}
 		});
@@ -197,23 +198,6 @@ public class SelectProjectController {
 				selectedProject.set(newValue);
 			}
 		});
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void openTasks() {

@@ -71,15 +71,15 @@ public class TaskFxModel implements EntityFxModel {
 	 */
 	@Override
 	public Task getEntity() {
-		Task t = new Task();
-		t.setProject(getProject());
-		t.setName(getName());
-		t.setDateTimeFrom(getFrom());
-		t.setDateTimeUntil(getUntil());
-		t.setTaskID(getTaskId());
-		t.setLaboratory(getLaboratory());
-		t.setCreatedBy(getCreatedBy());
-		return t;
+		Task task = new Task();
+		task.setProject(getProject());
+		task.setName(getName());
+		task.setDateTimeFrom(getFrom());
+		task.setDateTimeUntil(getUntil());
+		task.setTaskID(getTaskId());
+		task.setLaboratory(getLaboratory());
+		task.setCreatedBy(getCreatedBy());
+		return task;
 	}
 
 	public Laboratory getLaboratory() {

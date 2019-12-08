@@ -1,24 +1,20 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
 import java.util.List;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.UserDAO;
 
 public class RegistrationController {
+	
+	Utilities util;
 
 	@FXML
 	private PasswordField confirmPasswordPasswordField;
@@ -50,7 +46,7 @@ public class RegistrationController {
 				List<String> names = userDao.getAllNames();
 				boolean duplicateEmailOrName = emails.contains(email) || names.contains(name);
 				if (name.isEmpty() || email.isEmpty() || password1.isEmpty() || duplicateEmailOrName) {
-					showWrongDataInputWindow();
+					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 				} else {
 					if (password1.equals(password2)) {
 						User user = new User(name, password1, email);
@@ -58,32 +54,32 @@ public class RegistrationController {
 						userDao.addUser(user);
 						finishButton.getScene().getWindow().hide();
 					} else {
-						showWrongDataInputWindow();
+						util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 					}
 				}
 			}
 		});
 	}
 
-	private void showWrongDataInputWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Wrong data");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
+//	private void showWrongDataInputWindow() {
+//		WrongDataInputController controller = new WrongDataInputController();
+//		try {
+//			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
+//			loader.setController(controller);
+//
+//			Parent parentPane = loader.load();
+//			Scene scene = new Scene(parentPane);
+//
+//			Stage stage = new Stage();
+//			stage.setScene(scene);
+//			stage.initModality(Modality.APPLICATION_MODAL);
+//			stage.setResizable(false);
+//			stage.setTitle("Wrong data");
+//			stage.show();
+//
+//		} catch (IOException iOException) {
+//			iOException.printStackTrace();
+//		}
+//	}
 
 }

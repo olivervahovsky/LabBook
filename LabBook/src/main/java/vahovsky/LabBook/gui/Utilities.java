@@ -1,45 +1,52 @@
 package vahovsky.LabBook.gui;
 
-import javafx.scene.control.Button;
+import java.io.IOException;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import vahovsky.LabBook.fxmodels.EntityFxModel;
-import vahovsky.LabBook.persistent.EntityDAO;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class Utilities {
 	
-	public static void initialize(Button yesButton, Button noButton, EntityDAO entityDAO, EntityFxModel entityFxModel) {
-
-		yesButton.setOnKeyPressed(new EventHandler<KeyEvent>() {
-
-			@Override
-			public void handle(KeyEvent event) {
-				if (event.getCode().equals(KeyCode.ENTER)) {
-					entityDAO.deleteEntity(entityFxModel.getEntity());
-					yesButton.getScene().getWindow().hide();
-				}
-			}
-		});
-		
-		yesButton.setOnAction(new EventHandler<ActionEvent>() {
+	public void showModalWindow(Object controller, String fxml, String title) {
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+			fxmlLoader.setController(controller);
 			
-						@Override
-						public void handle(ActionEvent event) {
-							entityDAO.deleteEntity(entityFxModel.getEntity());
-							yesButton.getScene().getWindow().hide();
-						}
-					});
+			Parent rootPane = fxmlLoader.load();
+			Scene scene = new Scene(rootPane);
 
-		noButton.setOnAction(new EventHandler<ActionEvent>() {
+			Stage dialog = new Stage();
+			dialog.setScene(scene);
+			dialog.setTitle(title);
+			dialog.initModality(Modality.APPLICATION_MODAL);
+			dialog.showAndWait();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showWrongDataInputWindow(String fxmlFile, String title) {
+		WrongDataInputController controller = new WrongDataInputController();
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+			loader.setController(controller);
 
-			@Override
-			public void handle(ActionEvent event) {
-				noButton.getScene().getWindow().hide();
-			}
-		});
+			Parent parentPane = loader.load();
+			Scene scene = new Scene(parentPane);
+
+			Stage stage = new Stage();
+			stage.setScene(scene);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.setResizable(false);
+			stage.setTitle(title);
+			stage.show();
+
+		} catch (IOException iOException) {
+			iOException.printStackTrace();
+		}
 	}
 
 }

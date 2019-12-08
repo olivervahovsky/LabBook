@@ -29,7 +29,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
@@ -41,6 +40,8 @@ import vahovsky.LabBook.persistent.NoteDAO;
 
 
 public class SelectNoteController {
+	
+	Utilities util;
 
 	private NoteDAO noteDao = DAOfactory.INSTANCE.getNoteDAO();
 	private ObservableList<Note> notesModel;
@@ -79,7 +80,7 @@ public class SelectNoteController {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
 						EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-						showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
+						util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
 						notesModel.setAll(getNotes());
 					}
 				}
@@ -91,7 +92,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-				showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
+				util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -102,7 +103,7 @@ public class SelectNoteController {
 			public void handle(ActionEvent event) {
 				NoteFxModel noteFxModel = new NoteFxModel(selectedNote.get());
 				DeleteEntityController deleteNoteController = new DeleteEntityController(DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
-				showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting");
+				util.showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -112,7 +113,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewNoteController newNoteController = new NewNoteController(taskModel.getEntity());
-				showModalWindow(newNoteController, "newNote.fxml", "New Note");
+				util.showModalWindow(newNoteController, "newNote.fxml", "New Note");
 				notesModel.setAll(getNotes());
 			}
 		});
@@ -176,23 +177,6 @@ public class SelectNoteController {
 				selectedNote.set(newValue);
 			}
 		});
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private List<Note> getNotes() {

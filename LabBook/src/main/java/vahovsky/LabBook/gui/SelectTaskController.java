@@ -25,7 +25,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
@@ -35,6 +34,8 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.TaskDAO;
 
 public class SelectTaskController {
+	
+	Utilities util;
 
 	private TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
 	private ObservableList<Task> tasksModel;
@@ -88,7 +89,7 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditTaskController editTaskController = new EditTaskController(selectedTask.get());
-				showModalWindow(editTaskController, "editTask.fxml", "Task Editing");
+				util.showModalWindow(editTaskController, "editTask.fxml", "Task Editing");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -107,7 +108,7 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				TaskFxModel taskFxModel = new TaskFxModel(selectedTask.get());
 				DeleteEntityController deleteTaskController = new DeleteEntityController(DAOfactory.INSTANCE.getTaskDAO(), taskFxModel);
-				showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting");
+				util.showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -117,7 +118,7 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewTaskController newTaskController = new NewTaskController(projectModel.getEntity());
-				showModalWindow(newTaskController, "newTask.fxml", "New Task");
+				util.showModalWindow(newTaskController, "newTask.fxml", "New Task");
 				tasksModel.setAll(getTasks());
 			}
 		});
@@ -171,23 +172,6 @@ public class SelectTaskController {
 				}
 			}
 		});
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	public void openNotes() {

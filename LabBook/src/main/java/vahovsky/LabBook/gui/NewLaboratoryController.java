@@ -18,6 +18,8 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.LaboratoryDAO;
 
 public class NewLaboratoryController {
+	
+	Utilities util;
 
 	@FXML
 	private Button saveButton;
@@ -40,7 +42,7 @@ public class NewLaboratoryController {
 				String location = locationTextField.getText();
 
 				if (name.isEmpty() || location.isEmpty()) {
-					showWrongDataInputWindow();
+					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 				} else if (!isAvailable(name)) {
 					showTakenNameWindow();
 				} else {
@@ -53,27 +55,6 @@ public class NewLaboratoryController {
 			}
 		});
 
-	}
-
-	private void showWrongDataInputWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Wrong data");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
 	}
 
 	private void showTakenNameWindow() {
@@ -106,21 +87,5 @@ public class NewLaboratoryController {
 		}
 		return true;
 	}
-
-//	private void showModalWindow(Object controller, String fxml) {
-//		try {
-//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-//			fxmlLoader.setController(controller);
-//			Parent rootPane = fxmlLoader.load();
-//			Scene scene = new Scene(rootPane);
-//
-//			Stage dialog = new Stage();
-//			dialog.setScene(scene);
-//			dialog.initModality(Modality.APPLICATION_MODAL);
-//			dialog.showAndWait();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
 
 }

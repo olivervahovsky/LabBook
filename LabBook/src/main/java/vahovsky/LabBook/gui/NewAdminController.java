@@ -19,6 +19,8 @@ import vahovsky.LabBook.persistent.AdminDAO;
 import vahovsky.LabBook.persistent.DAOfactory;
 
 public class NewAdminController {
+	
+	Utilities util;
 
 	@FXML
 	private Button saveButton;
@@ -52,7 +54,7 @@ public class NewAdminController {
 				String password1 = passwordPasswordField.getText();
 				String password2 = confirmPasswordPasswordField.getText();
 				if (name.isEmpty() || email.isEmpty() || password1.isEmpty()) {
-					showWrongDataInputWindow();
+					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 				} else if (!isAvailable(name)) {
 					showTakenNameWindow();
 				} else {
@@ -65,33 +67,12 @@ public class NewAdminController {
 						adminDao.addAdmin(admin);
 						saveButton.getScene().getWindow().hide();
 					} else {
-						showWrongDataInputWindow();
+						util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 					}
 
 				}
 			}
 		});
-	}
-
-	private void showWrongDataInputWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Wrong data");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
 	}
 
 	private void showTakenNameWindow() {

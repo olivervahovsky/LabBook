@@ -1,6 +1,5 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,9 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
@@ -26,8 +22,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 import vahovsky.LabBook.fxmodels.ItemFxModel;
@@ -36,6 +30,9 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.LaboratoryDAO;
 
 public class EditLaboratoryController {
+	
+	Utilities util;
+	
 	@FXML
 	private Button saveButton;
 
@@ -88,7 +85,7 @@ public class EditLaboratoryController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewItemController newItemController = new NewItemController(laboratoryModel.getEntity());
-				showModalWindow(newItemController, "newItem.fxml", "New Item");
+				util.showModalWindow(newItemController, "newItem.fxml", "New Item");
 				itemModel.setAll(getItems());
 			}
 		});
@@ -99,7 +96,7 @@ public class EditLaboratoryController {
 			public void handle(ActionEvent event) {
 				ItemFxModel itemFxModel = new ItemFxModel(selectedItem.get());
 				DeleteEntityController deleteItemController = new DeleteEntityController(DAOfactory.INSTANCE.getItemDAO(), itemFxModel);
-				showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
+				util.showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
 				// itemModel.setAll(itemDao.getAll());
 				itemModel.setAll(getItems());
 
@@ -140,23 +137,6 @@ public class EditLaboratoryController {
 			}
 		});
 
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
 	private List<Item> getItems() {

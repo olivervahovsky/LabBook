@@ -15,7 +15,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Admin;
 import vahovsky.LabBook.entities.Laboratory;
@@ -29,6 +28,7 @@ import vahovsky.LabBook.persistent.UserDAO;
 public class EditDataAdminController {
 
 	private Admin admin;
+	private Utilities util;
 
 	@FXML
 	private ComboBox<User> userComboBox;
@@ -120,7 +120,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditAdminController editController = new EditAdminController(admin);
-				showModalWindow(editController, "editAdmin.fxml", "Admin editing");
+				util.showModalWindow(editController, "editAdmin.fxml", "Admin editing");
 				userModel.setAll(userDao.getAll());
 			}
 		});
@@ -131,7 +131,7 @@ public class EditDataAdminController {
 			public void handle(ActionEvent event) {
 				UserFxModel userFxModel = new UserFxModel(selectedUserModel.getEntity());
 				DeleteEntityController deleteController = new DeleteEntityController(DAOfactory.INSTANCE.getUserDAO(), userFxModel);
-				showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
+				util.showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
 				List<User> users = userDao.getAll();
 				userComboBox.setItems(FXCollections.observableList(users));
 				userModel.setAll(userDao.getAll());
@@ -157,7 +157,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewLaboratoryController laboratoryController = new NewLaboratoryController();
-				showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory");
+				util.showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));
 				laboratoryModel.setAll(laboratoryDao.getAll());
@@ -170,7 +170,7 @@ public class EditDataAdminController {
 			public void handle(ActionEvent event) {
 				EditLaboratoryController laboratoryController = new EditLaboratoryController(
 						selectedLaboratoryModel.getEntity());
-				showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing");
+				util.showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));
 			}
@@ -181,7 +181,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewAdminController newAdminController = new NewAdminController();
-				showModalWindow(newAdminController, "newAdmin.fxml", "New Admin");
+				util.showModalWindow(newAdminController, "newAdmin.fxml", "New Admin");
 
 			}
 		});
@@ -205,23 +205,6 @@ public class EditDataAdminController {
 
 		} catch (IOException iOException) {
 			iOException.printStackTrace();
-		}
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 

@@ -148,22 +148,6 @@ public class EditTaskController {
 
 	}
 
-//	private void showModalWindow(Object controller, String fxml) {
-//		try {
-//			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-//			fxmlLoader.setController(controller);
-//			Parent rootPane = fxmlLoader.load();
-//			Scene scene = new Scene(rootPane);
-//
-//			Stage dialog = new Stage();
-//			dialog.setScene(scene);
-//			dialog.initModality(Modality.APPLICATION_MODAL);
-//			dialog.showAndWait();
-//		} catch (IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-
 	// private List<Item> getItems() {
 	// List<Item> items = new ArrayList<>();
 	// if (itemDao.getAll() != null) {

@@ -14,7 +14,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Admin;
@@ -22,6 +21,8 @@ import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.persistent.DAOfactory;
 
 public class FrontPageController {
+	
+	Utilities util;
 
 	//private User user;
 	private Admin admin;
@@ -69,7 +70,7 @@ public class FrontPageController {
 						admin = UserIdentificationManager.getAdmin();
 						loginAdmin();
 					} else {
-						showWrongDataWindow();
+						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
 					}
 				}
 			}
@@ -89,7 +90,7 @@ public class FrontPageController {
 						admin = UserIdentificationManager.getAdmin();
 						loginAdmin();
 					} else {
-						showWrongDataWindow();
+						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
 					}
 				}
 			}
@@ -100,7 +101,7 @@ public class FrontPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				RegistrationController registrationController = new RegistrationController();
-				showModalWindow(registrationController, "registration.fxml", "Registration");
+				util.showModalWindow(registrationController, "registration.fxml", "Registration");
 			}
 		});
 
@@ -117,7 +118,7 @@ public class FrontPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				ForgottenPasswordController forgottenPasswordController = new ForgottenPasswordController();
-				showModalWindow(forgottenPasswordController, "forgottenPassword.fxml", "Forgotten Password");
+				util.showModalWindow(forgottenPasswordController, "forgottenPassword.fxml", "Forgotten Password");
 			}
 		});
 
@@ -133,7 +134,7 @@ public class FrontPageController {
 				admin = UserIdentificationManager.getAdmin();
 				loginAdmin();
 			} else {
-				showWrongDataWindow();
+				util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
 			}
 		});
 
@@ -173,45 +174,6 @@ public class FrontPageController {
 			stage.setTitle("Projects");
 			stage.show();
 			signInButton.getScene().getWindow().hide();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
-	private void showModalWindow(Object controller, String fxml, String title) {
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
-			fxmlLoader.setController(controller);
-			Parent rootPane = fxmlLoader.load();
-			Scene scene = new Scene(rootPane);
-
-			Stage dialog = new Stage();
-			dialog.setScene(scene);
-			dialog.setTitle(title);
-			dialog.initModality(Modality.APPLICATION_MODAL);
-			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void showWrongDataWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("alertBoxFailToSignIn.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			// nikde sa neda v aplikacii kliknut kym je toto okno aktivne
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Fail to sign in");
-			stage.show();
 
 		} catch (IOException iOException) {
 			iOException.printStackTrace();

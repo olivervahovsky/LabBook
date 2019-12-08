@@ -20,6 +20,8 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ItemDAO;
 
 public class NewItemController {
+	
+	Utilities util;
 
 	@FXML
 	private Button saveButton;
@@ -52,7 +54,7 @@ public class NewItemController {
 				String quantityString = quantityTextField.getText();
 				int quantity = Integer.parseInt(quantityString);
 				if (name.isEmpty() || quantityString == null) {
-					showWrongDataInputWindow();
+					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 				} else if (!isAvailable(name)) {
 					showTakenNameWindow();
 				} else {
@@ -67,27 +69,6 @@ public class NewItemController {
 			}
 		});
 
-	}
-
-	private void showWrongDataInputWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Wrong data");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
 	}
 
 	private void showTakenNameWindow() {

@@ -1,18 +1,12 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.fxmodels.UserFxModel;
@@ -20,6 +14,8 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class NewProjectController {
+	
+	Utilities util;
 
 	@FXML
 	private Button saveButton;
@@ -51,7 +47,7 @@ public class NewProjectController {
 				LocalDate until = untilDatePicker.getValue();
 
 				if (name.isEmpty() || from == null || until == null) {
-					showWrongDataInputWindow();
+					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
 				} else {
 					Project project = new Project(name, from, until, true);
 					project.setCreatedBy(userModel.getEntity());
@@ -65,24 +61,4 @@ public class NewProjectController {
 
 	}
 
-	private void showWrongDataInputWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Wrong data");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
 }
