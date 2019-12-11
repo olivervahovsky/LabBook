@@ -38,7 +38,7 @@ import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class SelectProjectController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	private ProjectDAO projectDao = DAOfactory.INSTANCE.getProjectDAO();
 	private ObservableList<Project> projectsModel;

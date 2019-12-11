@@ -15,7 +15,6 @@ public class EditAdminController {
 
 	private AdminDAO adminDao = DAOfactory.INSTANCE.getAdminDAO();
 	private AdminFxModel adminModel;
-	//private Admin admin;
 
 	@FXML
 	private Button saveButton;
@@ -33,10 +32,14 @@ public class EditAdminController {
 	private TextField emailTextField;
 
 	public EditAdminController(Admin admin) {
-		//this.admin = admin;
 		this.adminModel = new AdminFxModel(admin);
 	}
 
+	/**
+	 * Method for editing admin according to a user input in text fields. Text
+	 * fields are binded to a properties of the fxModel, which is based on an entity
+	 * to be edited.
+	 */
 	@FXML
 	void initialize() {
 		nameTextField.textProperty().bindBidirectional(adminModel.getNameProperty());
@@ -51,7 +54,7 @@ public class EditAdminController {
 				adminDao.saveAdmin(adminModel.getEntity());
 				saveButton.getScene().getWindow().hide();
 			}
-			
+
 		});
 	}
 }

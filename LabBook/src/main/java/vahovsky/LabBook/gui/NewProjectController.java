@@ -15,7 +15,7 @@ import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class NewProjectController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private Button saveButton;

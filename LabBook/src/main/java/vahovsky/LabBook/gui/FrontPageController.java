@@ -22,7 +22,7 @@ import vahovsky.LabBook.persistent.DAOfactory;
 
 public class FrontPageController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	//private User user;
 	private Admin admin;

@@ -28,7 +28,7 @@ import vahovsky.LabBook.persistent.UserDAO;
 public class EditDataAdminController {
 
 	private Admin admin;
-	private Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private ComboBox<User> userComboBox;
@@ -57,15 +57,13 @@ public class EditDataAdminController {
 	@FXML
 	private Button newAdminButton;
 
-	//private User user;
 	private UserDAO userDao;
 	private UserFxModel selectedUserModel;
-	private ObservableList<User> userModel;
+	private ObservableList<User> usersModel;
 
-	//private Laboratory laboratory;
 	private LaboratoryDAO laboratoryDao;
 	private LaboratoryFxModel selectedLaboratoryModel;
-	private ObservableList<Laboratory> laboratoryModel;
+	private ObservableList<Laboratory> laboratoriesModel;
 
 	public EditDataAdminController(Admin admin) {
 		this.admin = admin;
@@ -77,14 +75,14 @@ public class EditDataAdminController {
 
 	@FXML
 	void initialize() {
-		userModel = FXCollections.observableArrayList(userDao.getAll());
-		laboratoryModel = FXCollections.observableArrayList(laboratoryDao.getAll());
-
-		List<User> users = userDao.getAll();
-		userComboBox.setItems(FXCollections.observableList(users));
-		// zoberieme model comboboxu, z neho vybraneho itemu, pridame changelistenera -
-		// ak sa zmeni observableValue tak sa nastavi instancia userFxmodelu na novu
-		// value
+		// inicializujeme Observable list userov, aby sme ich potom mohli
+		// prezerať v comboboxe
+		usersModel = FXCollections.observableArrayList(userDao.getAll());
+		userComboBox.setItems(FXCollections.observableList(userDao.getAll()));
+		// zoberieme model comboboxu, z neho model selekcie a napokon model vybraného
+		// objektu. Naň pridáme changelistenera - ten je notifikovaný, kedykoľvek sa
+		// zmení Observable Value. Potom sa nastaví inštancia userFxModelu na novú
+		// value.
 		userComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<User>() {
 
 			@Override
@@ -95,7 +93,8 @@ public class EditDataAdminController {
 			}
 		});
 
-		laboratoriesComboBox.setItems(laboratoryModel);
+		laboratoriesModel = FXCollections.observableArrayList(laboratoryDao.getAll());
+		laboratoriesComboBox.setItems(laboratoriesModel);
 		laboratoriesComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Laboratory>() {
 
 			@Override
@@ -121,7 +120,7 @@ public class EditDataAdminController {
 			public void handle(ActionEvent event) {
 				EditAdminController editController = new EditAdminController(admin);
 				util.showModalWindow(editController, "editAdmin.fxml", "Admin editing");
-				userModel.setAll(userDao.getAll());
+				usersModel.setAll(userDao.getAll());
 			}
 		});
 
@@ -130,11 +129,12 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				UserFxModel userFxModel = new UserFxModel(selectedUserModel.getEntity());
-				DeleteEntityController deleteController = new DeleteEntityController(DAOfactory.INSTANCE.getUserDAO(), userFxModel);
+				DeleteEntityController deleteController = new DeleteEntityController(DAOfactory.INSTANCE.getUserDAO(),
+						userFxModel);
 				util.showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
 				List<User> users = userDao.getAll();
 				userComboBox.setItems(FXCollections.observableList(users));
-				userModel.setAll(userDao.getAll());
+				usersModel.setAll(userDao.getAll());
 			}
 		});
 
@@ -147,7 +147,7 @@ public class EditDataAdminController {
 				// selectedLaboratoryModel.getLaboratory());
 				// showModalWindow(deleteController, "deleteLaboratory.fxml");
 				laboratoryDao.deleteEntity(selectedLaboratoryModel.getEntity());
-				laboratoryModel.setAll(laboratoryDao.getAll());
+				laboratoriesModel.setAll(laboratoryDao.getAll());
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 			}
 		});
@@ -160,7 +160,7 @@ public class EditDataAdminController {
 				util.showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory");
 				List<Laboratory> laboratories = laboratoryDao.getAll();
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratories));
-				laboratoryModel.setAll(laboratoryDao.getAll());
+				laboratoriesModel.setAll(laboratoryDao.getAll());
 			}
 		});
 
@@ -181,8 +181,7 @@ public class EditDataAdminController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewAdminController newAdminController = new NewAdminController();
-				util.showModalWindow(newAdminController, "newAdmin.fxml", "New Admin");
-
+				util.showModalWindow(newAdminController, "Admin.fxml", "New Admin");
 			}
 		});
 

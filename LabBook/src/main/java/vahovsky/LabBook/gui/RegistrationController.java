@@ -14,7 +14,7 @@ import vahovsky.LabBook.persistent.UserDAO;
 
 public class RegistrationController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private PasswordField confirmPasswordPasswordField;

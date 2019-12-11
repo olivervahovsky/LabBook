@@ -41,7 +41,7 @@ import vahovsky.LabBook.persistent.NoteDAO;
 
 public class SelectNoteController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	private NoteDAO noteDao = DAOfactory.INSTANCE.getNoteDAO();
 	private ObservableList<Note> notesModel;

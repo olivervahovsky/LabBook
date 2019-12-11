@@ -12,7 +12,7 @@ import vahovsky.LabBook.persistent.DAOfactory;
 
 public class ForgottenPasswordController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private ResourceBundle resources;

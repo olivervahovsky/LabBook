@@ -33,7 +33,7 @@ import vahovsky.LabBook.persistent.TaskDAO;
 
 public class NewTaskController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private Button addButton;

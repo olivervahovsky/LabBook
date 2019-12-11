@@ -31,7 +31,7 @@ import vahovsky.LabBook.persistent.LaboratoryDAO;
 
 public class EditLaboratoryController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 	
 	@FXML
 	private Button saveButton;

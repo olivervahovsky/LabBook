@@ -16,7 +16,7 @@ import vahovsky.LabBook.persistent.NoteDAO;
 
 public class NewNoteController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private TextArea noteTextArea;

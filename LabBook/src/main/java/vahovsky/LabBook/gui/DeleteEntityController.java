@@ -27,7 +27,7 @@ public class DeleteEntityController {
 
 	/**
 	 * Method that controls actions on delete entity window. Pressing enter or
-	 * clicking "yes" on prompt deletes entity, while pressing no cancels the
+	 * clicking "yes" on prompt deletes entity, while pressing "no" cancels the
 	 * action.
 	 */
 	@FXML

@@ -21,7 +21,7 @@ import vahovsky.LabBook.persistent.ItemDAO;
 
 public class NewItemController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private Button saveButton;

@@ -20,7 +20,7 @@ import vahovsky.LabBook.persistent.DAOfactory;
 
 public class NewAdminController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	@FXML
 	private Button saveButton;
@@ -38,10 +38,6 @@ public class NewAdminController {
 	private TextField nameTextField;
 
 	private AdminDAO adminDao = DAOfactory.INSTANCE.getAdminDAO();
-
-	public NewAdminController() {
-
-	}
 
 	@FXML
 	void initialize() {

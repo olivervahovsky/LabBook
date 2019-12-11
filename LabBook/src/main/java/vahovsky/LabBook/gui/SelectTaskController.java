@@ -35,7 +35,7 @@ import vahovsky.LabBook.persistent.TaskDAO;
 
 public class SelectTaskController {
 	
-	Utilities util;
+	private Utilities util = new Utilities();
 
 	private TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
 	private ObservableList<Task> tasksModel;
