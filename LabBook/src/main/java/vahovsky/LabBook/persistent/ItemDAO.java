@@ -40,5 +40,14 @@ public interface ItemDAO extends EntityDAO {
 	 * @return entity object based on its corresponding representation (characterized by "id") in database
 	 */
 	Item getByID(Long id);
+	
+	/**
+	 * Method that tests, if the input parameter "name" already exists in the
+	 * database as a name of the entity Item.
+	 * 
+	 * @param name
+	 * @return true if the name is not in the database (hence it is available), false if it is
+	 */
+	boolean isNameAvailable(String name);
 
 }

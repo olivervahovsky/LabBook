@@ -48,5 +48,14 @@ public interface LaboratoryDAO extends EntityDAO {
 	 * @return the list of the items of this laboratory
 	 */
 	List<Item> getItemsOfLaboratory(Laboratory laboratory);
+	
+	/**
+	 * Method that tests, if the input parameter "name" already exists in the
+	 * database as a name of the entity Laboratory.
+	 * 
+	 * @param name
+	 * @return true if the name is not in the database (hence it is available), false if it is
+	 */
+	boolean isNameAvailable(String name);
 
 }

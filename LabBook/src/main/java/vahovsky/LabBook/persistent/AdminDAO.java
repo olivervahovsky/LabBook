@@ -31,10 +31,13 @@ public interface AdminDAO extends EntityDAO {
 	 */
 	void saveAdmin(Admin admin);
 
-	/** Method removing representation of entity object admin from database
-	 * @param admin entity object, the representation of which we want to remove from
-	 *              the database
+	/**
+	 * Method that tests, if the input parameter "name" already exists in the
+	 * database as a name of the entity Admin.
+	 * 
+	 * @param name
+	 * @return true if the name is not in the database (hence it is available), false if it is
 	 */
-	//void deleteEntity(Admin admin);
+	boolean isNameAvailable(String name);
 
 }

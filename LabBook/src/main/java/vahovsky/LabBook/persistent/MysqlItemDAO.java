@@ -96,5 +96,16 @@ public class MysqlItemDAO implements ItemDAO {
 				+ "WHERE id_item = " + id;
 		return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Item.class));
 	}
+	
+	@Override
+	public boolean isNameAvailable(String name) {
+		List<Item> items = getAll();
+		for (Item item : items) {
+			if (item.getName().equals(name)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

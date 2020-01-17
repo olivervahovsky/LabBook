@@ -13,6 +13,8 @@ public class Utilities {
 	public void showModalWindow(Object controller, String fxml, String title) {
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+			System.out.println(getClass());
+			System.out.println(getClass().getResource(fxml));
 			fxmlLoader.setController(controller);
 			
 			Parent rootPane = fxmlLoader.load();
@@ -23,25 +25,28 @@ public class Utilities {
 			dialog.setTitle(title);
 			dialog.initModality(Modality.APPLICATION_MODAL);
 			dialog.showAndWait();
-		} catch (IOException e) {
-			e.printStackTrace();
+			
+		} catch (IOException iOException) {
+			iOException.printStackTrace();
 		}
 	}
 	
-	public void showWrongDataInputWindow(String fxmlFile, String title) {
+	public void showWrongDataInputWindow(String fxml, String title) {
 		WrongDataInputController controller = new WrongDataInputController();
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
-			loader.setController(controller);
+			FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(fxml));
+			System.out.println(getClass());
+			System.out.println(getClass().getResource(fxml));
+			fxmlLoader.setController(controller);
 
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
+			Parent rootPane = fxmlLoader.load();
+			Scene scene = new Scene(rootPane);
 
 			Stage stage = new Stage();
 			stage.setScene(scene);
+			stage.setTitle(title);
 			stage.initModality(Modality.APPLICATION_MODAL);
 			stage.setResizable(false);
-			stage.setTitle(title);
 			stage.show();
 
 		} catch (IOException iOException) {

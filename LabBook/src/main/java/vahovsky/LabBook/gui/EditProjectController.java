@@ -14,9 +14,8 @@ import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class EditProjectController {
 
-	private ProjectDAO projectDao = DAOfactory.INSTANCE.getProjectDAO();
+	private ProjectDAO projectDao;
 	private ProjectFxModel projectModel;
-	// private Project project;
 
 	@FXML
 	private TextField nameTextField;
@@ -31,13 +30,12 @@ public class EditProjectController {
 	private Button saveButton;
 
 	public EditProjectController(Project project) {
-		// this.project = project;
-		this.projectModel = new ProjectFxModel(project);
+		projectDao = DAOfactory.INSTANCE.getProjectDAO();
+		projectModel = new ProjectFxModel(project);
 	}
 
 	@FXML
 	void initialize() {
-		// projectModel = FXCollections.observableArrayList(projectDao.getAll());
 		nameTextField.textProperty().bindBidirectional(projectModel.getNameProperty());
 		fromDatePicker.valueProperty().bindBidirectional(projectModel.getFromProperty());
 		untilDatePicker.valueProperty().bindBidirectional(projectModel.getUntilProperty());

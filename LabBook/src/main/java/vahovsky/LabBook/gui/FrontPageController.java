@@ -21,12 +21,8 @@ import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.persistent.DAOfactory;
 
 public class FrontPageController {
-	
-	private Utilities util = new Utilities();
 
-	//private User user;
-	private Admin admin;
-	//private UserFxModel signInFxModel = new UserFxModel();
+	private Utilities util = new Utilities();
 
 	@FXML
 	private TextField loginTextField;
@@ -43,15 +39,6 @@ public class FrontPageController {
 	@FXML
 	private Hyperlink forgottenPasswordHyperlink;
 
-	public FrontPageController() {
-
-	}
-
-	// public FrontPageController(User user) {
-	// this.user = user;
-	// this.userModel = new UserFxModel(user);
-	// }
-
 	@FXML
 	void initialize() {
 		// https://www.programcreek.com/java-api-examples/?class=javafx.scene.Scene&method=setOnKeyPressed
@@ -64,13 +51,13 @@ public class FrontPageController {
 					String password = passwordTextField.getText();
 
 					if (UserIdentificationManager.setUser(login, password) == 1) {
-						//user = UserIdentificationManager.getUser();
-						loginUser();
+						SelectProjectController controller = new SelectProjectController();
+						login(controller, "selectProject.fxml", "Projects");
 					} else if (UserIdentificationManager.setUser(login, password) == 2) {
-						admin = UserIdentificationManager.getAdmin();
-						loginAdmin();
+						AdminPageController controller = new AdminPageController();
+						login(controller, "editDataAdmin.fxml", "Admin Page");
 					} else {
-						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
+						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml", "Fail to sign in");
 					}
 				}
 			}
@@ -84,13 +71,13 @@ public class FrontPageController {
 					String password = passwordTextField.getText();
 
 					if (UserIdentificationManager.setUser(login, password) == 1) {
-						//user = UserIdentificationManager.getUser();
-						loginUser();
+						SelectProjectController controller = new SelectProjectController();
+						login(controller, "selectProject.fxml", "Projects");
 					} else if (UserIdentificationManager.setUser(login, password) == 2) {
-						admin = UserIdentificationManager.getAdmin();
-						loginAdmin();
+						AdminPageController controller = new AdminPageController();
+						login(controller, "editDataAdmin.fxml", "Admin Page");
 					} else {
-						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
+						util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml", "Fail to sign in");
 					}
 				}
 			}
@@ -105,14 +92,6 @@ public class FrontPageController {
 			}
 		});
 
-		/*
-		 * signInButton.setOnAction(new EventHandler<ActionEvent>() {
-		 * 
-		 * @Override public void handle(ActionEvent event) { SelectProjectController
-		 * selectProjectController = new SelectProjectController();
-		 * showModalWindow(selectProjectController, "selectProject.fxml"); } });
-		 */
-
 		forgottenPasswordHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -122,28 +101,39 @@ public class FrontPageController {
 			}
 		});
 
-		signInButton.setOnAction(eh -> {
+		signInButton.setOnAction(new EventHandler<ActionEvent>() {
 
-			String login = loginTextField.getText();
-			String password = passwordTextField.getText();
+			@Override
+			public void handle(ActionEvent event) {
+				String login = loginTextField.getText();
+				String password = passwordTextField.getText();
 
-			if (UserIdentificationManager.setUser(login, password) == 1) {
-				//user = UserIdentificationManager.getUser();
-				loginUser();
-			} else if (UserIdentificationManager.setUser(login, password) == 2) {
-				admin = UserIdentificationManager.getAdmin();
-				loginAdmin();
-			} else {
-				util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml","Fail to sign in");
+				if (UserIdentificationManager.setUser(login, password) == 1) {
+					SelectProjectController controller = new SelectProjectController();
+					login(controller, "selectProject.fxml", "Projects");
+				} else if (UserIdentificationManager.setUser(login, password) == 2) {
+					AdminPageController controller = new AdminPageController();
+					login(controller, "editDataAdmin.fxml", "Admin Page");
+				} else {
+					util.showWrongDataInputWindow("alertBoxFailToSignIn.fxml", "Fail to sign in");// .../gui/
+				}
 			}
 		});
 
 	}
 
-	private void loginAdmin() {
-		EditDataAdminController controller = new EditDataAdminController(admin);
+	/**
+	 * Method that hides the login/register page and opens new window. Type of the
+	 * window that appears depends on the type of the user logged in - either User
+	 * (select project window) or Admin (edit data window).
+	 * 
+	 * @param controller controller of the window that is going to appear
+	 * @param fxml fxml file of the window that is going to appear
+	 * @param pageTitle title of the window that is going to appear
+	 */
+	private void login(Object controller, String fxml, String pageTitle) {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("editDataAdmin.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
 			loader.setController(controller);
 
 			Parent parentPane = loader.load();
@@ -151,7 +141,7 @@ public class FrontPageController {
 
 			Stage stage = new Stage();
 			stage.setScene(scene);
-			stage.setTitle("Admin Page");
+			stage.setTitle(pageTitle);
 			stage.show();
 			signInButton.getScene().getWindow().hide();
 
@@ -160,36 +150,25 @@ public class FrontPageController {
 		}
 	}
 
-	private void loginUser() {
-		SelectProjectController controller = new SelectProjectController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("selectProject.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Projects");
-			stage.show();
-			signInButton.getScene().getWindow().hide();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
+	/** Method that returns entity Admin, based on the value of its parameter "name"
+	 * @param name value of the admin's parameter "name", based on which is the entity Admin returned
+	 * @return entity Admin with the corresponding name
+	 */
 	public Admin findByName(String name) {
 		List<Admin> admins = DAOfactory.INSTANCE.getAdminDAO().getAll();
-		for (Admin a : admins) {
-			if (a.getName().equals(name)) {
-				return a;
+		for (Admin admin : admins) {
+			if (admin.getName().equals(name)) {
+				return admin;
 			}
 		}
 		return null;
 	}
 
+	/** Method that returns entity User, based on the values of its parameters "name" and "password"
+	 * @param name value of the user's parameter "name", based on which is the entity User returned
+	 * @param password value of the user's parameter "password", based on which is the entity User returned
+	 * @return entity User with the corresponding name and password
+	 */
 	public User findByName(String name, String password) {
 		List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
 		for (User user : users) {

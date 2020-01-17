@@ -102,5 +102,16 @@ public class MysqlLaboratoryDAO implements LaboratoryDAO {
 		}
 		return items;
 	}
+	
+	@Override
+	public boolean isNameAvailable(String name) {
+		List<Laboratory> labs = getAll();
+		for (Laboratory laboratory : labs) {
+			if (laboratory.getName().equals(name)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

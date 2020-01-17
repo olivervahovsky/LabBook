@@ -1,7 +1,5 @@
 package vahovsky.LabBook.gui;
 
-import java.util.List;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,10 +21,6 @@ import vahovsky.LabBook.persistent.TaskDAO;
 
 public class EditTaskController {
 
-	private TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
-	private TaskFxModel taskModel;
-	//private Task task;
-
 	@FXML
 	private Button saveButton;
 
@@ -42,34 +36,26 @@ public class EditTaskController {
 	@FXML
 	private TextField nameTextField;
 
-	//private Laboratory laboratory;
+	private TaskDAO taskDao;
+	private TaskFxModel taskModel;
 	private LaboratoryDAO laboratoryDao;
 	private LaboratoryFxModel selectedLaboratoryModel;
-	//private ObservableList<Laboratory> laboratoryModel;
-	//private ObservableList<Item> itemsModel;
-	//private Map<String, BooleanProperty> columnsVisibility = new LinkedHashMap<>();
-	//private ItemDAO itemDao;
-	//private ObjectProperty<Item> selectedItem = new SimpleObjectProperty<>();
 
 	public EditTaskController(Task task) {
-		//this.task = task;
-		this.taskModel = new TaskFxModel(task);
+		taskDao = DAOfactory.INSTANCE.getTaskDAO();
+		taskModel = new TaskFxModel(task);
 		laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
-		//itemDao = DAOfactory.INSTANCE.getItemDAO();
 		selectedLaboratoryModel = new LaboratoryFxModel();
 	}
 
 	@FXML
 	void initialize() {
-		//itemsModel = FXCollections.observableArrayList(itemDao.getAll());
-		//laboratoryModel = FXCollections.observableArrayList(laboratoryDao.getAll());
 
 		nameTextField.textProperty().bindBidirectional(taskModel.getNameProperty());
 		fromDatePicker.valueProperty().bindBidirectional(taskModel.getFromProperty());
 		untilDatePicker.valueProperty().bindBidirectional(taskModel.getUntilProperty());
 
-		List<Laboratory> laboratories = laboratoryDao.getAll();
-		laboratoryComboBox.setItems(FXCollections.observableList(laboratories));
+		laboratoryComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 		laboratoryComboBox.getSelectionModel().select(taskModel.getLaboratory());
 		laboratoryComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Laboratory>() {
 
@@ -77,7 +63,6 @@ public class EditTaskController {
 			public void changed(ObservableValue<? extends Laboratory> observable, Laboratory oldValue,
 					Laboratory newValue) {
 				if (newValue != null) {
-					// System.out.println(newValue.getName());
 					selectedLaboratoryModel.setLaboratory(newValue);
 				}
 			}
@@ -89,76 +74,7 @@ public class EditTaskController {
 				taskModel.setLaboratory(selectedLaboratoryModel.getEntity());
 				taskDao.saveTask(taskModel.getEntity());
 				saveButton.getScene().getWindow().hide();
-
 			}
 		});
-
-		// removeButton.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent event) {
-		// RemoveItemController removeItemController = new
-		// RemoveItemController(selectedItem.get());
-		// showModalWindow(removeItemController, "removeItem.fxml");
-		// itemsModel.setAll(itemDao.getAll());
-		// }
-		// });
-
-		// addButton.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent event) {
-		// AddItemInTaskController addItemController = new AddItemInTaskController(
-		// selectedLaboratoryModel.getLaboratory(), taskModel.getTask());
-		// showModalWindow(addItemController, "addItemInTask.fxml");
-		//
-		// }
-		// });
-		//
-		// TableColumn<Item, String> nameCol = new TableColumn<>("Name");
-		// nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-		// itemsTableView.getColumns().add(nameCol);
-		// columnsVisibility.put("Name", nameCol.visibleProperty());
-		//
-		// itemsTableView.setItems(itemsModel);
-		// itemsTableView.setEditable(true);
-		//
-		// ContextMenu contextMenu = new ContextMenu();
-		// for (Entry<String, BooleanProperty> entry : columnsVisibility.entrySet()) {
-		// CheckMenuItem menuItem = new CheckMenuItem(entry.getKey());
-		// menuItem.selectedProperty().bindBidirectional(entry.getValue());
-		// contextMenu.getItems().add(menuItem);
-		// }
-		// itemsTableView.setContextMenu(contextMenu);
-		//
-		// itemsTableView.getSelectionModel().selectedItemProperty().addListener(new
-		// ChangeListener<Item>() {
-		//
-		// @Override
-		// public void changed(ObservableValue<? extends Item> observable, Item
-		// oldValue, Item newValue) {
-		// if (newValue == null) {
-		// removeButton.setDisable(true);
-		// } else {
-		// removeButton.setDisable(false);
-		// }
-		// selectedItem.set(newValue);
-		// }
-		// });
-
 	}
-
-	// private List<Item> getItems() {
-	// List<Item> items = new ArrayList<>();
-	// if (itemDao.getAll() != null) {
-	// List<Item> allItems = itemDao.getAll();
-	// for (Item i : allItems) {
-	// if (i.getTask().equals(selectedLaboratoryModel.getLaboratory())) {
-	// items.add(i);
-	// }
-	// }
-	// }
-	// return items;
-	//
-	// }
 }

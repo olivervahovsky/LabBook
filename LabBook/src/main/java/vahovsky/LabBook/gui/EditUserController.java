@@ -13,7 +13,7 @@ import vahovsky.LabBook.persistent.UserDAO;
 
 public class EditUserController {
 
-	private UserDAO userDao = DAOfactory.INSTANCE.getUserDAO();
+	private UserDAO userDao;
 	private UserFxModel userModel;
 
 	@FXML
@@ -32,7 +32,8 @@ public class EditUserController {
 	private TextField nameTextField;
 
 	public EditUserController(User user) {
-		this.userModel = new UserFxModel(user);
+		userDao = DAOfactory.INSTANCE.getUserDAO();
+		userModel = new UserFxModel(user);
 	}
 
 	@FXML

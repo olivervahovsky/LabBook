@@ -16,7 +16,7 @@ import vahovsky.LabBook.persistent.NoteDAO;
 
 public class NewNoteController {
 	
-	private Utilities util = new Utilities();
+	private Utilities util;
 
 	@FXML
 	private TextArea noteTextArea;
@@ -27,6 +27,7 @@ public class NewNoteController {
 	private TaskFxModel taskModel;
 
 	public NewNoteController(Task task) {
+		util = new Utilities();
 		this.taskModel = new TaskFxModel(task);
 	}
 

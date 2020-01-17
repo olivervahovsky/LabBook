@@ -13,7 +13,7 @@ import vahovsky.LabBook.persistent.DAOfactory;
 
 public class EditAdminController {
 
-	private AdminDAO adminDao = DAOfactory.INSTANCE.getAdminDAO();
+	private AdminDAO adminDao;
 	private AdminFxModel adminModel;
 
 	@FXML
@@ -32,7 +32,8 @@ public class EditAdminController {
 	private TextField emailTextField;
 
 	public EditAdminController(Admin admin) {
-		this.adminModel = new AdminFxModel(admin);
+		adminDao = DAOfactory.INSTANCE.getAdminDAO();
+		adminModel = new AdminFxModel(admin);
 	}
 
 	/**

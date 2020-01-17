@@ -31,7 +31,7 @@ import vahovsky.LabBook.persistent.LaboratoryDAO;
 
 public class EditLaboratoryController {
 	
-	private Utilities util = new Utilities();
+	private Utilities util;
 	
 	@FXML
 	private Button saveButton;
@@ -51,22 +51,25 @@ public class EditLaboratoryController {
 	@FXML
 	private TextField locationTextField;
 
-	private LaboratoryDAO laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
+	private LaboratoryDAO laboratoryDao;
 	private LaboratoryFxModel laboratoryModel;
-	private Map<String, BooleanProperty> columnsVisibility = new LinkedHashMap<>();
-	// private Laboratory laboratory;
-	private ObservableList<Item> itemModel;
-	// private ItemDAO itemDao = DAOfactory.INSTANCE.getItemDAO();
-	private ObjectProperty<Item> selectedItem = new SimpleObjectProperty<>();
+	
+	private ObservableList<Item> listOfItemsModel;
+	private ObjectProperty<Item> selectedItem;
+	
+	private Map<String, BooleanProperty> columnsVisibility;
 
 	public EditLaboratoryController(Laboratory laboratory) {
-		// this.laboratory = laboratory;
-		this.laboratoryModel = new LaboratoryFxModel(laboratory);
+		util = new Utilities();
+		laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
+		laboratoryModel = new LaboratoryFxModel(laboratory);
+		selectedItem = new SimpleObjectProperty<>();
+		columnsVisibility = new LinkedHashMap<>();
 	}
 
 	@FXML
 	void initialize() {
-		itemModel = FXCollections.observableArrayList(getItems());
+		listOfItemsModel = FXCollections.observableArrayList(laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity()));
 		nameTextField.textProperty().bindBidirectional(laboratoryModel.getNameProperty());
 		locationTextField.textProperty().bindBidirectional(laboratoryModel.getLocationProperty());
 
@@ -76,7 +79,6 @@ public class EditLaboratoryController {
 			public void handle(ActionEvent event) {
 				laboratoryDao.saveLaboratory(laboratoryModel.getEntity());
 				saveButton.getScene().getWindow().hide();
-
 			}
 		});
 
@@ -86,7 +88,7 @@ public class EditLaboratoryController {
 			public void handle(ActionEvent event) {
 				NewItemController newItemController = new NewItemController(laboratoryModel.getEntity());
 				util.showModalWindow(newItemController, "newItem.fxml", "New Item");
-				itemModel.setAll(getItems());
+				listOfItemsModel.setAll(laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity()));
 			}
 		});
 
@@ -97,8 +99,7 @@ public class EditLaboratoryController {
 				ItemFxModel itemFxModel = new ItemFxModel(selectedItem.get());
 				DeleteEntityController deleteItemController = new DeleteEntityController(DAOfactory.INSTANCE.getItemDAO(), itemFxModel);
 				util.showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
-				// itemModel.setAll(itemDao.getAll());
-				itemModel.setAll(getItems());
+				listOfItemsModel.setAll(laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity()));
 
 			}
 		});
@@ -113,7 +114,7 @@ public class EditLaboratoryController {
 		itemsTableView.getColumns().add(quantityCol);
 		columnsVisibility.put("quantity", quantityCol.visibleProperty());
 
-		itemsTableView.setItems(itemModel);
+		itemsTableView.setItems(listOfItemsModel);
 		itemsTableView.setEditable(true);
 
 		ContextMenu contextMenu = new ContextMenu();
@@ -129,8 +130,10 @@ public class EditLaboratoryController {
 			@Override
 			public void changed(ObservableValue<? extends Item> observable, Item oldValue, Item newValue) {
 				if (newValue == null) {
+					// ak práve nie je vybraný žiadny item, tlačítko delete je deaktivované
 					deleteButton.setDisable(true);
 				} else {
+					// ak je vybraný nejaký item, tlačítko delete je aktívne
 					deleteButton.setDisable(false);
 				}
 				selectedItem.set(newValue);
@@ -138,26 +141,5 @@ public class EditLaboratoryController {
 		});
 
 	}
-
-	private List<Item> getItems() {
-		return laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity());
-	}
-
-//	private List<Item> getItems() {
-//		List<Item> items = new ArrayList<>();
-//		if (itemDao.getAll() != null) {
-//			List<Item> allItems = itemDao.getAll();
-//			for (Item i : allItems) {
-//				System.out.println("1 " + i.getLaboratory());
-//				System.out.println("2 " + laboratoryModel.getLaboratory().getLaboratoryID());
-//				if (i.getLaboratory() != null)
-//					if (i.getLaboratory().getLaboratoryID().equals(laboratoryModel.getLaboratory().getLaboratoryID())) {
-//						items.add(i);
-//					}
-//			}
-//		}
-//		return items;
-//
-//	}
 
 }

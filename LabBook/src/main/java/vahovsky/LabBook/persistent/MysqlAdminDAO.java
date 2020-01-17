@@ -71,5 +71,16 @@ public class MysqlAdminDAO implements AdminDAO {
 		String sql = "DELETE FROM admin WHERE id_admin = " + admin.getEntityID();
 		jdbcTemplate.update(sql);
 	}
+	
+	@Override
+	public boolean isNameAvailable(String name) {
+		List<Admin> admins = getAll();
+		for (Admin admin : admins) {
+			if (admin.getName().equals(name)) {
+				return false;
+			}
+		}
+		return true;
+	}
 
 }

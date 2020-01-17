@@ -1,5 +1,7 @@
 package vahovsky.LabBook.app;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,6 +28,11 @@ public class App extends Application {
 		primaryStage.setTitle("LabBook login");
 		primaryStage.setScene(scene);
 		primaryStage.show();
+		
+//		File file = new File("C:/Users/Oliver/git/LabBook/LabBook/target/classes/vahovsky/LabBook/gui");
+//		File[] listOfFiles = file.listFiles();
+//		for(File item: listOfFiles)
+//			System.out.println(item);
 	}
 
 	public static void main(String[] args) {

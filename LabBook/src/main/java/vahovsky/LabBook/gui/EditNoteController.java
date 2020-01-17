@@ -19,15 +19,13 @@ public class EditNoteController {
 	@FXML
 	private TextArea noteTextArea;
 
-	//private TaskFxModel taskModel;
-
 	private NoteFxModel notesModel;
 
 	private NoteDAO noteDao;
 
 	public EditNoteController(Note note) {
-		this.notesModel = new NoteFxModel(note);
-		this.noteDao = DAOfactory.INSTANCE.getNoteDAO();
+		notesModel = new NoteFxModel(note);
+		noteDao = DAOfactory.INSTANCE.getNoteDAO();
 	}
 
 	@FXML

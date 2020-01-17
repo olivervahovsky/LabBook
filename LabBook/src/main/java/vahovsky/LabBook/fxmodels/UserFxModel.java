@@ -34,7 +34,7 @@ public class UserFxModel implements EntityFxModel {
 	 * @param user entity object, which parameters are used to set parameters of
 	 *             fxModel object
 	 */
-	public void setUser(User user) {
+	public void setByUser(User user) {
 		setName(user.getName());
 		setPassword(user.getPassword());
 		setUserID(user.getEntityID());
