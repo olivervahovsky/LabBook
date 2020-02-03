@@ -42,9 +42,11 @@ public class NewAdminController {
 				String password1 = passwordPasswordField.getText();
 				String password2 = confirmPasswordPasswordField.getText();
 				if (name.isEmpty() || email.isEmpty() || password1.isEmpty()) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 				} else if (!adminDao.isNameAvailable(name)) {
-					util.showWrongDataInputWindow("takenName.fxml", "Taken Name");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "takenName.fxml", "Taken Name", null);
 				} else {
 					if (password1.equals(password2)) {
 						Admin admin = new Admin();
@@ -55,9 +57,9 @@ public class NewAdminController {
 						adminDao.addAdmin(admin);
 						saveButton.getScene().getWindow().hide();
 					} else {
-						util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+						WrongDataInputController controller = new WrongDataInputController();
+						util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 					}
-
 				}
 			}
 		});

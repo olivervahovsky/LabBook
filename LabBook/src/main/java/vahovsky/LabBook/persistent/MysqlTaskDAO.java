@@ -3,6 +3,7 @@ package vahovsky.LabBook.persistent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +16,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Task;
+import vahovsky.LabBook.fxmodels.ProjectFxModel;
 
 public class MysqlTaskDAO implements TaskDAO {
 
@@ -165,6 +167,30 @@ public class MysqlTaskDAO implements TaskDAO {
 		List<Item> items = mtd.getItems(task);
 		task.setItems(items);
 		return task;
+	}
+	
+	@Override
+	public boolean isAvailable(String name) {
+		List<Task> tasks = getAll();
+		for (Task t : tasks) {
+			if (t.getName().equals(name)) {
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	@Override
+	public List<Task> getTasks(ProjectFxModel projectModel) {
+		List<Task> tasks = new ArrayList<>();
+		List<Task> allTasks = getAll();
+		for (Task task : allTasks) {
+			if (task.getProject().getEntityID() == projectModel.getProjectId()) {
+				tasks.add(task);
+			}
+		}
+		return tasks;
+
 	}
 
 }

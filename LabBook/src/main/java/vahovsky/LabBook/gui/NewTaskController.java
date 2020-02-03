@@ -1,6 +1,5 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -10,16 +9,11 @@ import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
@@ -33,7 +27,7 @@ import vahovsky.LabBook.persistent.TaskDAO;
 
 public class NewTaskController {
 	
-	private Utilities util = new Utilities();
+	private Utilities util;
 
 	@FXML
 	private Button addButton;
@@ -64,23 +58,16 @@ public class NewTaskController {
 
 	private LaboratoryDAO laboratoryDao;
 	private LaboratoryFxModel selectedLaboratoryModel;
-//	private ObservableList<Laboratory> laboratoryModel;
-	// private ObjectProperty<Item> selectedItem = new SimpleObjectProperty<>();
-//	private ObjectProperty<Laboratory> selectedLaboratory = new SimpleObjectProperty<>();
-//	private ObservableList<Item> itemsModel;
-//	private ItemDAO itemDao;
 
 	public NewTaskController(Project project) {
-		this.projectModel = new ProjectFxModel(project);
+		util = new Utilities();
+		projectModel = new ProjectFxModel(project);
 		laboratoryDao = DAOfactory.INSTANCE.getLaboratoryDAO();
-//		itemDao = DAOfactory.INSTANCE.getItemDAO();
 		selectedLaboratoryModel = new LaboratoryFxModel();
 	}
 
 	@FXML
 	void initialize() {
-//		laboratoryModel = FXCollections.observableArrayList(laboratoryDao.getAll());
-		// itemsModel = FXCollections.observableArrayList(getItems());
 
 		List<Laboratory> laboratories = laboratoryDao.getAll();
 		laboratoryComboBox.setItems(FXCollections.observableList(laboratories));
@@ -90,42 +77,10 @@ public class NewTaskController {
 			public void changed(ObservableValue<? extends Laboratory> observable, Laboratory oldValue,
 					Laboratory newValue) {
 				if (newValue != null) {
-					// System.out.println(newValue.getName());
 					selectedLaboratoryModel.setLaboratory(newValue);
 				}
 			}
 		});
-
-		// TableColumn<Item, String> nameCol = new TableColumn<>("Name");
-		// nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
-		// itemsTableView.getColumns().add(nameCol);
-		// columnsVisibility.put("Name", nameCol.visibleProperty());
-
-		// itemsTableView.setItems(itemsModel);
-		// itemsTableView.setEditable(true);
-
-		// ContextMenu contextMenu = new ContextMenu();
-		// for (Entry<String, BooleanProperty> entry : columnsVisibility.entrySet()) {
-		// CheckMenuItem menuItem = new CheckMenuItem(entry.getKey());
-		// menuItem.selectedProperty().bindBidirectional(entry.getValue());
-		// contextMenu.getItems().add(menuItem);
-		// }
-		// itemsTableView.setContextMenu(contextMenu);
-		//
-		// itemsTableView.getSelectionModel().selectedItemProperty().addListener(new
-		// ChangeListener<Item>() {
-		//
-		// @Override
-		// public void changed(ObservableValue<? extends Item> observable, Item
-		// oldValue, Item newValue) {
-		// if (newValue == null) {
-		// saveButton.setDisable(true);
-		// } else {
-		// saveButton.setDisable(false);
-		// }
-		// selectedItem.set(newValue);
-		// }
-		// });
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
@@ -136,9 +91,11 @@ public class NewTaskController {
 				LocalDate until = untilDatePicker.getValue();
 
 				if (name.isEmpty()) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
-				} else if (!isAvailable(name)) {
-					showTakenNameWindow();
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
+				} else if (!taskDao.isAvailable(name)) {
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "takenName.fxml", "Taken Name", null);
 				} else {
 					Task task = new Task(name, from, until, projectModel.getEntity());
 					if (selectedLaboratoryModel.getEntity() != null) {
@@ -153,71 +110,6 @@ public class NewTaskController {
 			}
 		});
 
-		// addButton.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent event) {
-		// SelectItemTasksController itemController = new
-		// SelectItemTasksController(selectedLaboratory.get());
-		// showModalWindow(itemController, "selectItemTasks.fxml");
-		//
-		// }
-		// });
-		//
-		// removeButton.setOnAction(new EventHandler<ActionEvent>() {
-		//
-		// @Override
-		// public void handle(ActionEvent event) {
-		// DeleteItemController deleteItemController = new
-		// DeleteItemController(selectedItem.get());
-		// showModalWindow(deleteItemController, "deleteItem.fxml");
-		// itemsModel.setAll(itemDao.getAll());
-		//
-		// }
-		// });
-
 	}
-
-	// private List<Item> getItems() {
-	// List<Item> items = new ArrayList<>();
-	// List<Item> allItems = itemDao.getAll();
-	// for (Item i : allItems) {
-	// if (i.getLaboratory() == selectedLaboratoryModel.getLaboratory()) {
-	// items.add(i);
-	// }
-	// }
-	// return items;
-	//
-	// }
-
-	private void showTakenNameWindow() {
-		WrongDataInputController controller = new WrongDataInputController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("takenName.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.setResizable(false);
-			stage.setTitle("Taken Name");
-			stage.show();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
-	private boolean isAvailable(String name) {
-		List<Task> tasks = taskDao.getAll();
-		for (Task t : tasks) {
-			if (t.getName().equals(name)) {
-				return false;
-			}
-		}
-		return true;
-	}
+	
 }

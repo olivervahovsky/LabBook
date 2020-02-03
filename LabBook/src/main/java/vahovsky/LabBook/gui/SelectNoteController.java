@@ -1,10 +1,7 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -18,9 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
@@ -29,7 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
@@ -38,15 +31,14 @@ import vahovsky.LabBook.fxmodels.TaskFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.NoteDAO;
 
-
 public class SelectNoteController {
-	
+
 	private Utilities util = new Utilities();
 
-	private NoteDAO noteDao = DAOfactory.INSTANCE.getNoteDAO();
+	private NoteDAO noteDao;
 	private ObservableList<Note> notesModel;
-	private Map<String, BooleanProperty> columnsVisibility = new LinkedHashMap<>();
-	private ObjectProperty<Note> selectedNote = new SimpleObjectProperty<>();
+	private Map<String, BooleanProperty> columnsVisibility;
+	private ObjectProperty<Note> selectedNote;
 	private TaskFxModel taskModel;
 	private Project project;
 
@@ -66,13 +58,16 @@ public class SelectNoteController {
 	private TableView<Note> notesTableView;
 
 	public SelectNoteController(Task task, Project project) {
-		this.taskModel = new TaskFxModel(task);
+		noteDao = DAOfactory.INSTANCE.getNoteDAO();
+		columnsVisibility = new LinkedHashMap<>();
+		selectedNote = new SimpleObjectProperty<>();
+		taskModel = new TaskFxModel(task);
 		this.project = project;
 	}
 
 	@FXML
 	void initialize() {
-		notesModel = FXCollections.observableArrayList(getNotes());
+		notesModel = FXCollections.observableArrayList(noteDao.getNotes(taskModel));
 
 		notesTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -80,8 +75,8 @@ public class SelectNoteController {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
 						EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-						util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
-						notesModel.setAll(getNotes());
+						util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
+						notesModel.setAll(noteDao.getNotes(taskModel));
 					}
 				}
 			}
@@ -92,8 +87,8 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditNoteController editNoteController = new EditNoteController(selectedNote.get());
-				util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing");
-				notesModel.setAll(getNotes());
+				util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
+				notesModel.setAll(noteDao.getNotes(taskModel));
 			}
 		});
 
@@ -102,9 +97,10 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				NoteFxModel noteFxModel = new NoteFxModel(selectedNote.get());
-				DeleteEntityController deleteNoteController = new DeleteEntityController(DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
-				util.showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting");
-				notesModel.setAll(getNotes());
+				DeleteEntityController deleteNoteController = new DeleteEntityController(
+						DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
+				util.showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting", null);
+				notesModel.setAll(noteDao.getNotes(taskModel));
 			}
 		});
 
@@ -113,8 +109,8 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewNoteController newNoteController = new NewNoteController(taskModel.getEntity());
-				util.showModalWindow(newNoteController, "newNote.fxml", "New Note");
-				notesModel.setAll(getNotes());
+				util.showModalWindow(newNoteController, "newNote.fxml", "New Note", null);
+				notesModel.setAll(noteDao.getNotes(taskModel));
 			}
 		});
 
@@ -123,22 +119,7 @@ public class SelectNoteController {
 			@Override
 			public void handle(ActionEvent event) {
 				SelectTaskController controller = new SelectTaskController(project);
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("selectTask.fxml"));
-					loader.setController(controller);
-
-					Parent parentPane = loader.load();
-					Scene scene = new Scene(parentPane);
-
-					Stage stage = new Stage();
-					stage.setScene(scene);
-					stage.setTitle("Projects");
-					stage.show();
-					tasksButton.getScene().getWindow().hide();
-
-				} catch (IOException iOException) {
-					iOException.printStackTrace();
-				}
+				util.showModalWindow(controller, "selectTask.fxml", "Projects", tasksButton);
 			}
 		});
 
@@ -179,16 +160,5 @@ public class SelectNoteController {
 		});
 	}
 
-	private List<Note> getNotes() {
-		List<Note> notes = new ArrayList<>();
-		List<Note> allNotes = noteDao.getAll();
-		for (Note note : allNotes) {
-			if (note.getTask() != null)
-				if (note.getTask().getEntityID().equals(taskModel.getTaskId())) {
-					notes.add(note);
-				}
-		}
-		return notes;
-
-	}
+	
 }

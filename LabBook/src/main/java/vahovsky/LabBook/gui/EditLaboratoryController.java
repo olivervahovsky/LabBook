@@ -1,7 +1,6 @@
 package vahovsky.LabBook.gui;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -87,7 +86,7 @@ public class EditLaboratoryController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewItemController newItemController = new NewItemController(laboratoryModel.getEntity());
-				util.showModalWindow(newItemController, "newItem.fxml", "New Item");
+				util.showModalWindow(newItemController, "newItem.fxml", "New Item", null);
 				listOfItemsModel.setAll(laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity()));
 			}
 		});
@@ -98,7 +97,7 @@ public class EditLaboratoryController {
 			public void handle(ActionEvent event) {
 				ItemFxModel itemFxModel = new ItemFxModel(selectedItem.get());
 				DeleteEntityController deleteItemController = new DeleteEntityController(DAOfactory.INSTANCE.getItemDAO(), itemFxModel);
-				util.showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item");
+				util.showModalWindow(deleteItemController, "deleteItem.fxml", "Delete Item", null);
 				listOfItemsModel.setAll(laboratoryDao.getItemsOfLaboratory(laboratoryModel.getEntity()));
 
 			}

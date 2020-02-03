@@ -3,6 +3,7 @@ package vahovsky.LabBook.persistent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
+import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Project;
 
@@ -99,5 +101,18 @@ public class MysqlProjectDAO implements ProjectDAO {
 		String sql = "SELECT id_project AS projectID, name, active, date_from, date_until, each_item_available, user_id_user "
 				+ "FROM project " + "WHERE id_project = " + id;
 		return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(Project.class));
+	}
+	
+	@Override
+	public List<Project> getProjects() {
+		List<Project> projects = new ArrayList<>();
+		List<Project> allProjects = getAll();
+		for (Project project : allProjects) {
+			if (project.getCreatedBy().getEntityID().equals(UserIdentificationManager.getUser().getEntityID())) {
+				projects.add(project);
+			}
+		}
+		return projects;
+
 	}
 }

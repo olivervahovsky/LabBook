@@ -15,7 +15,7 @@ import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.NoteDAO;
 
 public class NewNoteController {
-	
+
 	private Utilities util;
 
 	@FXML
@@ -41,7 +41,8 @@ public class NewNoteController {
 				Note note = new Note();
 				String text = noteTextArea.getText();
 				if (text.isEmpty()) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 				} else {
 					note.setText(text);
 					note.setTask(taskModel.getEntity());

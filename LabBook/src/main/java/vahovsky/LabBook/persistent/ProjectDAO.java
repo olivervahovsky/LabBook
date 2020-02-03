@@ -41,5 +41,7 @@ public interface ProjectDAO extends EntityDAO {
 	 *         (characterized by "id") in database
 	 */
 	Project getByID(Long id);
+	
+	List<Project> getProjects();
 
 }

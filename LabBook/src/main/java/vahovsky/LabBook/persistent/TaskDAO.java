@@ -4,6 +4,7 @@ import java.util.List;
 
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Task;
+import vahovsky.LabBook.fxmodels.ProjectFxModel;
 
 public interface TaskDAO extends EntityDAO {
 
@@ -52,5 +53,9 @@ public interface TaskDAO extends EntityDAO {
 	 *             task in the table task_has_item)
 	 */
 	List<Item> getItems(Task task);
+	
+	boolean isAvailable(String name);
+	
+	List<Task> getTasks(ProjectFxModel projectModel);
 
 }

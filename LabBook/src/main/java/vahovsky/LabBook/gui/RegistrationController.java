@@ -46,7 +46,8 @@ public class RegistrationController {
 				List<String> names = userDao.getAllNames();
 				boolean duplicateEmailOrName = emails.contains(email) || names.contains(name);
 				if (name.isEmpty() || email.isEmpty() || password1.isEmpty() || duplicateEmailOrName) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 				} else {
 					if (password1.equals(password2)) {
 						User user = new User(name, password1, email);
@@ -54,32 +55,12 @@ public class RegistrationController {
 						userDao.addUser(user);
 						finishButton.getScene().getWindow().hide();
 					} else {
-						util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+						WrongDataInputController controller = new WrongDataInputController();
+						util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 					}
 				}
 			}
 		});
 	}
-
-//	private void showWrongDataInputWindow() {
-//		WrongDataInputController controller = new WrongDataInputController();
-//		try {
-//			FXMLLoader loader = new FXMLLoader(getClass().getResource("WrongDataInput.fxml"));
-//			loader.setController(controller);
-//
-//			Parent parentPane = loader.load();
-//			Scene scene = new Scene(parentPane);
-//
-//			Stage stage = new Stage();
-//			stage.setScene(scene);
-//			stage.initModality(Modality.APPLICATION_MODAL);
-//			stage.setResizable(false);
-//			stage.setTitle("Wrong data");
-//			stage.show();
-//
-//		} catch (IOException iOException) {
-//			iOException.printStackTrace();
-//		}
-//	}
 
 }

@@ -36,8 +36,10 @@ public class ForgottenPasswordController {
 			public void handle(ActionEvent event) {
 				String email = emailTextField.textProperty().get();
 				List<String> emails = DAOfactory.INSTANCE.getUserDAO().getAllEmails();
-				if (!emails.contains(email))
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+				if (!emails.contains(email)) {
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
+				}
 				else {
 					ForgottenPasswordManagerSimple.sendPassword(email);
 					sendPasswordButton.getScene().getWindow().hide();

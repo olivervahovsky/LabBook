@@ -1,9 +1,7 @@
 package vahovsky.LabBook.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -17,9 +15,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.ContextMenu;
@@ -28,7 +23,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import vahovsky.LabBook.business.ExportUserDataToExcelManager;
 import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Project;
@@ -74,7 +68,7 @@ public class SelectProjectController {
 
 	@FXML
 	void initialize() {
-		projectsModel = FXCollections.observableArrayList(getProjects());
+		projectsModel = FXCollections.observableArrayList(projectDao.getProjects());
 
 		//https://stackoverflow.com/questions/26563390/detect-doubleclick-on-row-of-tableview-javafx
 		projectsTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -82,7 +76,8 @@ public class SelectProjectController {
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
-						openTasks();
+						SelectTaskController controller = new SelectTaskController(selectedProject.get());
+						util.showModalWindow(controller, "selectTask.fxml", "Tasks", openButton);
 					}
 				}
 			}
@@ -106,8 +101,8 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditProjectController editController = new EditProjectController(selectedProject.get());
-				util.showModalWindow(editController, "editProject.fxml", "Project Editing");
-				projectsModel.setAll(getProjects());
+				util.showModalWindow(editController, "editProject.fxml", "Project Editing", null);
+				projectsModel.setAll(projectDao.getProjects());
 			}
 		});
 
@@ -115,7 +110,8 @@ public class SelectProjectController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				openTasks();
+				SelectTaskController controller = new SelectTaskController(selectedProject.get());
+				util.showModalWindow(controller, "selectTask.fxml", "Tasks", openButton);
 			}
 		});
 
@@ -125,8 +121,8 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				ProjectFxModel projectFxModel = new ProjectFxModel(selectedProject.get());
 				DeleteEntityController deleteProjectController = new DeleteEntityController(DAOfactory.INSTANCE.getProjectDAO(), projectFxModel);
-				util.showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting");
-				projectsModel.setAll(getProjects());
+				util.showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting", null);
+				projectsModel.setAll(projectDao.getProjects());
 			}
 		});
 
@@ -134,7 +130,8 @@ public class SelectProjectController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				signOut();
+				FrontPageController controller = new FrontPageController();
+				util.showModalWindow(controller, "../app/frontPage.fxml", "LabBook login", signOutButton);
 			}
 		});
 		newProjectButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -143,8 +140,8 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				NewProjectController newProjectController = new NewProjectController(
 						UserIdentificationManager.getUser());
-				util.showModalWindow(newProjectController, "newProject.fxml", "New Project");
-				projectsModel.setAll(getProjects());
+				util.showModalWindow(newProjectController, "newProject.fxml", "New Project", null);
+				projectsModel.setAll(projectDao.getProjects());
 			}
 		});
 
@@ -153,7 +150,7 @@ public class SelectProjectController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditUserController editUserController = new EditUserController(UserIdentificationManager.getUser());
-				util.showModalWindow(editUserController, "editUser.fxml", "Account Editing");
+				util.showModalWindow(editUserController, "editUser.fxml", "Account Editing", null);
 
 			}
 		});
@@ -162,16 +159,6 @@ public class SelectProjectController {
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		projectsTableView.getColumns().add(nameCol);
 		columnsVisibility.put("ID", nameCol.visibleProperty());
-
-		// TableColumn<Project, LocalDate> fromCol = new TableColumn<>("date_from");
-		// fromCol.setCellValueFactory(new PropertyValueFactory<>("from"));
-		// projectsTableView.getColumns().add(fromCol);
-		// columnsVisibility.put("from", fromCol.visibleProperty());
-
-		// TableColumn<Project, Boolean> activeCol = new TableColumn<>("Active");
-		// activeCol.setCellValueFactory(new PropertyValueFactory<>("active"));
-		// projectsTableView.getColumns().add(activeCol);
-		// columnsVisibility.put("active", activeCol.visibleProperty());
 
 		projectsTableView.setItems(projectsModel);
 		projectsTableView.setEditable(true);
@@ -200,54 +187,4 @@ public class SelectProjectController {
 		});
 	}
 
-	public void openTasks() {
-		SelectTaskController controller = new SelectTaskController(selectedProject.get());
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("selectTask.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Tasks");
-			stage.show();
-			openButton.getScene().getWindow().hide();
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
-	public void signOut() {
-		FrontPageController controller = new FrontPageController();
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../app/frontPage.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("LabBook login");
-			stage.show();
-			signOutButton.getScene().getWindow().hide();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
-	private List<Project> getProjects() {
-		List<Project> projects = new ArrayList<>();
-		List<Project> allProjects = projectDao.getAll();
-		for (Project project : allProjects) {
-			if (project.getCreatedBy().getEntityID().equals(UserIdentificationManager.getUser().getEntityID())) {
-				projects.add(project);
-			}
-		}
-		return projects;
-
-	}
 }

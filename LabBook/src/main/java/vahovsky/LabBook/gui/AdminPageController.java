@@ -116,7 +116,7 @@ public class AdminPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditAdminController editController = new EditAdminController(UserIdentificationManager.getAdmin());
-				util.showModalWindow(editController, "editAdmin.fxml", "Admin editing");
+				util.showModalWindow(editController, "editAdmin.fxml", "Admin editing", null);
 			}
 		});
 
@@ -126,7 +126,7 @@ public class AdminPageController {
 			public void handle(ActionEvent event) {
 				DeleteEntityController deleteController = new DeleteEntityController(DAOfactory.INSTANCE.getUserDAO(),
 						selectedUserModel);
-				util.showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting");
+				util.showModalWindow(deleteController, "deleteUserAdmin.fxml", "Admin deleting", null);
 				userComboBox.setItems(FXCollections.observableList(userDao.getAll()));
 			}
 		});
@@ -137,7 +137,7 @@ public class AdminPageController {
 			public void handle(ActionEvent event) {
 				DeleteEntityController deleteController = new DeleteEntityController(
 						DAOfactory.INSTANCE.getLaboratoryDAO(), selectedLaboratoryModel);
-				util.showModalWindow(deleteController, "deleteLaboratory.fxml", "Delete Laboratory");
+				util.showModalWindow(deleteController, "deleteLaboratory.fxml", "Delete Laboratory", null);
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 			}
 		});
@@ -147,7 +147,7 @@ public class AdminPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewLaboratoryController laboratoryController = new NewLaboratoryController();
-				util.showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory");
+				util.showModalWindow(laboratoryController, "newLaboratory.fxml", "New Laboratory", null);
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 			}
 		});
@@ -158,7 +158,7 @@ public class AdminPageController {
 			public void handle(ActionEvent event) {
 				EditLaboratoryController laboratoryController = new EditLaboratoryController(
 						selectedLaboratoryModel.getEntity());
-				util.showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing");
+				util.showModalWindow(laboratoryController, "editLaboratory.fxml", "Laboratory editing", null);
 				laboratoriesComboBox.setItems(FXCollections.observableList(laboratoryDao.getAll()));
 			}
 		});
@@ -168,7 +168,7 @@ public class AdminPageController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewAdminController newAdminController = new NewAdminController();
-				util.showModalWindow(newAdminController, "newAdmin.fxml", "New Admin");
+				util.showModalWindow(newAdminController, "newAdmin.fxml", "New Admin", null);
 			}
 		});
 

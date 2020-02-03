@@ -45,9 +45,11 @@ public class NewItemController {
 				String quantityString = quantityTextField.getText();
 				int quantity = Integer.parseInt(quantityString);
 				if (name.isEmpty() || quantityString == null) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 				} else if (!itemDao.isNameAvailable(name)) {
-					util.showWrongDataInputWindow("takenName.fxml", "Taken Name");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "takenName.fxml", "Taken Name", null);
 				} else {
 					Item item = new Item();
 					item.setName(name);
@@ -59,7 +61,6 @@ public class NewItemController {
 				}
 			}
 		});
-
 	}
 
 }

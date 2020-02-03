@@ -2,6 +2,7 @@ package vahovsky.LabBook.persistent;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
+import vahovsky.LabBook.fxmodels.TaskFxModel;
 
 public class MysqlNoteDAO implements NoteDAO {
 
@@ -113,6 +115,19 @@ public class MysqlNoteDAO implements NoteDAO {
 	public void deleteEntity(Entity note) {
 		String sql = "DELETE FROM note WHERE id_note = " + note.getEntityID();
 		jdbcTemplate.update(sql);
+	}
+	
+	@Override
+	public List<Note> getNotes(TaskFxModel taskModel) {
+		List<Note> notes = new ArrayList<>();
+		List<Note> allNotes = getAll();
+		for (Note note : allNotes) {
+			if (note.getTask() != null)
+				if (note.getTask().getEntityID().equals(taskModel.getTaskId())) {
+					notes.add(note);
+				}
+		}
+		return notes;
 	}
 
 }

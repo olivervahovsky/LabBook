@@ -3,6 +3,7 @@ package vahovsky.LabBook.persistent;
 import java.util.List;
 
 import vahovsky.LabBook.entities.Note;
+import vahovsky.LabBook.fxmodels.TaskFxModel;
 
 public interface NoteDAO extends EntityDAO {
 
@@ -30,5 +31,7 @@ public interface NoteDAO extends EntityDAO {
 	 * @param note entity object, upon which changes were made
 	 */
 	void saveNote(Note note);
+	
+	List<Note> getNotes(TaskFxModel taskModel);
 
 }

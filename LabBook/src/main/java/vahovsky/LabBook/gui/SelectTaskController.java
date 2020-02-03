@@ -1,9 +1,6 @@
 package vahovsky.LabBook.gui;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javafx.beans.property.BooleanProperty;
@@ -16,16 +13,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.stage.Stage;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.fxmodels.ProjectFxModel;
@@ -35,12 +28,12 @@ import vahovsky.LabBook.persistent.TaskDAO;
 
 public class SelectTaskController {
 	
-	private Utilities util = new Utilities();
+	private Utilities util;
 
-	private TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
+	private TaskDAO taskDao;
 	private ObservableList<Task> tasksModel;
-	private Map<String, BooleanProperty> columnsVisibility = new LinkedHashMap<>();
-	private ObjectProperty<Task> selectedTask = new SimpleObjectProperty<>();
+	private Map<String, BooleanProperty> columnsVisibility;
+	private ObjectProperty<Task> selectedTask;
 	private ProjectFxModel projectModel;
 
 	@FXML
@@ -62,23 +55,25 @@ public class SelectTaskController {
 	private Button projectsButton;
 
 	public SelectTaskController(Project project) {
-		this.projectModel = new ProjectFxModel(project);
-	}
-
-	public SelectTaskController() {
+		util = new Utilities();
+		taskDao = DAOfactory.INSTANCE.getTaskDAO();
+		columnsVisibility = new LinkedHashMap<>();
+		selectedTask = new SimpleObjectProperty<>();
+		projectModel = new ProjectFxModel(project);
 	}
 
 	@FXML
 	void initialize() {
 
-		tasksModel = FXCollections.observableArrayList(getTasks());
+		tasksModel = FXCollections.observableArrayList(taskDao.getTasks(projectModel));
 
 		tasksTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent mouseEvent) {
 				if (mouseEvent.getButton().equals(MouseButton.PRIMARY)) {
 					if (mouseEvent.getClickCount() == 2) {
-						openNotes();
+						SelectNoteController controller = new SelectNoteController(selectedTask.get(), projectModel.getEntity());
+						util.showModalWindow(controller, "selectNotes.fxml", "Notes", openButton);
 					}
 				}
 			}
@@ -89,8 +84,8 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				EditTaskController editTaskController = new EditTaskController(selectedTask.get());
-				util.showModalWindow(editTaskController, "editTask.fxml", "Task Editing");
-				tasksModel.setAll(getTasks());
+				util.showModalWindow(editTaskController, "editTask.fxml", "Task Editing", null);
+				tasksModel.setAll(taskDao.getTasks(projectModel));
 			}
 		});
 
@@ -98,7 +93,8 @@ public class SelectTaskController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				openNotes();
+				SelectNoteController controller = new SelectNoteController(selectedTask.get(), projectModel.getEntity());
+				util.showModalWindow(controller, "selectNotes.fxml", "Notes", openButton);
 			}
 		});
 
@@ -108,8 +104,8 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				TaskFxModel taskFxModel = new TaskFxModel(selectedTask.get());
 				DeleteEntityController deleteTaskController = new DeleteEntityController(DAOfactory.INSTANCE.getTaskDAO(), taskFxModel);
-				util.showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting");
-				tasksModel.setAll(getTasks());
+				util.showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting", null);
+				tasksModel.setAll(taskDao.getTasks(projectModel));
 			}
 		});
 
@@ -118,8 +114,8 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				NewTaskController newTaskController = new NewTaskController(projectModel.getEntity());
-				util.showModalWindow(newTaskController, "newTask.fxml", "New Task");
-				tasksModel.setAll(getTasks());
+				util.showModalWindow(newTaskController, "newTask.fxml", "New Task", null);
+				tasksModel.setAll(taskDao.getTasks(projectModel));
 			}
 		});
 
@@ -127,11 +123,6 @@ public class SelectTaskController {
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tasksTableView.getColumns().add(nameCol);
 		columnsVisibility.put("name", nameCol.visibleProperty());
-
-		// TableColumn<Task, Laboratory> labCol = new TableColumn<>("Laboratory");
-		// labCol.setCellValueFactory(new PropertyValueFactory<>("lab"));
-		// tasksTableView.getColumns().add(labCol);
-		// columnsVisibility.put("lab", labCol.visibleProperty());
 
 		tasksTableView.setItems(tasksModel);
 		tasksTableView.setEditable(true);
@@ -154,56 +145,9 @@ public class SelectTaskController {
 			@Override
 			public void handle(ActionEvent event) {
 				SelectProjectController controller = new SelectProjectController();
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("selectProject.fxml"));
-					loader.setController(controller);
-
-					Parent parentPane = loader.load();
-					Scene scene = new Scene(parentPane);
-
-					Stage stage = new Stage();
-					stage.setScene(scene);
-					stage.setTitle("Projects");
-					stage.show();
-					projectsButton.getScene().getWindow().hide();
-
-				} catch (IOException iOException) {
-					iOException.printStackTrace();
-				}
+				util.showModalWindow(controller, "selectProject.fxml", "Projects", projectsButton);
 			}
 		});
-	}
-
-	public void openNotes() {
-		SelectNoteController controller = new SelectNoteController(selectedTask.get(), projectModel.getEntity());
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("selectNotes.fxml"));
-			loader.setController(controller);
-
-			Parent parentPane = loader.load();
-			Scene scene = new Scene(parentPane);
-
-			Stage stage = new Stage();
-			stage.setScene(scene);
-			stage.setTitle("Notes");
-			stage.show();
-			openButton.getScene().getWindow().hide();
-
-		} catch (IOException iOException) {
-			iOException.printStackTrace();
-		}
-	}
-
-	private List<Task> getTasks() {
-		List<Task> tasks = new ArrayList<>();
-		List<Task> allTasks = taskDao.getAll();
-		for (Task task : allTasks) {
-			if (task.getProject().getEntityID() == projectModel.getProjectId()) {
-				tasks.add(task);
-			}
-		}
-		return tasks;
-
 	}
 
 }

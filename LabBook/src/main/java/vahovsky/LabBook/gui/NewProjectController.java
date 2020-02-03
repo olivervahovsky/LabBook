@@ -15,7 +15,7 @@ import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class NewProjectController {
 	
-	private Utilities util = new Utilities();
+	private Utilities util;
 
 	@FXML
 	private Button saveButton;
@@ -32,6 +32,7 @@ public class NewProjectController {
 	private UserFxModel userModel;
 
 	public NewProjectController(User user) {
+		util = new Utilities();
 		userModel = new UserFxModel(user);
 	}
 
@@ -47,7 +48,8 @@ public class NewProjectController {
 				LocalDate until = untilDatePicker.getValue();
 
 				if (name.isEmpty() || from == null || until == null) {
-					util.showWrongDataInputWindow("WrongDataInput.fxml", "Wrong data");
+					WrongDataInputController controller = new WrongDataInputController();
+					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
 				} else {
 					Project project = new Project(name, from, until, true);
 					project.setCreatedBy(userModel.getEntity());
