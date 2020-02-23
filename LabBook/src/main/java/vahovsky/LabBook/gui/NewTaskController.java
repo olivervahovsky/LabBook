@@ -93,7 +93,7 @@ public class NewTaskController {
 				if (name.isEmpty()) {
 					WrongDataInputController controller = new WrongDataInputController();
 					util.showModalWindow(controller, "WrongDataInput.fxml", "Wrong data", null);
-				} else if (!taskDao.isAvailable(name)) {
+				} else if (!taskDao.isNameAvailable(name)) {
 					WrongDataInputController controller = new WrongDataInputController();
 					util.showModalWindow(controller, "takenName.fxml", "Taken Name", null);
 				} else {

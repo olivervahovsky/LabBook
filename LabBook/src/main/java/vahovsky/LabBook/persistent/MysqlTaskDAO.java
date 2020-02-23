@@ -15,8 +15,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
+import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
-import vahovsky.LabBook.fxmodels.ProjectFxModel;
 
 public class MysqlTaskDAO implements TaskDAO {
 
@@ -30,11 +30,11 @@ public class MysqlTaskDAO implements TaskDAO {
 	 * Method that creates reference between task and items used in that task. For
 	 * this purpose, rows are inserted into the reference table task_has_item, as
 	 * there exists a two - way relationship between tasks and items (more items may
-	 * belong to a single task as well as single item may be used in numerous
-	 * tasks). If there are already rows referencing this task in the table
+	 * belong to a single task as well as single item may be used in multiple
+	 * tasks). If there are rows already referencing this task in the table
 	 * task_has_item , these are deleted before inserting new rows.
 	 * 
-	 * @param task Task, which reference to items we are updating in the table
+	 * @param task Task, whose reference to items we are updating in the table
 	 *             task_has_item
 	 */
 	private void insertItems(Task task) {
@@ -105,9 +105,7 @@ public class MysqlTaskDAO implements TaskDAO {
 
 			@Override
 			public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Item item = new Item();
-				item = DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
-				return item;
+				return DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
 			}
 		});
 		return items;
@@ -170,10 +168,10 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 	
 	@Override
-	public boolean isAvailable(String name) {
+	public boolean isNameAvailable(String name) {
 		List<Task> tasks = getAll();
-		for (Task t : tasks) {
-			if (t.getName().equals(name)) {
+		for (Task task : tasks) {
+			if (task.getName().equals(name)) {
 				return false;
 			}
 		}
@@ -181,11 +179,11 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 	
 	@Override
-	public List<Task> getTasks(ProjectFxModel projectModel) {
+	public List<Task> getTasks(Project project) {
 		List<Task> tasks = new ArrayList<>();
 		List<Task> allTasks = getAll();
 		for (Task task : allTasks) {
-			if (task.getProject().getEntityID() == projectModel.getProjectId()) {
+			if (task.getProject().getEntityID() == project.getEntityID()) {
 				tasks.add(task);
 			}
 		}

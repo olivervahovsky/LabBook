@@ -65,7 +65,7 @@ public class SelectTaskController {
 	@FXML
 	void initialize() {
 
-		tasksModel = FXCollections.observableArrayList(taskDao.getTasks(projectModel));
+		tasksModel = FXCollections.observableArrayList(taskDao.getTasks(projectModel.getEntity()));
 
 		tasksTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -85,7 +85,7 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				EditTaskController editTaskController = new EditTaskController(selectedTask.get());
 				util.showModalWindow(editTaskController, "editTask.fxml", "Task Editing", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel));
+				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
 			}
 		});
 
@@ -105,7 +105,7 @@ public class SelectTaskController {
 				TaskFxModel taskFxModel = new TaskFxModel(selectedTask.get());
 				DeleteEntityController deleteTaskController = new DeleteEntityController(DAOfactory.INSTANCE.getTaskDAO(), taskFxModel);
 				util.showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel));
+				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
 			}
 		});
 
@@ -115,7 +115,7 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				NewTaskController newTaskController = new NewTaskController(projectModel.getEntity());
 				util.showModalWindow(newTaskController, "newTask.fxml", "New Task", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel));
+				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
 			}
 		});
 

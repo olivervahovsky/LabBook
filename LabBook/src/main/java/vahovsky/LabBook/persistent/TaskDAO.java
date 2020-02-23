@@ -3,8 +3,8 @@ package vahovsky.LabBook.persistent;
 import java.util.List;
 
 import vahovsky.LabBook.entities.Item;
+import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
-import vahovsky.LabBook.fxmodels.ProjectFxModel;
 
 public interface TaskDAO extends EntityDAO {
 
@@ -43,19 +43,31 @@ public interface TaskDAO extends EntityDAO {
 	 *         (characterized by "id") in database
 	 */
 	Task getByID(Long id);
-	
+
 	/**
 	 * Method that gets items of the task according to the table task_has_item in
 	 * the database.
 	 * 
-	 * @param task The task, identified uniquely in the table task_has_item, to
+	 * @param task the task, identified uniquely in the table task_has_item, to
 	 *             which we are getting items (according to the reference to this
 	 *             task in the table task_has_item)
 	 */
 	List<Item> getItems(Task task);
-	
-	boolean isAvailable(String name);
-	
-	List<Task> getTasks(ProjectFxModel projectModel);
+
+	/**
+	 * Tests if provided name of the task is unique among all the tasks in database.
+	 * 
+	 * @param name title of the task to be tested
+	 * @return true, if provided name is unique, false if it is not
+	 */
+	boolean isNameAvailable(String name);
+
+	/**
+	 * Method, that returns all the tasks of the project specified.
+	 * 
+	 * @param project project, whose tasks we are interested in
+	 * @return list of all the tasks of the project specified
+	 */
+	List<Task> getTasks(Project project);
 
 }

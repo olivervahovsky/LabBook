@@ -56,6 +56,6 @@ public interface LaboratoryDAO extends EntityDAO {
 	 * @param name
 	 * @return true if the name is not in the database (hence it is available), false if it is
 	 */
-	boolean isNameAvailable(String name);
+	boolean isNameAvailable(String name); 
 
 }

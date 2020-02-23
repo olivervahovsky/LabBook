@@ -41,7 +41,12 @@ public interface ProjectDAO extends EntityDAO {
 	 *         (characterized by "id") in database
 	 */
 	Project getByID(Long id);
-	
+
+	/**
+	 * Method that returns projects of currently logged-in user/administrator
+	 * 
+	 * @return List of projects of currently logged-in user/administrator
+	 */
 	List<Project> getProjects();
 
 }

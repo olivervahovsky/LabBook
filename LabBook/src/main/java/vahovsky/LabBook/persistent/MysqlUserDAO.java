@@ -102,6 +102,7 @@ public class MysqlUserDAO implements UserDAO {
 		return jdbcTemplate.queryForObject(sql, new BeanPropertyRowMapper<>(User.class));
 	}
 
+	@Override
 	public List<Task> getTasks(Entity user) {
 		String sql = "SELECT id_task, project_id_project, name, active,"
 				+ " date_time_from, date_time_until, each_item_available, user_id_user, laboratory_id_laboratory "
@@ -137,9 +138,7 @@ public class MysqlUserDAO implements UserDAO {
 
 				@Override
 				public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-					Item item = new Item();
-					item = DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
-					return item;
+					return DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
 				}
 			});
 			task.setItems(items);
@@ -147,6 +146,7 @@ public class MysqlUserDAO implements UserDAO {
 		return tasks;
 	}
 
+	@Override
 	public List<Note> getNotes(User user) {
 		String sql = "SELECT id_note, text, timestamp, user_id_user, task_id_task, project_id_project, item_id_item "
 				+ "FROM note " + "WHERE user_id_user = " + user.getEntityID();

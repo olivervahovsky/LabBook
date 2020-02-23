@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
-import vahovsky.LabBook.fxmodels.TaskFxModel;
+import vahovsky.LabBook.entities.Task;
 
 public class MysqlNoteDAO implements NoteDAO {
 
@@ -118,12 +118,12 @@ public class MysqlNoteDAO implements NoteDAO {
 	}
 	
 	@Override
-	public List<Note> getNotes(TaskFxModel taskModel) {
+	public List<Note> getNotes(Task task) {
 		List<Note> notes = new ArrayList<>();
 		List<Note> allNotes = getAll();
 		for (Note note : allNotes) {
 			if (note.getTask() != null)
-				if (note.getTask().getEntityID().equals(taskModel.getTaskId())) {
+				if (note.getTask().equals(task)) {
 					notes.add(note);
 				}
 		}

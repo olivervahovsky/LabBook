@@ -27,7 +27,6 @@ import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.fxmodels.NoteFxModel;
-import vahovsky.LabBook.fxmodels.TaskFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.NoteDAO;
 
@@ -39,7 +38,7 @@ public class SelectNoteController {
 	private ObservableList<Note> notesModel;
 	private Map<String, BooleanProperty> columnsVisibility;
 	private ObjectProperty<Note> selectedNote;
-	private TaskFxModel taskModel;
+	private Task task;
 	private Project project;
 
 	@FXML
@@ -61,13 +60,13 @@ public class SelectNoteController {
 		noteDao = DAOfactory.INSTANCE.getNoteDAO();
 		columnsVisibility = new LinkedHashMap<>();
 		selectedNote = new SimpleObjectProperty<>();
-		taskModel = new TaskFxModel(task);
+		this.task = task;
 		this.project = project;
 	}
 
 	@FXML
 	void initialize() {
-		notesModel = FXCollections.observableArrayList(noteDao.getNotes(taskModel));
+		notesModel = FXCollections.observableArrayList(noteDao.getNotes(task));
 
 		notesTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -76,7 +75,7 @@ public class SelectNoteController {
 					if (mouseEvent.getClickCount() == 2) {
 						EditNoteController editNoteController = new EditNoteController(selectedNote.get());
 						util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
-						notesModel.setAll(noteDao.getNotes(taskModel));
+						notesModel.setAll(noteDao.getNotes(task));
 					}
 				}
 			}
@@ -88,7 +87,7 @@ public class SelectNoteController {
 			public void handle(ActionEvent event) {
 				EditNoteController editNoteController = new EditNoteController(selectedNote.get());
 				util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
-				notesModel.setAll(noteDao.getNotes(taskModel));
+				notesModel.setAll(noteDao.getNotes(task));
 			}
 		});
 
@@ -100,7 +99,7 @@ public class SelectNoteController {
 				DeleteEntityController deleteNoteController = new DeleteEntityController(
 						DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
 				util.showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting", null);
-				notesModel.setAll(noteDao.getNotes(taskModel));
+				notesModel.setAll(noteDao.getNotes(task));
 			}
 		});
 
@@ -108,9 +107,9 @@ public class SelectNoteController {
 
 			@Override
 			public void handle(ActionEvent event) {
-				NewNoteController newNoteController = new NewNoteController(taskModel.getEntity());
+				NewNoteController newNoteController = new NewNoteController(task);
 				util.showModalWindow(newNoteController, "newNote.fxml", "New Note", null);
-				notesModel.setAll(noteDao.getNotes(taskModel));
+				notesModel.setAll(noteDao.getNotes(task));
 			}
 		});
 

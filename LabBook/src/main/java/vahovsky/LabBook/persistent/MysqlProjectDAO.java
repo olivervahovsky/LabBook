@@ -113,6 +113,5 @@ public class MysqlProjectDAO implements ProjectDAO {
 			}
 		}
 		return projects;
-
 	}
 }
