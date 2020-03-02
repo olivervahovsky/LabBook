@@ -2,6 +2,7 @@ package vahovsky.LabBook.test.business;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -28,9 +29,16 @@ import vahovsky.LabBook.persistent.UserDAO;
 
 public class ExportUserDataToExcelManagerTest {
 
+	/**
+	 * Method tests if method <code>exportUserData(User user)</code> in class
+	 * <code>ExportUserDataToExcelManager</code> works properly. Test user, his
+	 * project and items, laboratory, tasks and note of the project are created.
+	 * Data are exported into excel file and consequently number of sheets and rows
+	 * in sheets are compared to expected values.
+	 */
 	@Test
 	void excelTest() {
-		
+
 		User testUser = new User();
 		testUser.setName("tester");
 		testUser.setPassword("1234");
@@ -84,7 +92,7 @@ public class ExportUserDataToExcelManagerTest {
 		task.setItems(Arrays.asList(testItem, testItem2, testItem3));
 		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
 		taskDAO.addTask(task);
-		
+
 		Task task1 = new Task();
 		task1.setProject(project);
 		task1.setName("testTask");
@@ -107,13 +115,14 @@ public class ExportUserDataToExcelManagerTest {
 			ExportUserDataToExcelManager.exportUserData(testUser);
 
 			// https://stackoverflow.com/questions/6896435/count-number-of-worksheets-in-excel-file
+			File excelWorkbook = new File("userData.xlsx");
 			XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream("userData.xlsx"));
 			assertTrue(workbook.getNumberOfSheets() == 3);
 			assertTrue(workbook.getSheetAt(0).getPhysicalNumberOfRows() == 2);
 			assertTrue(workbook.getSheetAt(1).getPhysicalNumberOfRows() == 3);
 			assertTrue(workbook.getSheetAt(2).getPhysicalNumberOfRows() == 2);
-			
 			workbook.close();
+			excelWorkbook.delete();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

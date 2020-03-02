@@ -41,10 +41,10 @@ public class FrontPageController {
 					String login = loginTextField.getText();
 					String password = passwordTextField.getText();
 
-					if (UserIdentificationManager.setUser(login, password) == 1) {
+					if (UserIdentificationManager.setUserOrAdmin(login, password) == 1) {
 						SelectProjectController controller = new SelectProjectController();
 						util.showModalWindow(controller, "selectProject.fxml", "Projects", signInButton);
-					} else if (UserIdentificationManager.setUser(login, password) == 2) {
+					} else if (UserIdentificationManager.setUserOrAdmin(login, password) == 2) {
 						AdminPageController controller = new AdminPageController();
 						util.showModalWindow(controller, "editDataAdmin.fxml", "Admin Page", signInButton);
 					} else {
@@ -62,10 +62,10 @@ public class FrontPageController {
 					String login = loginTextField.getText();
 					String password = passwordTextField.getText();
 
-					if (UserIdentificationManager.setUser(login, password) == 1) {
+					if (UserIdentificationManager.setUserOrAdmin(login, password) == 1) {
 						SelectProjectController controller = new SelectProjectController();
 						util.showModalWindow(controller, "selectProject.fxml", "Projects", signInButton);
-					} else if (UserIdentificationManager.setUser(login, password) == 2) {
+					} else if (UserIdentificationManager.setUserOrAdmin(login, password) == 2) {
 						AdminPageController controller = new AdminPageController();
 						util.showModalWindow(controller, "editDataAdmin.fxml", "Admin Page", signInButton);
 					} else {
@@ -101,10 +101,10 @@ public class FrontPageController {
 				String login = loginTextField.getText();
 				String password = passwordTextField.getText();
 
-				if (UserIdentificationManager.setUser(login, password) == 1) {
+				if (UserIdentificationManager.setUserOrAdmin(login, password) == 1) {
 					SelectProjectController controller = new SelectProjectController();
 					util.showModalWindow(controller, "selectProject.fxml", "Projects", signInButton);
-				} else if (UserIdentificationManager.setUser(login, password) == 2) {
+				} else if (UserIdentificationManager.setUserOrAdmin(login, password) == 2) {
 					AdminPageController controller = new AdminPageController();
 					util.showModalWindow(controller, "editDataAdmin.fxml", "Admin Page", signInButton);
 				} else {

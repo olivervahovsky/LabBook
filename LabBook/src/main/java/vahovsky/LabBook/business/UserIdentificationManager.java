@@ -70,10 +70,10 @@ public class UserIdentificationManager {
 	 * 
 	 * @param userName username typed during the login.
 	 * @param password password typed during the login.
-	 * @return integer indicating if the login credentials belong to a user, and
-	 *         admin or neither (wrong username or password)
+	 * @return integer indicating if the login credentials belong to a user, admin
+	 *         or neither of the two (wrong username or password)
 	 */
-	public static int setUser(String userName, String password) {
+	public static int setUserOrAdmin(String userName, String password) {
 		PasswordManager pm = new PasswordManager();
 
 		List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
