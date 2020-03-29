@@ -7,15 +7,14 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import vahovsky.LabBook.entities.Admin;
-import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.persistent.AdminDAO;
 import vahovsky.LabBook.persistent.DAOfactory;
 
 class MysqlAdminDAOTest {
 
 	/**
-	 * Method that tests method <vode>getAll()</code> in class
-	 * <code>MysqlAdminDAO</code>. Tests if the list of admin returned from the
+	 * Method that tests method <code>getAll()</code> in class
+	 * <code>MysqlAdminDAO</code>. Tests if the list of admins returned from the
 	 * database have size > 0.
 	 */
 	@Test
@@ -71,10 +70,11 @@ class MysqlAdminDAOTest {
 
 	/**
 	 * Method that tests method <code>saveAdmin</code> in class
-	 * <code>MysqlAdminDAO</code>. Test admin is made and saved in to database.
+	 * <code>MysqlAdminDAO</code>. Test admin is made and saved into the database.
 	 * First test runs to assert that he was correctly added into the database. Next
 	 * some of his parameters are changed and saved. Then we look for the test admin
 	 * in the database (through his ID) and check, if his parameters really changed.
+	 * In the end it is removed from the database.
 	 */
 	@Test
 	void testSave() {
