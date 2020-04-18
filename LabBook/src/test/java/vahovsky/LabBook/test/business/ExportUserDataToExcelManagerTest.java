@@ -37,7 +37,7 @@ public class ExportUserDataToExcelManagerTest {
 	 * in sheets are compared to expected values.
 	 */
 	@Test
-	void excelTest() {
+	void testExcel() {
 
 		User testUser = new User();
 		testUser.setName("tester");

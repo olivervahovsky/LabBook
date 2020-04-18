@@ -20,7 +20,7 @@ public class PasswordManagerTest {
 	 * class <code>PasswordManager</code> works properly. Various inputs are tested.
 	 */
 	@Test
-	void isCorrectPasswordTest() {
+	void testIsCorrectPassword() {
 
 		PasswordManager manager = new PasswordManager();
 

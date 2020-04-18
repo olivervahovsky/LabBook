@@ -20,7 +20,7 @@ public class MysqlItemDAOTest {
 	/**
 	 * Method that tests method <code>getAll()</code> in class
 	 * <code>MysqlItemDAO</code>. Tests if the list of items returned from the
-	 * database have size > 0.
+	 * database has size > 0.
 	 */
 	@Test
 	void testGetAll() {
@@ -39,7 +39,7 @@ public class MysqlItemDAOTest {
 	 * is removed from the database and it is tested if the removal was successful.
 	 */
 	@Test
-	void addDeleteTest() {
+	void testAddDelete() {
 
 		Laboratory lab = new Laboratory();
 		lab.setName("test_lab");
@@ -91,7 +91,7 @@ public class MysqlItemDAOTest {
 	 * <code>MysqlItemDAO</code>. Test item is made and saved into the database.
 	 * First test runs to assert that it was correctly added into the database. Next
 	 * some of its parameters are changed and saved. Then we look for the test item
-	 * in the database (through his ID) and check, if his parameters really changed.
+	 * in the database (through his ID) and check, if its parameters really changed.
 	 * In the end it is removed from the database.
 	 */
 	@Test
@@ -143,7 +143,7 @@ public class MysqlItemDAOTest {
 
 	/**
 	 * Method that tests method <code>isNameAvailable(String name)</code> in class
-	 * <code>MysqlItemDAO</code>. First, availability of the future test items's
+	 * <code>MysqlItemDAO</code>. First, availability of the future test item's
 	 * name is tested. Then test item with that name is added into the database.
 	 * Next, availability of that name is tested again, this time negative result is
 	 * expected. Finally, test item is removed from the database.

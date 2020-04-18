@@ -22,7 +22,7 @@ public class UserIdentificationManagerTest {
 	 * user was properly set. The same then goes for the admin.
 	 */
 	@Test
-	void setUserOrAdminTest() {
+	void testSetUserOrAdmin() {
 		User testUser = new User();
 		testUser.setName("tester");
 		testUser.setPassword("1234");
@@ -60,7 +60,7 @@ public class UserIdentificationManagerTest {
 	 * <code>UserIdentificationManager</code>.
 	 */
 	@Test
-	void logOutTest() {
+	void testLogOut() {
 		User testUser = new User();
 		testUser.setName("tester");
 		testUser.setPassword("1234");
@@ -88,7 +88,7 @@ public class UserIdentificationManagerTest {
 	 * compared to him.
 	 */
 	@Test
-	void getUserTest() {
+	void testGetUser() {
 		User testUser = new User();
 		testUser.setName("tester");
 		testUser.setPassword("1234");
@@ -111,7 +111,7 @@ public class UserIdentificationManagerTest {
 	 * compared to him.
 	 */
 	@Test
-	void getAdminTest() {
+	void testGetAdmin() {
 		Admin testAdmin = new Admin();
 		testAdmin.setName("tester");
 		testAdmin.setPassword("1234");

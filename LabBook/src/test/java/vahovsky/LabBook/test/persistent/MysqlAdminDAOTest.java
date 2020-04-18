@@ -15,7 +15,7 @@ class MysqlAdminDAOTest {
 	/**
 	 * Method that tests method <code>getAll()</code> in class
 	 * <code>MysqlAdminDAO</code>. Tests if the list of admins returned from the
-	 * database have size > 0.
+	 * database has size > 0.
 	 */
 	@Test
 	void testGetAll() {
@@ -33,7 +33,7 @@ class MysqlAdminDAOTest {
 	 * from the database and it is tested if the removal was successful.
 	 */
 	@Test
-	void addDeleteTest() {
+	void testAddDelete() {
 		Admin testAdmin = new Admin();
 		testAdmin.setName("tester");
 		testAdmin.setPassword("1234");
