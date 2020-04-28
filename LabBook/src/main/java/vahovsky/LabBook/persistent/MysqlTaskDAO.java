@@ -15,7 +15,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Item;
-import vahovsky.LabBook.entities.Project;
+import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Task;
 
 public class MysqlTaskDAO implements TaskDAO {
@@ -150,7 +150,13 @@ public class MysqlTaskDAO implements TaskDAO {
 
 	@Override
 	public void deleteEntity(Entity task) {
+		// First delete all the notes belonging to the task, as they cannot be
+		// accessed after task deletion
+		jdbcTemplate.update("DELETE FROM note WHERE task_id_task = ?", task.getEntityID());
+		// Next delete all the rows of the table task_has_item corresponding to the
+		// task to be deleted
 		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task= ?", task.getEntityID());
+		// Finally delete the task itself
 		String sql = "DELETE FROM task WHERE id_task = " + task.getEntityID();
 		jdbcTemplate.update(sql);
 	}
@@ -166,7 +172,7 @@ public class MysqlTaskDAO implements TaskDAO {
 		task.setItems(items);
 		return task;
 	}
-	
+
 	@Override
 	public boolean isNameAvailable(String name) {
 		List<Task> tasks = getAll();
@@ -179,16 +185,17 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 	
 	@Override
-	public List<Task> getTasks(Project project) {
-		List<Task> tasks = new ArrayList<>();
-		List<Task> allTasks = getAll();
-		for (Task task : allTasks) {
-			if (task.getProject().getEntityID() == project.getEntityID()) {
-				tasks.add(task);
+	public List<Note> getNotes(Task task) {
+		List<Note> notes = new ArrayList<>();
+		List<Note> allNotes = DAOfactory.INSTANCE.getNoteDAO().getAll();
+		for (Note note : allNotes) {
+			if (note.getTask() != null) {
+				if (note.getTask().getEntityID() == task.getEntityID()) {
+					notes.add(note);
+				}
 			}
 		}
-		return tasks;
-
+		return notes;
 	}
 
 }

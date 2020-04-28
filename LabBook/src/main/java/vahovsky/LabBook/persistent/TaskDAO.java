@@ -3,7 +3,7 @@ package vahovsky.LabBook.persistent;
 import java.util.List;
 
 import vahovsky.LabBook.entities.Item;
-import vahovsky.LabBook.entities.Project;
+import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Task;
 
 public interface TaskDAO extends EntityDAO {
@@ -61,13 +61,13 @@ public interface TaskDAO extends EntityDAO {
 	 * @return true, if provided name is unique, false if it is not
 	 */
 	boolean isNameAvailable(String name);
-
+	
 	/**
-	 * Method, that returns all the tasks of the project specified.
+	 * Method returning list of notes belonging to a task.
 	 * 
-	 * @param project project, whose tasks we are interested in
-	 * @return list of all the tasks of the project specified
+	 * @param task Task, notes belonging to which we want to see
+	 * @return List of task's notes
 	 */
-	List<Task> getTasks(Project project);
+	List<Note> getNotes(Task task);
 
 }

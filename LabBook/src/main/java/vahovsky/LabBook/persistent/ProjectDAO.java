@@ -3,6 +3,7 @@ package vahovsky.LabBook.persistent;
 import java.util.List;
 
 import vahovsky.LabBook.entities.Project;
+import vahovsky.LabBook.entities.Task;
 
 public interface ProjectDAO extends EntityDAO {
 
@@ -48,5 +49,13 @@ public interface ProjectDAO extends EntityDAO {
 	 * @return List of projects of currently logged-in user/administrator
 	 */
 	List<Project> getProjects();
+
+	/**
+	 * Method, that returns all the tasks of the project specified.
+	 * 
+	 * @param project, whose tasks we want to have returned
+	 * @return list of all the tasks of the project specified
+	 */
+	List<Task> getTasks(Project project);
 
 }

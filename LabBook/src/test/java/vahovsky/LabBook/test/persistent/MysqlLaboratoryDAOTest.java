@@ -90,7 +90,7 @@ public class MysqlLaboratoryDAOTest {
 	 * in class <code>MysqlLaboratoryDAO</code>. Test laboratory is made and saved
 	 * into the database. First test runs to assert that it was correctly added into
 	 * the database. Next some of its parameters are changed and saved. Then we look
-	 * for the test laboratory in the database (through his ID) and check, if its
+	 * for the test laboratory in the database (through its ID) and check, if its
 	 * parameters really changed. In the end it is removed from the database.
 	 */
 	@Test
@@ -152,14 +152,7 @@ public class MysqlLaboratoryDAOTest {
 		testItem1.setLaboratory(testLaboratory);
 		itemDAO.addItem(testItem1);
 
-		List<Item> items = laboratoryDAO.getItemsOfLaboratory(testLaboratory);
-		int numberOfItems = 0;
-		for (Item item : items) {
-			if (item.getLaboratory().getEntityID().equals(testLaboratory.getEntityID())) {
-				numberOfItems++;
-			}
-		}
-		assertEquals(2, numberOfItems);
+		assertEquals(2, laboratoryDAO.getItemsOfLaboratory(testLaboratory).size());
 
 		itemDAO.deleteEntity(testItem);
 		itemDAO.deleteEntity(testItem1);

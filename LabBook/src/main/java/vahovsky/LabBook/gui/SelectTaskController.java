@@ -24,13 +24,13 @@ import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.fxmodels.ProjectFxModel;
 import vahovsky.LabBook.fxmodels.TaskFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
-import vahovsky.LabBook.persistent.TaskDAO;
+import vahovsky.LabBook.persistent.ProjectDAO;
 
 public class SelectTaskController {
 	
 	private Utilities util;
 
-	private TaskDAO taskDao;
+	private ProjectDAO projectDao;
 	private ObservableList<Task> tasksModel;
 	private Map<String, BooleanProperty> columnsVisibility;
 	private ObjectProperty<Task> selectedTask;
@@ -56,7 +56,7 @@ public class SelectTaskController {
 
 	public SelectTaskController(Project project) {
 		util = new Utilities();
-		taskDao = DAOfactory.INSTANCE.getTaskDAO();
+		projectDao = DAOfactory.INSTANCE.getProjectDAO();
 		columnsVisibility = new LinkedHashMap<>();
 		selectedTask = new SimpleObjectProperty<>();
 		projectModel = new ProjectFxModel(project);
@@ -65,7 +65,7 @@ public class SelectTaskController {
 	@FXML
 	void initialize() {
 
-		tasksModel = FXCollections.observableArrayList(taskDao.getTasks(projectModel.getEntity()));
+		tasksModel = FXCollections.observableArrayList(projectDao.getTasks(projectModel.getEntity()));
 
 		tasksTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -85,7 +85,7 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				EditTaskController editTaskController = new EditTaskController(selectedTask.get());
 				util.showModalWindow(editTaskController, "editTask.fxml", "Task Editing", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
+				tasksModel.setAll(projectDao.getTasks(projectModel.getEntity()));
 			}
 		});
 
@@ -105,7 +105,7 @@ public class SelectTaskController {
 				TaskFxModel taskFxModel = new TaskFxModel(selectedTask.get());
 				DeleteEntityController deleteTaskController = new DeleteEntityController(DAOfactory.INSTANCE.getTaskDAO(), taskFxModel);
 				util.showModalWindow(deleteTaskController, "deleteTask.fxml", "Task Deleting", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
+				tasksModel.setAll(projectDao.getTasks(projectModel.getEntity()));
 			}
 		});
 
@@ -115,7 +115,7 @@ public class SelectTaskController {
 			public void handle(ActionEvent event) {
 				NewTaskController newTaskController = new NewTaskController(projectModel.getEntity());
 				util.showModalWindow(newTaskController, "newTask.fxml", "New Task", null);
-				tasksModel.setAll(taskDao.getTasks(projectModel.getEntity()));
+				tasksModel.setAll(projectDao.getTasks(projectModel.getEntity()));
 			}
 		});
 

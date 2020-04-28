@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -12,12 +13,14 @@ import org.junit.jupiter.api.Test;
 
 import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
+import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ItemDAO;
 import vahovsky.LabBook.persistent.LaboratoryDAO;
+import vahovsky.LabBook.persistent.NoteDAO;
 import vahovsky.LabBook.persistent.ProjectDAO;
 import vahovsky.LabBook.persistent.TaskDAO;
 import vahovsky.LabBook.persistent.UserDAO;
@@ -299,6 +302,56 @@ public class MysqlTaskDAOTest {
 		itemDAO.deleteEntity(testItem2);
 		itemDAO.deleteEntity(testItem3);
 		laboratoryDAO.deleteEntity(testLaboratory);
+	}
+	
+	@Test
+	void testGetNotes() {
+		User testUser = new User();
+		testUser.setName("tester");
+		testUser.setPassword("1234");
+		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
+		userDAO.addUser(testUser);
+		
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setEachItemAvailable(true);
+		testProject.setCreatedBy(testUser);
+		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
+		projectDAO.addProject(testProject);
+		
+		Task testTask = new Task();
+		testTask.setProject(testProject);
+		testTask.setName("testTask");
+		testTask.setActive(false);
+		testTask.setEachItemAvailable(false);
+		testTask.setCreatedBy(testUser);
+		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
+		taskDAO.addTask(testTask);
+		
+		
+		
+		assertEquals(0, taskDAO.getNotes(testTask).size());
+		
+		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
+		Note testNote1 = new Note();
+		testNote1.setText("testovaci text 1");
+		testNote1.setTimestamp(LocalDateTime.now());
+		testNote1.setTask(testTask);
+		testNote1.setAuthor(testUser);
+		noteDAO.addNote(testNote1);
+		
+		Note testNote2 = new Note();
+		testNote2.setText("testovaci text 2");
+		testNote2.setTimestamp(LocalDateTime.now());
+		testNote2.setTask(testTask);
+		testNote2.setAuthor(testUser);
+		noteDAO.addNote(testNote2);
+		
+		assertEquals(2, taskDAO.getNotes(testTask).size());
+	
+		userDAO.deleteEntity(testUser);
+		assertEquals(0, taskDAO.getNotes(testTask).size());
 	}
 
 }

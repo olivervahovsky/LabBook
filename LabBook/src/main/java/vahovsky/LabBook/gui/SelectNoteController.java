@@ -28,13 +28,13 @@ import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.fxmodels.NoteFxModel;
 import vahovsky.LabBook.persistent.DAOfactory;
-import vahovsky.LabBook.persistent.NoteDAO;
+import vahovsky.LabBook.persistent.TaskDAO;
 
 public class SelectNoteController {
 
 	private Utilities util = new Utilities();
 
-	private NoteDAO noteDao;
+	private TaskDAO taskDao;
 	private ObservableList<Note> notesModel;
 	private Map<String, BooleanProperty> columnsVisibility;
 	private ObjectProperty<Note> selectedNote;
@@ -57,7 +57,7 @@ public class SelectNoteController {
 	private TableView<Note> notesTableView;
 
 	public SelectNoteController(Task task, Project project) {
-		noteDao = DAOfactory.INSTANCE.getNoteDAO();
+		taskDao = DAOfactory.INSTANCE.getTaskDAO();
 		columnsVisibility = new LinkedHashMap<>();
 		selectedNote = new SimpleObjectProperty<>();
 		this.task = task;
@@ -66,7 +66,7 @@ public class SelectNoteController {
 
 	@FXML
 	void initialize() {
-		notesModel = FXCollections.observableArrayList(noteDao.getNotes(task));
+		notesModel = FXCollections.observableArrayList(taskDao.getNotes(task));
 
 		notesTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
@@ -75,7 +75,7 @@ public class SelectNoteController {
 					if (mouseEvent.getClickCount() == 2) {
 						EditNoteController editNoteController = new EditNoteController(selectedNote.get());
 						util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
-						notesModel.setAll(noteDao.getNotes(task));
+						notesModel.setAll(taskDao.getNotes(task));
 					}
 				}
 			}
@@ -87,7 +87,7 @@ public class SelectNoteController {
 			public void handle(ActionEvent event) {
 				EditNoteController editNoteController = new EditNoteController(selectedNote.get());
 				util.showModalWindow(editNoteController, "editNote.fxml", "Note Editing", null);
-				notesModel.setAll(noteDao.getNotes(task));
+				notesModel.setAll(taskDao.getNotes(task));
 			}
 		});
 
@@ -99,7 +99,7 @@ public class SelectNoteController {
 				DeleteEntityController deleteNoteController = new DeleteEntityController(
 						DAOfactory.INSTANCE.getNoteDAO(), noteFxModel);
 				util.showModalWindow(deleteNoteController, "deleteNote.fxml", "Note Deleting", null);
-				notesModel.setAll(noteDao.getNotes(task));
+				notesModel.setAll(taskDao.getNotes(task));
 			}
 		});
 
@@ -109,7 +109,7 @@ public class SelectNoteController {
 			public void handle(ActionEvent event) {
 				NewNoteController newNoteController = new NewNoteController(task);
 				util.showModalWindow(newNoteController, "newNote.fxml", "New Note", null);
-				notesModel.setAll(noteDao.getNotes(task));
+				notesModel.setAll(taskDao.getNotes(task));
 			}
 		});
 

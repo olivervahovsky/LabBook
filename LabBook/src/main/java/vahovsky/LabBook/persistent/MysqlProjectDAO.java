@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import vahovsky.LabBook.business.UserIdentificationManager;
 import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Project;
+import vahovsky.LabBook.entities.Task;
 
 public class MysqlProjectDAO implements ProjectDAO {
 
@@ -113,5 +114,17 @@ public class MysqlProjectDAO implements ProjectDAO {
 			}
 		}
 		return projects;
+	}
+	
+	@Override
+	public List<Task> getTasks(Project project) {
+		List<Task> tasks = new ArrayList<>();
+		List<Task> allTasks = DAOfactory.INSTANCE.getTaskDAO().getAll();
+		for (Task task : allTasks) {
+			if (task.getProject().getEntityID() == project.getEntityID()) {
+				tasks.add(task);
+			}
+		}
+		return tasks;
 	}
 }
