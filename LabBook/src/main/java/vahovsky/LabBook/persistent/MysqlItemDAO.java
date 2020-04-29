@@ -39,6 +39,18 @@ public class MysqlItemDAO implements ItemDAO {
 			values.put("laboratory_id_laboratory", null);
 		item.setItemID(insert.executeAndReturnKey(values).longValue());
 	}
+	
+	@Override
+	public void deleteEntity(Entity item) {
+		// First delete all the notes belonging to the item, as they cannot be accessed
+		// after item deletion
+		jdbcTemplate.update("DELETE FROM note WHERE item_id_item = ?", item.getEntityID());
+		// Next delete also all the rows of the table task_has_item corresponding to the
+		// item to be deleted
+		jdbcTemplate.update("DELETE FROM task_has_item WHERE item_id_item = ?", item.getEntityID());
+		// Finally, delete the item itself
+		jdbcTemplate.update("DELETE FROM item WHERE id_item = " + item.getEntityID());
+	}
 
 	@Override
 	public void saveItem(Item item) {
@@ -76,18 +88,6 @@ public class MysqlItemDAO implements ItemDAO {
 				return item;
 			}
 		});
-	}
-
-	@Override
-	public void deleteEntity(Entity item) {
-		// First delete all the notes belonging to the item, as they cannot be accessed
-		// after item deletion
-		jdbcTemplate.update("DELETE FROM note WHERE item_id_item = ?", item.getEntityID());
-		// Next delete also all the rows of the table task_has_item corresponding to the
-		// item to be deleted
-		jdbcTemplate.update("DELETE FROM task_has_item WHERE item_id_item = ?", item.getEntityID());
-		// Finally, delete the item itself
-		jdbcTemplate.update("DELETE FROM item WHERE id_item = " + item.getEntityID());
 	}
 
 	@Override

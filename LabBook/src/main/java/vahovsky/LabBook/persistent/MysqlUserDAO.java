@@ -41,6 +41,30 @@ public class MysqlUserDAO implements UserDAO {
 
 		user.setUserID(insert.executeAndReturnKey(values).longValue());
 	}
+	
+	@Override
+	public void deleteEntity(Entity user) {
+		// First delete all the notes belonging to the user, as they cannot be
+		// accessed after user deletion
+		jdbcTemplate.update("DELETE FROM note WHERE user_id_user = ?", user.getEntityID());
+		// Next delete all the tasks belonging to the user, as they cannot be
+		// accessed after user deletion. Here, deleting rows from the tasks table is
+		// not enough, as tasks are foreign keys elsewhere, hence we delete tasks by
+		// calling the method deleteTask which updates all the references to these
+		// tasks in other tables of the database.
+		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasks(user);
+		if (tasks != null) {
+			for (Task task : tasks) {
+				DAOfactory.INSTANCE.getTaskDAO().deleteEntity(task);
+			}
+		}
+		// Next delete all the projects belonging to the user, as they cannot be
+		// accessed after user deletion.
+		jdbcTemplate.update("DELETE FROM project WHERE user_id_user = ?", user.getEntityID());
+		// Finally delete the user himself
+		String sql = "DELETE FROM user WHERE id_user = " + user.getEntityID();
+		jdbcTemplate.update(sql);
+	}
 
 	@Override
 	public List<User> getAll() {
@@ -69,30 +93,6 @@ public class MysqlUserDAO implements UserDAO {
 			String sql = "UPDATE user SET " + "name = ?, password = ?, email = ? " + "WHERE id_user = ?";
 			jdbcTemplate.update(sql, user.getName(), user.getPassword(), user.getEmail(), user.getEntityID());
 		}
-	}
-
-	@Override
-	public void deleteEntity(Entity user) {
-		// First delete all the notes belonging to the user, as they cannot be
-		// accessed after user deletion
-		jdbcTemplate.update("DELETE FROM note WHERE user_id_user = ?", user.getEntityID());
-		// Next delete all the tasks belonging to the user, as they cannot be
-		// accessed after user deletion. Here, deleting rows from the tasks table is
-		// not enough, as tasks are foreign keys elsewhere, hence we delete tasks by
-		// calling the method deleteTask which updates all the references to these
-		// tasks in other tables of the database.
-		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasks(user);
-		if (tasks != null) {
-			for (Task task : tasks) {
-				DAOfactory.INSTANCE.getTaskDAO().deleteEntity(task);
-			}
-		}
-		// Next delete all the projects belonging to the user, as they cannot be
-		// accessed after user deletion.
-		jdbcTemplate.update("DELETE FROM project WHERE user_id_user = ?", user.getEntityID());
-		// Finally delete the user himself
-		String sql = "DELETE FROM user WHERE id_user = " + user.getEntityID();
-		jdbcTemplate.update(sql);
 	}
 
 	@Override

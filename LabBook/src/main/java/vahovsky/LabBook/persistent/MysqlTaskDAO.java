@@ -76,6 +76,19 @@ public class MysqlTaskDAO implements TaskDAO {
 		task.setTaskID(insert.executeAndReturnKey(values).longValue());
 		insertItems(task);
 	}
+	
+	@Override
+	public void deleteEntity(Entity task) {
+		// First delete all the notes belonging to the task, as they cannot be
+		// accessed after task deletion
+		jdbcTemplate.update("DELETE FROM note WHERE task_id_task = ?", task.getEntityID());
+		// Next delete all the rows of the table task_has_item corresponding to the
+		// task to be deleted
+		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task= ?", task.getEntityID());
+		// Finally delete the task itself
+		String sql = "DELETE FROM task WHERE id_task = " + task.getEntityID();
+		jdbcTemplate.update(sql);
+	}
 
 	@Override
 	public void saveTask(Task task) {
@@ -146,19 +159,6 @@ public class MysqlTaskDAO implements TaskDAO {
 			task.setItems(items);
 		}
 		return tasks;
-	}
-
-	@Override
-	public void deleteEntity(Entity task) {
-		// First delete all the notes belonging to the task, as they cannot be
-		// accessed after task deletion
-		jdbcTemplate.update("DELETE FROM note WHERE task_id_task = ?", task.getEntityID());
-		// Next delete all the rows of the table task_has_item corresponding to the
-		// task to be deleted
-		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task= ?", task.getEntityID());
-		// Finally delete the task itself
-		String sql = "DELETE FROM task WHERE id_task = " + task.getEntityID();
-		jdbcTemplate.update(sql);
 	}
 
 	@Override

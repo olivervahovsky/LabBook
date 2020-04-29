@@ -43,6 +43,19 @@ public class MysqlProjectDAO implements ProjectDAO {
 
 		project.setProjectID(insert.executeAndReturnKey(values).longValue());
 	}
+	
+	@Override
+	public void deleteEntity(Entity project) {
+		// First delete all the notes belonging to the project, as they cannot be
+		// accessed after project deletion
+		jdbcTemplate.update("DELETE FROM note WHERE project_id_project = ?", project.getEntityID());
+		// Next delete all the tasks belonging to the project, as they cannot be
+		// accessed after project deletion
+		jdbcTemplate.update("DELETE FROM task WHERE project_id_project = ?", project.getEntityID());
+		// Finally delete the project itself
+		String sql = "DELETE FROM project WHERE id_project = " + project.getEntityID();
+		jdbcTemplate.update(sql);
+	}
 
 	@Override
 	public List<Project> getAll() {
@@ -82,19 +95,6 @@ public class MysqlProjectDAO implements ProjectDAO {
 					project.getDateUntil(), project.isEachItemAvailable(), project.getCreatedBy().getEntityID(),
 					project.getEntityID());
 		}
-	}
-
-	@Override
-	public void deleteEntity(Entity project) {
-		// First delete all the notes belonging to the project, as they cannot be
-		// accessed after project deletion
-		jdbcTemplate.update("DELETE FROM note WHERE project_id_project = ?", project.getEntityID());
-		// Next delete all the tasks belonging to the project, as they cannot be
-		// accessed after project deletion
-		jdbcTemplate.update("DELETE FROM task WHERE project_id_project = ?", project.getEntityID());
-		// Finally delete the project itself
-		String sql = "DELETE FROM project WHERE id_project = " + project.getEntityID();
-		jdbcTemplate.update(sql);
 	}
 
 	@Override

@@ -37,6 +37,20 @@ public class MysqlLaboratoryDAO implements LaboratoryDAO {
 
 		laboratory.setLaboratoryID(insert.executeAndReturnKey(values).longValue());
 	}
+	
+	@Override
+	public void deleteEntity(Entity laboratory) {
+		// First delete the reference of the laboratory to be removed from those items,
+		// which formerly belonged to this laboratory
+		String sql = "UPDATE item SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
+		jdbcTemplate.update(sql, null, laboratory.getEntityID());
+		// Also delete the reference of the laboratory to be removed from those tasks,
+		// which formerly belonged to this laboratory
+		sql = "UPDATE task SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
+		jdbcTemplate.update(sql, null, laboratory.getEntityID());
+		// Finally, delete the laboratory itself
+		jdbcTemplate.update("DELETE FROM laboratory WHERE id_laboratory = " + laboratory.getEntityID());
+	}
 
 	@Override
 	public List<Laboratory> getAll() {
@@ -64,20 +78,6 @@ public class MysqlLaboratoryDAO implements LaboratoryDAO {
 			String sql = "UPDATE laboratory SET " + "name = ?, location = ? " + "WHERE id_laboratory = ?";
 			jdbcTemplate.update(sql, laboratory.getName(), laboratory.getLocation(), laboratory.getEntityID());
 		}
-	}
-
-	@Override
-	public void deleteEntity(Entity laboratory) {
-		// First delete the reference of the laboratory to be removed from those items,
-		// which formerly belonged to this laboratory
-		String sql = "UPDATE item SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
-		jdbcTemplate.update(sql, null, laboratory.getEntityID());
-		// Also delete the reference of the laboratory to be removed from those tasks,
-		// which formerly belonged to this laboratory
-		sql = "UPDATE task SET " + "laboratory_id_laboratory = ? " + "WHERE laboratory_id_laboratory = ?";
-		jdbcTemplate.update(sql, null, laboratory.getEntityID());
-		// Finally, delete the laboratory itself
-		jdbcTemplate.update("DELETE FROM laboratory WHERE id_laboratory = " + laboratory.getEntityID());
 	}
 
 	@Override

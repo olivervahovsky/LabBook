@@ -35,9 +35,9 @@ public class MysqlNoteDAOTest {
 	/**
 	 * Method that tests method <code>addNote(Note note)</code> and
 	 * <code>deleteEntity(Entity note)</code> in a class <code>MysqlNoteDAO</code>.
-	 * First test user and his test project are created, so the test note have an
+	 * First test user and his test project are created, so the test note has an
 	 * author (test user) and the entity (test project) to which it corresponds.
-	 * Than the test note itself is created and it is checked if such a note is not
+	 * Then the test note itself is created and it is checked if such a note is not
 	 * already in the database. It is then added into the database and it is tested
 	 * if the addition was successful. In the end the note is removed from the
 	 * database and it is tested if the removal was successful. Test user and

@@ -47,6 +47,12 @@ public class MysqlNoteDAO implements NoteDAO {
 
 		note.setNoteID(insert.executeAndReturnKey(values).longValue());
 	}
+	
+	@Override
+	public void deleteEntity(Entity note) {
+		String sql = "DELETE FROM note WHERE id_note = " + note.getEntityID();
+		jdbcTemplate.update(sql);
+	}
 
 	@Override
 	public List<Note> getAll() {
@@ -107,12 +113,6 @@ public class MysqlNoteDAO implements NoteDAO {
 			jdbcTemplate.update(sql, note.getText(), note.getTimestamp(), note.getAuthor().getEntityID(), taskID,
 					projectID, itemID, note.getEntityID());
 		}
-	}
-
-	@Override
-	public void deleteEntity(Entity note) {
-		String sql = "DELETE FROM note WHERE id_note = " + note.getEntityID();
-		jdbcTemplate.update(sql);
 	}
 
 }

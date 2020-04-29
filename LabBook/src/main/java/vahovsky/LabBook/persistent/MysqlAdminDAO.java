@@ -34,7 +34,12 @@ public class MysqlAdminDAO implements AdminDAO {
 		values.put("email", admin.getEmail());
 
 		admin.setAdminID(insert.executeAndReturnKey(values).longValue());
-
+	}
+	
+	@Override
+	public void deleteEntity(Entity admin) {
+		String sql = "DELETE FROM admin WHERE id_admin = " + admin.getEntityID();
+		jdbcTemplate.update(sql);
 	}
 
 	@Override
@@ -64,12 +69,6 @@ public class MysqlAdminDAO implements AdminDAO {
 			String sql = "UPDATE admin SET " + "name = ?, password = ?, email = ? " + "WHERE id_admin = ?";
 			jdbcTemplate.update(sql, admin.getName(), admin.getPassword(), admin.getEmail(), admin.getEntityID());
 		}
-	}
-
-	@Override
-	public void deleteEntity(Entity admin) {
-		String sql = "DELETE FROM admin WHERE id_admin = " + admin.getEntityID();
-		jdbcTemplate.update(sql);
 	}
 	
 	@Override
