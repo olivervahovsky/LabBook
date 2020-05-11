@@ -52,7 +52,7 @@ public class MysqlUserDAO implements UserDAO {
 		// not enough, as tasks are foreign keys elsewhere, hence we delete tasks by
 		// calling the method deleteTask which updates all the references to these
 		// tasks in other tables of the database.
-		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasks(user);
+		List<Task> tasks = DAOfactory.INSTANCE.getUserDAO().getTasksOfUser(user);
 		if (tasks != null) {
 			for (Task task : tasks) {
 				DAOfactory.INSTANCE.getTaskDAO().deleteEntity(task);
@@ -103,7 +103,7 @@ public class MysqlUserDAO implements UserDAO {
 	}
 
 	@Override
-	public List<Task> getTasks(Entity user) {
+	public List<Task> getTasksOfUser(Entity user) {
 		String sql = "SELECT id_task, project_id_project, name, active,"
 				+ " date_time_from, date_time_until, each_item_available, user_id_user, laboratory_id_laboratory "
 				+ "FROM task " + "WHERE user_id_user = " + user.getEntityID();

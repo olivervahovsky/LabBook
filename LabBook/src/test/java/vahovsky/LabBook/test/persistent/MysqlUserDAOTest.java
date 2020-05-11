@@ -141,7 +141,7 @@ class MysqlUserDAOTest {
 	}
 
 	@Test
-	void testGetTasks() {
+	void testGetTasksOfUser() {
 		User testUser = new User();
 		testUser.setName("testerGetByID");
 		testUser.setPassword("1234");
@@ -185,7 +185,7 @@ class MysqlUserDAOTest {
 		taskDao = DAOfactory.INSTANCE.getTaskDAO();
 		taskDao.addTask(task2);
 
-		assertTrue(userDAO.getTasks(testUser).size() == 2);
+		assertTrue(userDAO.getTasksOfUser(testUser).size() == 2);
 		
 		userDAO.deleteEntity(testUser);
 	}

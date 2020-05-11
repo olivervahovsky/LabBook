@@ -48,7 +48,7 @@ public interface ProjectDAO extends EntityDAO {
 	 * 
 	 * @return List of projects of currently logged-in user/administrator
 	 */
-	List<Project> getProjects();
+	List<Project> getProjectsOfLoggedUser();
 
 	/**
 	 * Method, that returns all the tasks of the project specified.
@@ -56,6 +56,6 @@ public interface ProjectDAO extends EntityDAO {
 	 * @param project, whose tasks we want to have returned
 	 * @return list of all the tasks of the project specified
 	 */
-	List<Task> getTasks(Project project);
+	List<Task> getTasksOfProject(Project project);
 
 }

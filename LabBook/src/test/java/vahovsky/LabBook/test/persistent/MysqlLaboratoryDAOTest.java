@@ -163,7 +163,7 @@ public class MysqlLaboratoryDAOTest {
 	 * Method that tests method <code>getLaboratoryByID(Long id)</code> in class
 	 * <code>MysqlLaboratoryDAO</code>. Test laboratory is made and added into the
 	 * database. ID of the test laboratory is saved and compared to the ID of the
-	 * laboratory, that is returned by the method
+	 * laboratory that is returned by the method
 	 * <code>getLaboratoryByID(Long id)</code>. Finally, test laboratory is removed
 	 * from the database.
 	 */

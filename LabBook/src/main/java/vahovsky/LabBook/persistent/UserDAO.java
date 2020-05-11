@@ -79,7 +79,7 @@ public interface UserDAO extends EntityDAO {
 	 * @param user User, whose projects we want to list.
 	 * @return implementation of List<> containing all the tasks of defined user.
 	 */
-	List<Task> getTasks(Entity user);
+	List<Task> getTasksOfUser(Entity user);
 
 	/**
 	 * Method that returns list of the notes of defined user.

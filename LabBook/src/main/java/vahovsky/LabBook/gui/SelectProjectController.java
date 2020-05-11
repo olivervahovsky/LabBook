@@ -68,7 +68,7 @@ public class SelectProjectController {
 
 	@FXML
 	void initialize() {
-		projectsModel = FXCollections.observableArrayList(projectDao.getProjects());
+		projectsModel = FXCollections.observableArrayList(projectDao.getProjectsOfLoggedUser());
 
 		//https://stackoverflow.com/questions/26563390/detect-doubleclick-on-row-of-tableview-javafx
 		projectsTableView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -102,7 +102,7 @@ public class SelectProjectController {
 			public void handle(ActionEvent event) {
 				EditProjectController editController = new EditProjectController(selectedProject.get());
 				util.showModalWindow(editController, "editProject.fxml", "Project Editing", null);
-				projectsModel.setAll(projectDao.getProjects());
+				projectsModel.setAll(projectDao.getProjectsOfLoggedUser());
 			}
 		});
 
@@ -122,7 +122,7 @@ public class SelectProjectController {
 				ProjectFxModel projectFxModel = new ProjectFxModel(selectedProject.get());
 				DeleteEntityController deleteProjectController = new DeleteEntityController(DAOfactory.INSTANCE.getProjectDAO(), projectFxModel);
 				util.showModalWindow(deleteProjectController, "deleteProject.fxml", "Project Deleting", null);
-				projectsModel.setAll(projectDao.getProjects());
+				projectsModel.setAll(projectDao.getProjectsOfLoggedUser());
 			}
 		});
 
@@ -141,7 +141,7 @@ public class SelectProjectController {
 				NewProjectController newProjectController = new NewProjectController(
 						UserIdentificationManager.getUser());
 				util.showModalWindow(newProjectController, "newProject.fxml", "New Project", null);
-				projectsModel.setAll(projectDao.getProjects());
+				projectsModel.setAll(projectDao.getProjectsOfLoggedUser());
 			}
 		});
 

@@ -105,7 +105,7 @@ public class MysqlProjectDAO implements ProjectDAO {
 	}
 	
 	@Override
-	public List<Project> getProjects() {
+	public List<Project> getProjectsOfLoggedUser() {
 		List<Project> projects = new ArrayList<>();
 		List<Project> allProjects = getAll();
 		for (Project project : allProjects) {
@@ -117,7 +117,7 @@ public class MysqlProjectDAO implements ProjectDAO {
 	}
 	
 	@Override
-	public List<Task> getTasks(Project project) {
+	public List<Task> getTasksOfProject(Project project) {
 		List<Task> tasks = new ArrayList<>();
 		List<Task> allTasks = DAOfactory.INSTANCE.getTaskDAO().getAll();
 		for (Task task : allTasks) {

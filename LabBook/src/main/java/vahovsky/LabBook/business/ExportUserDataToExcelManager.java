@@ -116,7 +116,7 @@ public class ExportUserDataToExcelManager {
 			cell.setCellStyle(headerCellStyle);
 		}
 
-		List<Task> tasks = userDAO.getTasks(user);
+		List<Task> tasks = userDAO.getTasksOfUser(user);
 		rowNum = 1;
 
 		// list the tasks according to projects they are a part of, their status
