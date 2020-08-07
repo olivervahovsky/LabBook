@@ -25,19 +25,46 @@ public class MysqlTaskDAO implements TaskDAO {
 	public MysqlTaskDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	@Override
+	public List<Task> getAll() {
+		String sql = "SELECT id_task, project_id_project, name, active, date_time_from, date_time_until,"
+				+ " each_item_available, user_id_user, laboratory_id_laboratory " + "FROM task";
+		List<Task> tasks = jdbcTemplate.query(sql, new RowMapper<Task>() {
 
-	/**
-	 * Method that creates reference between task and items used in that task. For
-	 * this purpose, rows are inserted into the reference table task_has_item, as
-	 * there exists a two - way relationship between tasks and items (more items may
-	 * belong to a single task as well as single item may be used in multiple
-	 * tasks). If there are rows already referencing this task in the table
-	 * task_has_item , these are deleted before inserting new rows.
-	 * 
-	 * @param task Task, whose reference to items we are updating in the table
-	 *             task_has_item
-	 */
-	private void insertItems(Task task) {
+			@Override
+			public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
+				Task task = new Task();
+				task.setTaskID(rs.getLong("id_task"));
+				task.setProject(DAOfactory.INSTANCE.getProjectDAO().getByID(rs.getLong("project_id_project")));
+				task.setName(rs.getString("name"));
+				task.setActive(rs.getBoolean("active"));
+				Timestamp timestamp = rs.getTimestamp("date_time_from");
+				if (timestamp != null) {
+					task.setDateTimeFrom(timestamp.toLocalDateTime().toLocalDate());
+				}
+				timestamp = rs.getTimestamp("date_time_until");
+				if (timestamp != null) {
+					task.setDateTimeUntil(timestamp.toLocalDateTime().toLocalDate());
+				}
+				task.setEachItemAvailable(rs.getBoolean("each_item_available"));
+				task.setCreatedBy(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));
+				if (task.getLaboratory() != null)
+					task.setLaboratory(DAOfactory.INSTANCE.getLaboratoryDAO()
+							.getLaboratoryByID(rs.getLong("laboratory_id_laboratory")));
+				return task;
+			}
+		});
+		for (Task task : tasks) {
+			MysqlTaskDAO mtd = new MysqlTaskDAO(jdbcTemplate);
+			List<Item> items = mtd.getItems(task);
+			task.setItems(items);
+		}
+		return tasks;
+	}
+	
+	@Override
+	public void insertItems(Task task) {
 		jdbcTemplate.update("DELETE FROM task_has_item WHERE task_id_task = ?", task.getEntityID());
 		if (task.getItems() != null)
 			if (task.getItems().size() > 0) {
@@ -51,7 +78,7 @@ public class MysqlTaskDAO implements TaskDAO {
 				jdbcTemplate.update(insertSql);
 			}
 	}
-
+	
 	@Override
 	public void addTask(Task task) {
 
@@ -89,7 +116,7 @@ public class MysqlTaskDAO implements TaskDAO {
 		String sql = "DELETE FROM task WHERE id_task = " + task.getEntityID();
 		jdbcTemplate.update(sql);
 	}
-
+	
 	@Override
 	public void saveTask(Task task) {
 		if (task == null)
@@ -110,57 +137,7 @@ public class MysqlTaskDAO implements TaskDAO {
 			insertItems(task);
 		}
 	}
-
-	@Override
-	public List<Item> getItems(Task task) {
-		String sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getEntityID();
-		List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
-
-			@Override
-			public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
-				return DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
-			}
-		});
-		return items;
-	}
-
-	@Override
-	public List<Task> getAll() {
-		String sql = "SELECT id_task, project_id_project, name, active, date_time_from, date_time_until,"
-				+ " each_item_available, user_id_user, laboratory_id_laboratory " + "FROM task";
-		List<Task> tasks = jdbcTemplate.query(sql, new RowMapper<Task>() {
-
-			@Override
-			public Task mapRow(ResultSet rs, int rowNum) throws SQLException {
-				Task task = new Task();
-				task.setTaskID(rs.getLong("id_task"));
-				task.setProject(DAOfactory.INSTANCE.getProjectDAO().getByID(rs.getLong("project_id_project")));
-				task.setName(rs.getString("name"));
-				task.setActive(rs.getBoolean("active"));
-				Timestamp timestamp = rs.getTimestamp("date_time_from");
-				if (timestamp != null) {
-					task.setDateTimeFrom(timestamp.toLocalDateTime().toLocalDate());
-				}
-				timestamp = rs.getTimestamp("date_time_until");
-				if (timestamp != null) {
-					task.setDateTimeUntil(timestamp.toLocalDateTime().toLocalDate());
-				}
-				task.setEachItemAvailable(rs.getBoolean("each_item_available"));
-				task.setCreatedBy(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));
-				if (task.getLaboratory() != null)
-					task.setLaboratory(DAOfactory.INSTANCE.getLaboratoryDAO()
-							.getLaboratoryByID(rs.getLong("laboratory_id_laboratory")));
-				return task;
-			}
-		});
-		for (Task task : tasks) {
-			MysqlTaskDAO mtd = new MysqlTaskDAO(jdbcTemplate);
-			List<Item> items = mtd.getItems(task);
-			task.setItems(items);
-		}
-		return tasks;
-	}
-
+	
 	@Override
 	public Task getByID(Long id) {
 		String sql = "SELECT id_task AS taskID, project_id_project, name, active,"
@@ -174,14 +151,16 @@ public class MysqlTaskDAO implements TaskDAO {
 	}
 
 	@Override
-	public boolean isNameAvailable(String name) {
-		List<Task> tasks = getAll();
-		for (Task task : tasks) {
-			if (task.getName().equals(name)) {
-				return false;
+	public List<Item> getItems(Task task) {
+		String sql = "SELECT item_id_item FROM task_has_item WHERE task_id_task =" + task.getEntityID();
+		List<Item> items = jdbcTemplate.query(sql, new RowMapper<Item>() {
+
+			@Override
+			public Item mapRow(ResultSet rs, int rowNum) throws SQLException {
+				return DAOfactory.INSTANCE.getItemDAO().getByID(rs.getLong("item_id_item"));
 			}
-		}
-		return true;
+		});
+		return items;
 	}
 	
 	@Override
@@ -196,6 +175,17 @@ public class MysqlTaskDAO implements TaskDAO {
 			}
 		}
 		return notes;
+	}
+
+	@Override
+	public boolean isNameAvailable(String name) {
+		List<Task> tasks = getAll();
+		for (Task task : tasks) {
+			if (task.getName().equals(name)) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 }

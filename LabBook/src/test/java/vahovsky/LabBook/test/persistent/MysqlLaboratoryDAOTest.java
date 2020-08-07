@@ -183,9 +183,9 @@ public class MysqlLaboratoryDAOTest {
 	/**
 	 * Method that tests method <code>isNameAvailable(String name)</code> in class
 	 * <code>MysqlLaboratoryDAO</code>. First, availability of the future test
-	 * laboratory's name is tested. Then test item with that name is added into the
+	 * laboratory's name is tested. Then test laboratory with that name is added into the
 	 * database. Next, availability of that name is tested again, this time negative
-	 * result is expected. Finally, test item is removed from the database.
+	 * result is expected. Finally, test laboratory is removed from the database.
 	 */
 	@Test
 	void testIsNameAvailable() {

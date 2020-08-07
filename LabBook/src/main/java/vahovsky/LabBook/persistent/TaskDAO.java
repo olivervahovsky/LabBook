@@ -7,6 +7,19 @@ import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Task;
 
 public interface TaskDAO extends EntityDAO {
+	
+	/**
+	 * Method that creates reference between task and items used in that task. For
+	 * this purpose, rows are inserted into the reference table task_has_item, as
+	 * there exists a two - way relationship between tasks and items (more items may
+	 * belong to a single task as well as single item may be used in multiple
+	 * tasks). If there are rows already referencing this task in the table
+	 * task_has_item , these are deleted before inserting new rows.
+	 * 
+	 * @param task Task, whose reference to items we are updating in the table
+	 *             task_has_item
+	 */
+	void insertItems(Task task);
 
 	/**
 	 * Method adding representation of entity object task into database

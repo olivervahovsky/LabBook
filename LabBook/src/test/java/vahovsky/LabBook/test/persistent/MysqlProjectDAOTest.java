@@ -234,7 +234,7 @@ public class MysqlProjectDAOTest {
 	 * Eventually, test user is deleted along with his test project.
 	 */
 	@Test
-	void testgetTasksOfProject() {
+	void testGetTasksOfProject() {
 		User testUser = new User();
 		testUser.setName("testerAddDelete");
 		testUser.setPassword("1234");
