@@ -13,14 +13,12 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import vahovsky.LabBook.entities.Item;
-import vahovsky.LabBook.entities.Laboratory;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
 import vahovsky.LabBook.entities.User;
 import vahovsky.LabBook.persistent.DAOfactory;
 import vahovsky.LabBook.persistent.ItemDAO;
-import vahovsky.LabBook.persistent.LaboratoryDAO;
 import vahovsky.LabBook.persistent.NoteDAO;
 import vahovsky.LabBook.persistent.ProjectDAO;
 import vahovsky.LabBook.persistent.TaskDAO;

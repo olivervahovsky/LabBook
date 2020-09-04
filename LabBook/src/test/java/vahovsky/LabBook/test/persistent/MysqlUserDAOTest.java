@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
@@ -20,6 +21,11 @@ import vahovsky.LabBook.persistent.UserDAO;
 
 class MysqlUserDAOTest {
 
+	/**
+	 * Method that tests method <code>getAll()</code> in class
+	 * <code>MysqlUserDAO</code>. Tests if the list of users returned from the
+	 * database has size > 0.
+	 */
 	@Test
 	void testGetAll() {
 		List<User> users = DAOfactory.INSTANCE.getUserDAO().getAll();
@@ -27,6 +33,16 @@ class MysqlUserDAOTest {
 		assertTrue(users.size() > 0);
 	}
 
+	/**
+	 * Method that tests method <code>addUser(User user)</code> and
+	 * <code>deleteEntity(Entity user)</code> in a class <code>MysqlUserDAO</code>.
+	 * Test user is created and it is checked if such a user is not already in the
+	 * database. It is then added into the database and it is tested if the addition
+	 * was successful. Test project, test task and test note is created, all
+	 * belonging to a test user. In the end test user is removed from the database
+	 * and it is tested whether the removal was successful as well as if his project,
+	 * task and note was removed.
+	 */
 	@Test
 	void addDeleteTest() {
 		User testUser = new User();
@@ -37,8 +53,8 @@ class MysqlUserDAOTest {
 
 		boolean notThere = true;
 		List<User> all = userDAO.getAll();
-		for (User u : all) {
-			if (u.getEntityID().equals(testUser.getEntityID())) {
+		for (User user : all) {
+			if (user.getEntityID().equals(testUser.getEntityID())) {
 				notThere = false;
 			}
 		}
@@ -46,46 +62,74 @@ class MysqlUserDAOTest {
 
 		userDAO.addUser(testUser);
 
-		Project project = new Project();
-		project.setName("testovaci_projekt");
-		project.setActive(true);
-		project.setDateFrom(LocalDate.now());
-		project.setEachItemAvailable(false);
-		project.setCreatedBy(testUser);
-		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project);
-
-		Note note = new Note();
-		note.setText("testovaci text");
-		note.setTimestamp(LocalDateTime.now());
-		note.setAuthor(testUser);
-		note.setProject(project);
-		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
-		noteDAO.addNote(note);
-
-		Task task = new Task();
-		task.setProject(project);
-		task.setName("task taskovity");
-		task.setActive(true);
-		task.setEachItemAvailable(true);
-		task.setCreatedBy(testUser);
-		TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
-		taskDao.addTask(task);
-
 		all = userDAO.getAll();
 		boolean succesfullyAdded = false;
-		for (User u : all) {
-			if (u.getEntityID().equals(testUser.getEntityID())) {
+		for (User user : all) {
+			if (user.getEntityID().equals(testUser.getEntityID())) {
 				succesfullyAdded = true;
 			}
 		}
 		assertTrue(succesfullyAdded);
 
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setDateFrom(LocalDate.now());
+		testProject.setEachItemAvailable(false);
+		testProject.setCreatedBy(testUser);
+		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
+		projectDAO.addProject(testProject);
+
+		Note testNote = new Note();
+		testNote.setText("testovaci text");
+		testNote.setTimestamp(LocalDateTime.now());
+		testNote.setAuthor(testUser);
+		testNote.setProject(testProject);
+		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
+		noteDAO.addNote(testNote);
+
+		Task testTask = new Task();
+		testTask.setProject(testProject);
+		testTask.setName("task taskovity");
+		testTask.setActive(true);
+		testTask.setEachItemAvailable(true);
+		testTask.setCreatedBy(testUser);
+		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
+		taskDAO.addTask(testTask);
+
 		userDAO.deleteEntity(testUser);
+		
 		all = userDAO.getAll();
 		boolean successfullyDeleted = true;
-		for (User u : all) {
-			if (u.getEntityID().equals(testUser.getEntityID())) {
+		for (User user : all) {
+			if (user.getEntityID().equals(testUser.getEntityID())) {
+				successfullyDeleted = false;
+			}
+		}
+		assertTrue(successfullyDeleted);
+		
+		List<Project> allProjects = projectDAO.getAll();
+		successfullyDeleted = true;
+		for (Project project : allProjects) {
+			if (project.getEntityID().equals(testProject.getEntityID())) {
+				successfullyDeleted = false;
+			}
+		}
+		assertTrue(successfullyDeleted);
+		
+		List<Task> allTasks = taskDAO.getAll();
+		successfullyDeleted = true;
+		for (Task task : allTasks) {
+			if (task.getEntityID().equals(testTask.getEntityID())) {
+				successfullyDeleted = false;
+			}
+		}
+		assertTrue(successfullyDeleted);
+		
+		List<Note> allNotes = noteDAO.getAll();
+		successfullyDeleted = true;
+		for (Note note : allNotes) {
+			if (note.getEntityID().equals(testNote.getEntityID())) {
 				successfullyDeleted = false;
 			}
 		}
@@ -186,7 +230,7 @@ class MysqlUserDAOTest {
 		taskDao.addTask(task2);
 
 		assertTrue(userDAO.getTasksOfUser(testUser).size() == 2);
-		
+
 		userDAO.deleteEntity(testUser);
 	}
 
@@ -198,7 +242,7 @@ class MysqlUserDAOTest {
 		testUser.setEmail("tester.testovaci@test.com");
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
-		
+
 		Project project = new Project();
 		project.setName("testovaci_projekt");
 		project.setActive(true);
@@ -207,7 +251,7 @@ class MysqlUserDAOTest {
 		project.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
 		projectDAO.addProject(project);
-		
+
 		Task task = new Task();
 		task.setProject(project);
 		task.setName("testTask");
@@ -217,7 +261,7 @@ class MysqlUserDAOTest {
 		task.setCreatedBy(testUser);
 		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
 		taskDAO.addTask(task);
-		
+
 		Note note = new Note();
 		note.setText("testovaci text");
 		note.setTimestamp(LocalDateTime.now());
@@ -225,21 +269,21 @@ class MysqlUserDAOTest {
 		note.setProject(project);
 		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
 		noteDAO.addNote(note);
-		
+
 		Note note2 = new Note();
 		note2.setText("testovaci text");
 		note2.setTimestamp(LocalDateTime.now());
 		note2.setAuthor(testUser);
 		note2.setTask(task);
 		noteDAO.addNote(note2);
-		
+
 		assertTrue(userDAO.getNotes(testUser) != null);
 		assertTrue(userDAO.getNotes(testUser).size() == 2);
-		
+
 		userDAO.deleteEntity(testUser);
-		
+
 	}
-	
+
 	@Test
 	void testGetProjects() {
 		User testUser = new User();
@@ -248,7 +292,7 @@ class MysqlUserDAOTest {
 		testUser.setEmail("tester.testovaci@test.com");
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
-		
+
 		Project project = new Project();
 		project.setName("testovaci_projekt");
 		project.setActive(true);
@@ -257,7 +301,7 @@ class MysqlUserDAOTest {
 		project.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
 		projectDAO.addProject(project);
-		
+
 		Project project2 = new Project();
 		project2.setName("testovaci_projekt2");
 		project2.setActive(true);
@@ -266,14 +310,14 @@ class MysqlUserDAOTest {
 		project2.setCreatedBy(testUser);
 		projectDAO = DAOfactory.INSTANCE.getProjectDAO();
 		projectDAO.addProject(project2);
-		
+
 		assertTrue(userDAO.getProjects(testUser) != null);
 		assertTrue(userDAO.getProjects(testUser).size() == 2);
-		
+
 		userDAO.deleteEntity(testUser);
-		
+
 	}
-	
+
 	@Test
 	void testGetByEmail() {
 		User testUser = new User();
@@ -287,7 +331,7 @@ class MysqlUserDAOTest {
 		assertTrue(id.equals(userDAO.getByEmail("tester.testovaci@test.com").getEntityID()));
 		userDAO.deleteEntity(testUser);
 	}
-	
+
 	@Test
 	void testGetAllEmails() {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
@@ -300,7 +344,7 @@ class MysqlUserDAOTest {
 		assertTrue(userDAO.getAllEmails().size() == origNumber + 1);
 		userDAO.deleteEntity(testUser);
 	}
-	
+
 	@Test
 	void testGetAllNames() {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();

@@ -26,6 +26,23 @@ public class MysqlUserDAO implements UserDAO {
 	public MysqlUserDAO(JdbcTemplate jdbcTemplate) {
 		this.jdbcTemplate = jdbcTemplate;
 	}
+	
+	@Override
+	public List<User> getAll() {
+		String sql = "SELECT id_user, name, password, email " + "FROM lab_book.user";
+		return jdbcTemplate.query(sql, new RowMapper<User>() {
+
+			@Override
+			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+				User user = new User();
+				user.setUserID(rs.getLong("id_user"));
+				user.setName(rs.getString("name"));
+				user.setPassword(rs.getString("password"));
+				user.setEmail(rs.getString("email"));
+				return user;
+			}
+		});
+	}
 
 	@Override
 	public void addUser(User user) {
@@ -64,23 +81,6 @@ public class MysqlUserDAO implements UserDAO {
 		// Finally delete the user himself
 		String sql = "DELETE FROM user WHERE id_user = " + user.getEntityID();
 		jdbcTemplate.update(sql);
-	}
-
-	@Override
-	public List<User> getAll() {
-		String sql = "SELECT id_user, name, password, email " + "FROM lab_book.user";
-		return jdbcTemplate.query(sql, new RowMapper<User>() {
-
-			@Override
-			public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-				User user = new User();
-				user.setUserID(rs.getLong("id_user"));
-				user.setName(rs.getString("name"));
-				user.setPassword(rs.getString("password"));
-				user.setEmail(rs.getString("email"));
-				return user;
-			}
-		});
 	}
 
 	@Override
