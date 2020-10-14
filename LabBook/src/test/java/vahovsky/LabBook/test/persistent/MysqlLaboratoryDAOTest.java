@@ -121,11 +121,11 @@ public class MysqlLaboratoryDAOTest {
 	 * <code>getItemsOfLaboratory(Laboratory laboratory)</code> in a class
 	 * <code>MysqlLaboratoryDAO</code>. Test laboratory is created and added into
 	 * the database. Next, some test items are created and their laboratory is set
-	 * to be the test laboratory created previously. Finally, the output of the
-	 * method <code>getItemsOfLaboratory(Laboratory laboratory)</code> - a list of
-	 * items stored in the laboratory is tested, if each of the items' laboratory ID
-	 * equals to test laboratory's ID. Test items and test laboratory are
-	 * subsequently removed from the database.
+	 * to be the test laboratory created previously. Finally, the size of the list
+	 * of laboratories which is a result of the method
+	 * <code>getItemsOfLaboratory(Laboratory laboratory)</code> is compared to the
+	 * number of test items. Test items and test laboratory are subsequently removed
+	 * from the database.
 	 */
 	@Test
 	void testGetItemsOfLaboratory() {
@@ -183,9 +183,10 @@ public class MysqlLaboratoryDAOTest {
 	/**
 	 * Method that tests method <code>isNameAvailable(String name)</code> in class
 	 * <code>MysqlLaboratoryDAO</code>. First, availability of the future test
-	 * laboratory's name is tested. Then test laboratory with that name is added into the
-	 * database. Next, availability of that name is tested again, this time negative
-	 * result is expected. Finally, test laboratory is removed from the database.
+	 * laboratory's name is tested. Then test laboratory with that name is added
+	 * into the database. Next, availability of that name is tested again, this time
+	 * negative result is expected. Finally, test laboratory is removed from the
+	 * database.
 	 */
 	@Test
 	void testIsNameAvailable() {

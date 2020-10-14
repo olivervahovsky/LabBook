@@ -8,7 +8,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import vahovsky.LabBook.entities.Entity;
 import vahovsky.LabBook.entities.Note;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
@@ -40,8 +39,8 @@ class MysqlUserDAOTest {
 	 * database. It is then added into the database and it is tested if the addition
 	 * was successful. Test project, test task and test note is created, all
 	 * belonging to a test user. In the end test user is removed from the database
-	 * and it is tested whether the removal was successful as well as if his project,
-	 * task and note was removed.
+	 * and it is tested whether the removal was successful as well as if his
+	 * project, task and note was removed.
 	 */
 	@Test
 	void addDeleteTest() {
@@ -98,7 +97,7 @@ class MysqlUserDAOTest {
 		taskDAO.addTask(testTask);
 
 		userDAO.deleteEntity(testUser);
-		
+
 		all = userDAO.getAll();
 		boolean successfullyDeleted = true;
 		for (User user : all) {
@@ -107,7 +106,7 @@ class MysqlUserDAOTest {
 			}
 		}
 		assertTrue(successfullyDeleted);
-		
+
 		List<Project> allProjects = projectDAO.getAll();
 		successfullyDeleted = true;
 		for (Project project : allProjects) {
@@ -116,7 +115,7 @@ class MysqlUserDAOTest {
 			}
 		}
 		assertTrue(successfullyDeleted);
-		
+
 		List<Task> allTasks = taskDAO.getAll();
 		successfullyDeleted = true;
 		for (Task task : allTasks) {
@@ -125,7 +124,7 @@ class MysqlUserDAOTest {
 			}
 		}
 		assertTrue(successfullyDeleted);
-		
+
 		List<Note> allNotes = noteDAO.getAll();
 		successfullyDeleted = true;
 		for (Note note : allNotes) {
@@ -136,6 +135,14 @@ class MysqlUserDAOTest {
 		assertTrue(successfullyDeleted);
 	}
 
+	/**
+	 * Method that tests method <code>saveUser(User user)</code> in class
+	 * <code>MysqlUserDAO</code>. Test user is made and saved into the database.
+	 * First test runs to assert that it was correctly added into the database. Next
+	 * some of its parameters are changed and saved. Then we look for the test user
+	 * in the database (through its ID) and check, if its parameters really changed.
+	 * In the end it is removed from the database.
+	 */
 	@Test
 	void testSave() {
 		User testUser = new User();
@@ -148,28 +155,35 @@ class MysqlUserDAOTest {
 		assertNotNull(testUser.getEntityID());
 		// update
 		testUser.setName("tester_new");
-		Project project = new Project();
-		project.setName("testovaci_projekt");
-		project.setActive(true);
-		project.setDateFrom(LocalDate.now());
-		project.setEachItemAvailable(false);
-		project.setCreatedBy(testUser);
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setDateFrom(LocalDate.now());
+		testProject.setEachItemAvailable(false);
+		testProject.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project);
+		projectDAO.addProject(testProject);
 
 		userDAO.saveUser(testUser);
 		List<User> all = userDAO.getAll();
-		for (User u : all) {
-			if (u.getEntityID().equals(testUser.getEntityID())) {
-				assertEquals("tester_new", u.getName());
-				assertTrue(project.getCreatedBy().getName().equals(u.getName()));
-				userDAO.deleteEntity(u);
+		for (User user : all) {
+			if (user.getEntityID().equals(testUser.getEntityID())) {
+				assertEquals("tester_new", user.getName());
+				assertTrue(testProject.getCreatedBy().getName().equals(user.getName()));
+				userDAO.deleteEntity(user);
 				return;
 			}
 		}
 		assertTrue(false, "update sa nepodaril");
 	}
 
+	/**
+	 * Method that tests method <code>getByID(Long id)</code> in class
+	 * <code>MysqlUserDAO</code>. Test user is made and added into the database. ID
+	 * of the test user is saved and compared to the ID of the user that is returned
+	 * by the method <code>getByID(Long id)</code>. Finally, test user is removed
+	 * from the database.
+	 */
 	@Test
 	void testGetByID() {
 		User testUser = new User();
@@ -184,6 +198,16 @@ class MysqlUserDAOTest {
 		userDAO.deleteEntity(testUser);
 	}
 
+	/**
+	 * Method that tests method <code>getTasksOfUser(Entity user)</code> in a class
+	 * <code>MysqlUserDAO</code>. Test user is created and added into the database.
+	 * Next, test projects are created and some tasks of these projects are created.
+	 * Project and their respective tasks are added into the database. Finally, the
+	 * size of the list of tasks which is a result of the method
+	 * <code>getTasksOfUser(Entity user)</code> is compared to the number of test
+	 * tasks. Test user is subsequently removed from the database along with all of
+	 * his projects and tasks.
+	 */
 	@Test
 	void testGetTasksOfUser() {
 		User testUser = new User();
@@ -193,47 +217,56 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 
-		Project project = new Project();
-		project.setName("testovaci_projekt");
-		project.setActive(true);
-		project.setDateFrom(LocalDate.now());
-		project.setEachItemAvailable(false);
-		project.setCreatedBy(testUser);
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setDateFrom(LocalDate.now());
+		testProject.setEachItemAvailable(false);
+		testProject.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project);
+		projectDAO.addProject(testProject);
 
-		Task task = new Task();
-		task.setProject(project);
-		task.setName("task taskovity");
-		task.setActive(true);
-		task.setEachItemAvailable(true);
-		task.setCreatedBy(testUser);
+		Task testTask = new Task();
+		testTask.setProject(testProject);
+		testTask.setName("task taskovity");
+		testTask.setActive(true);
+		testTask.setEachItemAvailable(true);
+		testTask.setCreatedBy(testUser);
 		TaskDAO taskDao = DAOfactory.INSTANCE.getTaskDAO();
-		taskDao.addTask(task);
+		taskDao.addTask(testTask);
 
-		Project project2 = new Project();
-		project2.setName("testovaci_projekt2");
-		project2.setActive(true);
-		project2.setDateFrom(LocalDate.now());
-		project2.setEachItemAvailable(false);
-		project2.setCreatedBy(testUser);
+		Project testProject2 = new Project();
+		testProject2.setName("testovaci_projekt2");
+		testProject2.setActive(true);
+		testProject2.setDateFrom(LocalDate.now());
+		testProject2.setEachItemAvailable(false);
+		testProject2.setCreatedBy(testUser);
 		projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project2);
+		projectDAO.addProject(testProject2);
 
-		Task task2 = new Task();
-		task2.setProject(project2);
-		task2.setName("task taskovity2");
-		task2.setActive(true);
-		task2.setEachItemAvailable(true);
-		task2.setCreatedBy(testUser);
+		Task testTask2 = new Task();
+		testTask2.setProject(testProject2);
+		testTask2.setName("task taskovity2");
+		testTask2.setActive(true);
+		testTask2.setEachItemAvailable(true);
+		testTask2.setCreatedBy(testUser);
 		taskDao = DAOfactory.INSTANCE.getTaskDAO();
-		taskDao.addTask(task2);
+		taskDao.addTask(testTask2);
 
 		assertTrue(userDAO.getTasksOfUser(testUser).size() == 2);
 
 		userDAO.deleteEntity(testUser);
 	}
 
+	/**
+	 * Method that tests method <code>getNotes(User user)</code> in a class
+	 * <code>MysqlUserDAO</code>. Test user is created and added into the database.
+	 * Next, test project, test task and some notes to these tasks are created. All
+	 * of it is added into the database. Finally, the size of the list of notes
+	 * which is a result of the method <code>getNotes(User user)</code> is compared
+	 * to the number of test tasks. Test user is subsequently removed from the
+	 * database along with all of his projects and tasks.
+	 */
 	@Test
 	void testGetNotes() {
 		User testUser = new User();
@@ -243,39 +276,39 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 
-		Project project = new Project();
-		project.setName("testovaci_projekt");
-		project.setActive(true);
-		project.setDateFrom(LocalDate.now());
-		project.setEachItemAvailable(false);
-		project.setCreatedBy(testUser);
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setDateFrom(LocalDate.now());
+		testProject.setEachItemAvailable(false);
+		testProject.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project);
+		projectDAO.addProject(testProject);
 
-		Task task = new Task();
-		task.setProject(project);
-		task.setName("testTask");
-		task.setActive(true);
-		task.setDateTimeFrom(LocalDate.now());
-		task.setEachItemAvailable(false);
-		task.setCreatedBy(testUser);
+		Task testTask = new Task();
+		testTask.setProject(testProject);
+		testTask.setName("testTask");
+		testTask.setActive(true);
+		testTask.setDateTimeFrom(LocalDate.now());
+		testTask.setEachItemAvailable(false);
+		testTask.setCreatedBy(testUser);
 		TaskDAO taskDAO = DAOfactory.INSTANCE.getTaskDAO();
-		taskDAO.addTask(task);
+		taskDAO.addTask(testTask);
 
-		Note note = new Note();
-		note.setText("testovaci text");
-		note.setTimestamp(LocalDateTime.now());
-		note.setAuthor(testUser);
-		note.setProject(project);
+		Note testNote = new Note();
+		testNote.setText("testovaci text");
+		testNote.setTimestamp(LocalDateTime.now());
+		testNote.setAuthor(testUser);
+		testNote.setProject(testProject);
 		NoteDAO noteDAO = DAOfactory.INSTANCE.getNoteDAO();
-		noteDAO.addNote(note);
+		noteDAO.addNote(testNote);
 
-		Note note2 = new Note();
-		note2.setText("testovaci text");
-		note2.setTimestamp(LocalDateTime.now());
-		note2.setAuthor(testUser);
-		note2.setTask(task);
-		noteDAO.addNote(note2);
+		Note testNote2 = new Note();
+		testNote2.setText("testovaci text");
+		testNote2.setTimestamp(LocalDateTime.now());
+		testNote2.setAuthor(testUser);
+		testNote2.setTask(testTask);
+		noteDAO.addNote(testNote2);
 
 		assertTrue(userDAO.getNotes(testUser) != null);
 		assertTrue(userDAO.getNotes(testUser).size() == 2);
@@ -284,6 +317,15 @@ class MysqlUserDAOTest {
 
 	}
 
+	/**
+	 * Method that tests method <code>getProjects(User user)</code> in a class
+	 * <code>MysqlUserDAO</code>. Test user is created and added into the database.
+	 * Next, test projects are created and added into the database. Finally, the
+	 * size of the list of projects which is a result of the method
+	 * <code>getProjects(User user)</code> is compared to the number of test
+	 * projects. Test user is subsequently removed from the database along with all
+	 * of his projects.
+	 */
 	@Test
 	void testGetProjects() {
 		User testUser = new User();
@@ -293,23 +335,23 @@ class MysqlUserDAOTest {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
 		userDAO.addUser(testUser);
 
-		Project project = new Project();
-		project.setName("testovaci_projekt");
-		project.setActive(true);
-		project.setDateFrom(LocalDate.now());
-		project.setEachItemAvailable(false);
-		project.setCreatedBy(testUser);
+		Project testProject = new Project();
+		testProject.setName("testovaci_projekt");
+		testProject.setActive(true);
+		testProject.setDateFrom(LocalDate.now());
+		testProject.setEachItemAvailable(false);
+		testProject.setCreatedBy(testUser);
 		ProjectDAO projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project);
+		projectDAO.addProject(testProject);
 
-		Project project2 = new Project();
-		project2.setName("testovaci_projekt2");
-		project2.setActive(true);
-		project2.setDateFrom(LocalDate.now());
-		project2.setEachItemAvailable(false);
-		project2.setCreatedBy(testUser);
+		Project testProject2 = new Project();
+		testProject2.setName("testovaci_projekt2");
+		testProject2.setActive(true);
+		testProject2.setDateFrom(LocalDate.now());
+		testProject2.setEachItemAvailable(false);
+		testProject2.setCreatedBy(testUser);
 		projectDAO = DAOfactory.INSTANCE.getProjectDAO();
-		projectDAO.addProject(project2);
+		projectDAO.addProject(testProject2);
 
 		assertTrue(userDAO.getProjects(testUser) != null);
 		assertTrue(userDAO.getProjects(testUser).size() == 2);
@@ -318,6 +360,13 @@ class MysqlUserDAOTest {
 
 	}
 
+	/**
+	 * Method that tests method <code>getByEmail(String email)</code> in class
+	 * <code>MysqlUserDAO</code>. Test user is made and added into the database. ID
+	 * of the test user is saved and compared to the ID of the user that is returned
+	 * by the method <code>getByEmail(String email)</code>. Finally, test user is
+	 * removed from the database.
+	 */
 	@Test
 	void testGetByEmail() {
 		User testUser = new User();
@@ -332,6 +381,13 @@ class MysqlUserDAOTest {
 		userDAO.deleteEntity(testUser);
 	}
 
+	/**
+	 * Method that tests method <code>getAllEmails()</code> in class
+	 * <code>MysqlUserDAO</code>. Size of the list that method
+	 * <code>getAllEmails()</code> returns is compared to the size of the list
+	 * returned after one more user is added into the database. If the new size
+	 * equals the original size + 1, the method is assumed to work correctly.
+	 */
 	@Test
 	void testGetAllEmails() {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();
