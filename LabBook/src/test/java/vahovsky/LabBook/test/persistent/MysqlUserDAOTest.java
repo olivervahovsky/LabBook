@@ -401,6 +401,13 @@ class MysqlUserDAOTest {
 		userDAO.deleteEntity(testUser);
 	}
 
+	/**
+	 * Method that tests method <code>getAllNames()</code> in class
+	 * <code>MysqlUserDAO</code>. Size of the list that method
+	 * <code>getAllNames()</code> returns is compared to the size of the list
+	 * returned after one more user is added into the database. If the new size
+	 * equals the original size + 1, the method is assumed to work correctly.
+	 */
 	@Test
 	void testGetAllNames() {
 		UserDAO userDAO = DAOfactory.INSTANCE.getUserDAO();

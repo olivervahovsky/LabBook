@@ -27,10 +27,6 @@ public class App extends Application {
 		primaryStage.setScene(scene);
 		primaryStage.show();
 		
-//		File file = new File("C:/Users/Oliver/git/LabBook/LabBook/target/classes/vahovsky/LabBook/gui");
-//		File[] listOfFiles = file.listFiles();
-//		for(File item: listOfFiles)
-//			System.out.println(item);
 	}
 
 	public static void main(String[] args) {
