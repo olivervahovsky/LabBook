@@ -160,6 +160,14 @@ public class SelectProjectController {
 		projectsTableView.getColumns().add(nameCol);
 		columnsVisibility.put("ID", nameCol.visibleProperty());
 
+		TableColumn<Project, String> dateFromCol = new TableColumn<>("Start of the project");
+		dateFromCol.setCellValueFactory(new PropertyValueFactory<>("dateFrom"));
+		projectsTableView.getColumns().add(dateFromCol);
+		
+		TableColumn<Project, String> dateUntilCol = new TableColumn<>("Estimated end of the project");
+		dateUntilCol.setCellValueFactory(new PropertyValueFactory<>("dateUntil"));
+		projectsTableView.getColumns().add(dateUntilCol);
+		
 		projectsTableView.setItems(projectsModel);
 		projectsTableView.setEditable(true);
 
