@@ -3,8 +3,6 @@ package vahovsky.LabBook.gui;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,8 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -158,7 +154,7 @@ public class SelectProjectController {
 		TableColumn<Project, String> nameCol = new TableColumn<>("Name");
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		projectsTableView.getColumns().add(nameCol);
-		columnsVisibility.put("ID", nameCol.visibleProperty());
+		columnsVisibility.put("name", nameCol.visibleProperty());
 
 		TableColumn<Project, String> dateFromCol = new TableColumn<>("Start of the project");
 		dateFromCol.setCellValueFactory(new PropertyValueFactory<>("dateFrom"));
@@ -170,14 +166,6 @@ public class SelectProjectController {
 		
 		projectsTableView.setItems(projectsModel);
 		projectsTableView.setEditable(true);
-
-		ContextMenu contextMenu = new ContextMenu();
-		for (Entry<String, BooleanProperty> entry : columnsVisibility.entrySet()) {
-			CheckMenuItem menuItem = new CheckMenuItem(entry.getKey());
-			menuItem.selectedProperty().bindBidirectional(entry.getValue());
-			contextMenu.getItems().add(menuItem);
-		}
-		projectsTableView.setContextMenu(contextMenu);
 
 		projectsTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Project>() {
 

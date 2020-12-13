@@ -35,8 +35,8 @@ public class TaskFxModel implements EntityFxModel {
 	public TaskFxModel(Task task) {
 		setProject(task.getProject());
 		setName(task.getName());
-		setFrom(task.getDateTimeFrom());
-		setUntil(task.getDateTimeUntil());
+		setFrom(task.getDateFrom());
+		setUntil(task.getDateUntil());
 		setTaskId(task.getEntityID());
 		setItems(task.getItems());
 		setLaboratory(task.getLaboratory());
@@ -53,8 +53,8 @@ public class TaskFxModel implements EntityFxModel {
 	public void setTask(Task task) {
 		setProject(task.getProject());
 		setName(task.getName());
-		setFrom(task.getDateTimeFrom());
-		setUntil(task.getDateTimeUntil());
+		setFrom(task.getDateFrom());
+		setUntil(task.getDateUntil());
 		setItems(task.getItems());
 		if (task.getLaboratory() != null) {
 			setLaboratory(task.getLaboratory());
@@ -75,7 +75,7 @@ public class TaskFxModel implements EntityFxModel {
 		task.setProject(getProject());
 		task.setName(getName());
 		task.setDateTimeFrom(getFrom());
-		task.setDateTimeUntil(getUntil());
+		task.setDateUntil(getUntil());
 		task.setTaskID(getTaskId());
 		task.setLaboratory(getLaboratory());
 		task.setCreatedBy(getCreatedBy());

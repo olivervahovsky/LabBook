@@ -8,8 +8,8 @@ public class Task implements Entity {
 	private Long taskID;
 	private String name;
 	private boolean active;
-	private LocalDate dateTimeFrom;
-	private LocalDate dateTimeUntil;
+	private LocalDate dateFrom;
+	private LocalDate dateUntil;
 	private boolean eachItemAvailable;
 	private List<Item> items;
 	private Laboratory laboratory;
@@ -23,8 +23,8 @@ public class Task implements Entity {
 
 	public Task(String name, LocalDate dateTimeFrom, LocalDate dateTimeUntil, Project project) {
 		this.name = name;
-		this.dateTimeFrom = dateTimeFrom;
-		this.dateTimeUntil = dateTimeUntil;
+		this.dateFrom = dateTimeFrom;
+		this.dateUntil = dateTimeUntil;
 		this.project = project;
 	}
 
@@ -53,20 +53,20 @@ public class Task implements Entity {
 		this.active = active;
 	}
 
-	public LocalDate getDateTimeFrom() {
-		return dateTimeFrom;
+	public LocalDate getDateFrom() {
+		return dateFrom;
 	}
 
-	public void setDateTimeFrom(LocalDate dateTimeFrom) {
-		this.dateTimeFrom = dateTimeFrom;
+	public void setDateTimeFrom(LocalDate dateFrom) {
+		this.dateFrom = dateFrom;
 	}
 
-	public LocalDate getDateTimeUntil() {
-		return dateTimeUntil;
+	public LocalDate getDateUntil() {
+		return dateUntil;
 	}
 
-	public void setDateTimeUntil(LocalDate dateTimeUntil) {
-		this.dateTimeUntil = dateTimeUntil;
+	public void setDateUntil(LocalDate dateUntil) {
+		this.dateUntil = dateUntil;
 	}
 
 	public boolean isEachItemAvailable() {

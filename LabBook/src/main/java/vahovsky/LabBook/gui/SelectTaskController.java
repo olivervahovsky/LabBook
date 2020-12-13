@@ -123,6 +123,26 @@ public class SelectTaskController {
 		nameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
 		tasksTableView.getColumns().add(nameCol);
 		columnsVisibility.put("name", nameCol.visibleProperty());
+		
+		TableColumn<Task, String> activeCol = new TableColumn<>("Task status");
+		activeCol.setCellValueFactory(new PropertyValueFactory<>("active"));
+		tasksTableView.getColumns().add(activeCol);
+		
+		TableColumn<Task, String> dateFromCol = new TableColumn<>("Start of the task");
+		dateFromCol.setCellValueFactory(new PropertyValueFactory<>("dateFrom"));
+		tasksTableView.getColumns().add(dateFromCol);
+		
+		TableColumn<Task, String> dateUntilCol = new TableColumn<>("Estimated end of the task");
+		dateUntilCol.setCellValueFactory(new PropertyValueFactory<>("dateUntil"));
+		tasksTableView.getColumns().add(dateUntilCol);
+		
+		TableColumn<Task, String> laboratoryCol = new TableColumn<>("Laboratory");
+		laboratoryCol.setCellValueFactory(new PropertyValueFactory<>("laboratory"));
+		tasksTableView.getColumns().add(laboratoryCol);
+		
+		TableColumn<Task, String> itemsCol = new TableColumn<>("Items");
+		itemsCol.setCellValueFactory(new PropertyValueFactory<>("items"));
+		tasksTableView.getColumns().add(itemsCol);
 
 		tasksTableView.setItems(tasksModel);
 		tasksTableView.setEditable(true);

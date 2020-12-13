@@ -128,17 +128,17 @@ public class ExportUserDataToExcelManager {
 			row.createCell(1).setCellValue(task.getName());
 			row.createCell(2).setCellValue(task.isActive());
 			Cell dateTimeFrom = row.createCell(3);
-			if (task.getDateTimeFrom() != null) {
+			if (task.getDateFrom() != null) {
 				dateTimeFrom.setCellValue(
 						// https://stackoverflow.com/questions/22929237/convert-java-time-localdate-into-java-util-date-type
-						Date.from(task.getDateTimeFrom().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+						Date.from(task.getDateFrom().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 				dateTimeFrom.setCellStyle(dateCellStyle);
 			} else
 				row.createCell(3).setCellValue("Not defined");
 			Cell dateTimeUntil = row.createCell(4);
-			if (task.getDateTimeUntil() != null) {
+			if (task.getDateUntil() != null) {
 				dateTimeUntil.setCellValue(
-						Date.from(task.getDateTimeUntil().atStartOfDay(ZoneId.systemDefault()).toInstant()));
+						Date.from(task.getDateUntil().atStartOfDay(ZoneId.systemDefault()).toInstant()));
 				dateTimeUntil.setCellStyle(dateCellStyle);
 			} else
 				row.createCell(4).setCellValue("Not defined");

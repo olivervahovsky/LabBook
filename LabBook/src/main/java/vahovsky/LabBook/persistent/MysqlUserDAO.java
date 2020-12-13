@@ -122,7 +122,7 @@ public class MysqlUserDAO implements UserDAO {
 				}
 				timestamp = rs.getTimestamp("date_time_until");
 				if (timestamp != null) {
-					task.setDateTimeUntil(timestamp.toLocalDateTime().toLocalDate());
+					task.setDateUntil(timestamp.toLocalDateTime().toLocalDate());
 				}
 				task.setEachItemAvailable(rs.getBoolean("each_item_available"));
 				task.setCreatedBy(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));

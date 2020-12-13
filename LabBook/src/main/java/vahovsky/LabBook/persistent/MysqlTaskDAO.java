@@ -45,11 +45,11 @@ public class MysqlTaskDAO implements TaskDAO {
 				}
 				timestamp = rs.getTimestamp("date_time_until");
 				if (timestamp != null) {
-					task.setDateTimeUntil(timestamp.toLocalDateTime().toLocalDate());
+					task.setDateUntil(timestamp.toLocalDateTime().toLocalDate());
 				}
 				task.setEachItemAvailable(rs.getBoolean("each_item_available"));
 				task.setCreatedBy(DAOfactory.INSTANCE.getUserDAO().getByID(rs.getLong("user_id_user")));
-				if (task.getLaboratory() != null)
+				if (rs.getLong("laboratory_id_laboratory") != 0) //if the value is SQL NULL, the value returned is 0
 					task.setLaboratory(DAOfactory.INSTANCE.getLaboratoryDAO()
 							.getLaboratoryByID(rs.getLong("laboratory_id_laboratory")));
 				return task;
@@ -92,8 +92,8 @@ public class MysqlTaskDAO implements TaskDAO {
 		values.put("project_id_project", task.getProject().getEntityID());
 		values.put("name", task.getName());
 		values.put("active", task.isActive());
-		values.put("date_time_from", task.getDateTimeFrom());
-		values.put("date_time_until", task.getDateTimeUntil());
+		values.put("date_time_from", task.getDateFrom());
+		values.put("date_time_until", task.getDateUntil());
 		values.put("each_item_available", task.isEachItemAvailable());
 		values.put("user_id_user", task.getCreatedBy().getEntityID());
 		if (task.getLaboratory() != null) {
@@ -132,7 +132,7 @@ public class MysqlTaskDAO implements TaskDAO {
 				laboratoryID = task.getLaboratory().getEntityID();
 			}
 			jdbcTemplate.update(sql, task.getProject().getEntityID(), task.getName(), task.isActive(),
-					task.getDateTimeFrom(), task.getDateTimeUntil(), task.isEachItemAvailable(),
+					task.getDateFrom(), task.getDateUntil(), task.isEachItemAvailable(),
 					task.getCreatedBy().getEntityID(), laboratoryID, task.getEntityID());
 			insertItems(task);
 		}
