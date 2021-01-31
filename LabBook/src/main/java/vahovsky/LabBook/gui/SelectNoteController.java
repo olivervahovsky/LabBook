@@ -3,8 +3,6 @@ package vahovsky.LabBook.gui;
 import java.time.LocalDate;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
-
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -16,8 +14,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckMenuItem;
-import javafx.scene.control.ContextMenu;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -133,15 +129,6 @@ public class SelectNoteController {
 		columnsVisibility.put("timestamp", dateCol.visibleProperty());
 
 		notesTableView.setItems(notesModel);
-		notesTableView.setEditable(true);
-
-		ContextMenu contextMenu = new ContextMenu();
-		for (Entry<String, BooleanProperty> entry : columnsVisibility.entrySet()) {
-			CheckMenuItem menuItem = new CheckMenuItem(entry.getKey());
-			menuItem.selectedProperty().bindBidirectional(entry.getValue());
-			contextMenu.getItems().add(menuItem);
-		}
-		notesTableView.setContextMenu(contextMenu);
 
 		notesTableView.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Note>() {
 

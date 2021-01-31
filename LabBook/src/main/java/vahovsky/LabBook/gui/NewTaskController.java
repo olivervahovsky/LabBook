@@ -12,10 +12,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import vahovsky.LabBook.business.UserIdentificationManager;
-import vahovsky.LabBook.entities.Item;
 import vahovsky.LabBook.entities.Laboratory;
 import vahovsky.LabBook.entities.Project;
 import vahovsky.LabBook.entities.Task;
@@ -28,9 +26,6 @@ import vahovsky.LabBook.persistent.TaskDAO;
 public class NewTaskController {
 	
 	private Utilities util;
-
-	@FXML
-	private Button addButton;
 
 	@FXML
 	private Button saveButton;
@@ -46,9 +41,6 @@ public class NewTaskController {
 
 	@FXML
 	private ComboBox<Laboratory> laboratoryComboBox;
-
-	@FXML
-	private TableView<Item> itemsTableView;
 
 	@FXML
 	private Button removeButton;
